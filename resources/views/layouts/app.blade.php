@@ -38,15 +38,16 @@
                   defaultData = result;
                   $('#tree').treeview({
                     data: defaultData,
+                    color: "#428bca",
                     backColor: '#7d4627',
+                    //backColor: '#c9d8c5',
                     onhoverColor: "#a8b6bf",
                     selectedBackColor:"#a8b6bf",
                     showBorder: false,
                     expandIcon: 'glyphicon glyphicon-chevron-right',
                     collapseIcon: 'glyphicon glyphicon-chevron-down',
-                    //padding:'0px',
-                    //enableLinks: true,
-                    //levels :1
+                    enableLinks: true,
+                    levels :3
                   });
               }
           });
@@ -145,7 +146,7 @@
                 <a href="{{URL::route('profile')}}">
                     <li style="background-color:#7d4627;font-size: 16px; font-weight: bold ">
                       TESTAGER  <span id="" class="glyphicon glyphicon-menu-hamburger hamburgerIcons" onclick="toggleHamburger()"></span>               
-                  </li>        
+                  </li>      
                 </a>
                @if(session()->has('open_project'))
                <script type="text/javascript">

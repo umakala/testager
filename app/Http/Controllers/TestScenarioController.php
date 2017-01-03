@@ -81,7 +81,21 @@ class TestScenarioController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+		$scenario = \App\TestScenario::find($id);
+
+		$cases = \App\TestCase::where('tsc_id' , $id)->get()->toArray();
+		$scenario->cases = count($cases);
+
+		$f_cases = array();
+		foreach ($cases as $key => $value) {
+			$f_cases[] = $value['tc_id'];
+		}
+
+		$scenario->steps = \App\TestCase::join('teststeps', 
+								'testcases.tc_id', '=', 'teststeps.tc_id')
+								->whereIn('testcases.tc_id', $f_cases)
+								->count();
+		return view('show.scenario', ['scenario' => $scenario]);
 	}
 
 	/**

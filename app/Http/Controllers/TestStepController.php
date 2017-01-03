@@ -34,7 +34,7 @@ class TestStepController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store( Request $request)
 	{
 		$messages = [
 		    'tc_id.not_in' => 'The case field is required.'
@@ -81,7 +81,8 @@ class TestStepController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+		$step = \App\TestStep::find($id);
+		return view('show.step', ['step' => $step]);
 	}
 
 	/**

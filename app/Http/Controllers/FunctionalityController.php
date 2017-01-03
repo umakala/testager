@@ -2,7 +2,7 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use DB;
 use Illuminate\Http\Request;
 
 class FunctionalityController extends Controller {
@@ -12,7 +12,7 @@ class FunctionalityController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index()	
 	{
 		//
 	}
@@ -71,7 +71,27 @@ class FunctionalityController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+		$functionality = \App\TestFunctionality::find($id);
+		$project =  \App\TestProject::find($functionality->tp_id);
+		$functionality->tp_name  = $project->tp_name;
+		$functionality->scenarios = \App\TestScenario::where('tf_id' , $id)->count();
+
+		$cases_id = \App\TestScenario::join('testcases', 
+								'testscenarios.tsc_id', '=', 'testcases.tsc_id')
+								->where('testscenarios.tf_id', $id)
+								->select('testcases.tc_id')
+								->get()->toArray();
+		$f_cases = array();
+		foreach ($cases_id as $key => $value) {
+			$f_cases[] = $value['tc_id'];
+		}
+		$functionality->cases = count($f_cases);
+		$functionality->steps = \App\TestCase::join('teststeps', 
+								'testcases.tc_id', '=', 'teststeps.tc_id')
+								->whereIn('testcases.tc_id', $f_cases)
+								->count();
+
+		return view('show.functionality', ['functionality' => $functionality]);
 	}
 
 	/**

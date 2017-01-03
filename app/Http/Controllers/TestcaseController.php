@@ -85,7 +85,10 @@ class TestcaseController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+		$case = \App\TestCase::find($id);
+
+		$case->steps = \App\TestStep::where('tc_id' , $id)->count();
+		return view('show.case', ['case' => $case]);
 	}
 
 	/**
