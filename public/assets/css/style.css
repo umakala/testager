@@ -1,0 +1,41 @@
+.sub-heading{
+	padding: 10px;
+}
+.table-header{
+	padding: 10px;
+	background-color: #666;
+	color: #FFF;
+	border-radius: 6px;
+}
+.table-rows{
+	height: 80px;
+	overflow: hidden;
+	margin-top: 20px; 
+}
+.wrapper{
+	/*display: block;*/
+	/*overflow: scroll;*/
+	/*height: 500px;*/
+}
+.truncateText {
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.forgotPass {
+	text-align: right;
+    line-height: 1px;
+    cursor: pointer;
+    font-style: italic;
+    font-size: small;
+}
+
+
+.mouseOverContent {
+	display: none;
+}
+
+.truncateText:hover .mouseOverContent{
+	display: block;
+}
