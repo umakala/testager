@@ -106,7 +106,8 @@ class TestScenarioController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		$scenario = \App\TestScenario::find($id);
+		return view('forms.edit_testscenario', ['scenario' =>$scenario]);
 	}
 
 	/**
@@ -115,9 +116,35 @@ class TestScenarioController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($id, Request $request)
 	{
-		//
+				//Validations
+		$validator = \Validator::make($request->all(), array(
+			'name' => 'required' ,
+			'status' => 'required'        
+			));
+		if ($validator->fails())
+		{
+			foreach ($validator->errors()->toArray() as $key => $value) {
+				$error[]=$value[0];
+			} 
+		}
+		else{
+			if( session()->has('email')){
+				//Process when validations pass
+				$content['tp_name']                 = $request->name;
+				$content['release']                 = $request->release;				
+		        //$content['description']             = $request->description;
+		        \App\TestProject::find($id)->update($content);
+		        //$create 							= \App\TestProject::create($content);
+		        //return redirect()->route('profile', ['message' => ""]);
+			 	return redirect()->route('project.show', ['id' => $id]);
+		 	}else
+		 	{
+		 		$error[] = "Session expired. Please login to continue";
+		 	}
+	 	}
+	 	return redirect()->route('project.edit', ['id' => $id, 'message' => $error])->withInput();
 	}
 
 	/**

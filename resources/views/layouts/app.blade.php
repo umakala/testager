@@ -58,15 +58,29 @@
 <body>
     <div class="col-lg-9 fixed" >
         <header class="header" style="display: block;">
-        <span id="headerTitle" class="headerTitle">Welcome</span>
+        <span id="headerTitle" class="headerTitle"></span>
         <span class="headerMenus">  
-            <a href="{{URL::route('profile')}}">
+          <span class="dropdown">  
+              <ul class="dropdown-menu">                    
+                    <li onclick="signOff()" ><a>Sign out</a></li>
+                </ul> 
+                  
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                    <span class="glyphicon glyphicon-user" style="color: #000"></span>
+                    <b class="caret" style="color: #000;"></b>
+                </a>
+            </span>
+            <a href="{{URL::route('profile')}}">      
                 <span class="highlights">
+                  Hi {{session()->get('name')}}
                 </span>
-            </a>
-            <span class="dropdown"> 
+            </a>            
+            </span>
+
+            <!-- Management  -->
+            <span class=" btn headerButt dropdown"> MANAGEMEMENT 
               <ul class="dropdown-menu">
-                    <!-- <li > <a href="{{url('project/create')}}" style="">
+                    <li > <a href="{{url('project/create')}}" style="">
                          Add Project
                     </a></li>
 
@@ -82,36 +96,53 @@
                          Add Testcase
                     </a>
                     </li>
-                    <li > <a href="{{url('teststep/create')}}"  style="">
-                         Add Step
-                    </a>
-                    </li>
-                     -->
-                    <li onclick="signOff()" ><a>Sign out</a></li>
                 </ul> 
                   
                 <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                    <span class="glyphicon glyphicon-user" style="color: #000"></span>
+                    
                     <b class="caret" style="color: #000;"></b>
                 </a>
             </span>
+
+
+            <!-- Test lab dropdown options  -->
+            <span class=" btn headerButt dropdown"> TESTLAB 
+              <ul class="dropdown-menu">
+                    <li > <a href="{{url('project/create')}}" style="">
+                         Add Project
+                    </a></li>
+                </ul>                   
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle">                    
+                    <b class="caret" style="color: #000;"></b>
+                </a>
             </span>
 
-                    <a href="{{url('project/create')}}" class="btn headerButt">
-                          Add Project
-                    </a>
-                    <a href="{{url('functionality/create')}}"   class="btn headerButt">
-                         Add Functionality
-                    </a>
-                    <a href="{{url('scenario/create')}}" style=""  class="btn headerButt">
-                         Add Scenario
-                    </a>
-                    <a href="{{url('testcase/create')}}"  style=""  class="btn headerButt">
-                         Add Testcase
-                    </a>
-                    <a href="{{url('teststep/create')}}"  style=""  class="btn headerButt">
-                         Add Step
-                    </a>
+            <!-- Defect dropdown options  -->
+            <span class=" btn headerButt dropdown"> DEFECT 
+              <ul class="dropdown-menu">
+                    <li > <a href="{{url('project/create')}}" style="">
+                         Add Project
+                    </a></li>
+                    <!-- Add more options here -->
+
+                </ul>                   
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle">                    
+                    <b class="caret" style="color: #000;"></b>
+                </a>
+            </span>
+
+            <!-- Reports dropdown options  -->
+            <span class=" btn headerButt dropdown"> REPORTS 
+              <ul class="dropdown-menu">
+                    <li > <a href="#" style="">
+                         SHOW 
+                    </a></li>
+                    <!-- Add more options here -->
+                </ul>                   
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle">                    
+                    <b class="caret" style="color: #000;"></b>
+                </a>
+            </span>
 
               @if(isset($projects))
               <span class="dropdown" style="float: right; margin-right: 5px"> 
@@ -130,6 +161,7 @@
               </a>
               </span> 
               @endif
+
         </header>
              <div class="dynTemplate">
                  @if(isset($info)) 
@@ -145,7 +177,7 @@
             <ul class="hamburgerMenu">
                 <a href="{{URL::route('profile')}}">
                     <li style="background-color:#7d4627;font-size: 16px; font-weight: bold ">
-                      TESTAGER  <span id="" class="glyphicon glyphicon-menu-hamburger hamburgerIcons" onclick="toggleHamburger()"></span>               
+                      AUTOMANAGER  <span id="" class="glyphicon glyphicon-menu-hamburger hamburgerIcons" onclick="toggleHamburger()"></span>               
                   </li>      
                 </a>
                @if(session()->has('open_project'))

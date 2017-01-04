@@ -146,7 +146,7 @@ return [
 		'App\Providers\RouteServiceProvider',
 		'Barryvdh\DomPDF\ServiceProvider',
 		'willvincent\Feeds\FeedsServiceProvider',		
-        'Intervention\Image\ImageServiceProvider',
+        //'Intervention\Image\ImageServiceProvider',
 
 	],
 
@@ -197,7 +197,7 @@ return [
 		'View'      => 'Illuminate\Support\Facades\View',
 		'Feeds'     => 'willvincent\Feeds\Facades\FeedsFacade',
 		'PDF' 		=> 'Barryvdh\DomPDF\Facade',
-		'Image'     => 'Intervention\Image\Facades\Image'
+		//'Image'     => 'Intervention\Image\Facades\Image'
        
 
 	],

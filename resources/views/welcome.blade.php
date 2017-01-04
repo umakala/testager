@@ -35,8 +35,8 @@
     <div class="col-sm-12 hamburger" style="padding: 0;">
         <ul class="hamburgerMenu">
             <a href="{{URL::route('home')}}">
-                <li style="background-color:#7d4627; text-align: center;">
-                  TESTAGER                
+                <li style="background-color:#7d4627; text-align: center; font-weight: bold; font-size: 18px">
+                  AUTOMANAGER                
               </li>        
           </a> 
       </ul>

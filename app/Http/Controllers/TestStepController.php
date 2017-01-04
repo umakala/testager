@@ -22,10 +22,12 @@ class TestStepController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create()
-	{
-		
-		$cases = \App\TestCase::where('tp_id' , session()->get('open_project'))->get();
+	public function create($tc_id)
+	{	
+		if($tc_id != null)
+			$cases = \App\TestCase::where('tc_id' , $tc_id)->get();
+		else		
+			$cases = \App\TestCase::where('tp_id' , session()->get('open_project'))->get();
 		return view('forms.teststep', ['cases' =>$cases]);
 	}
 
@@ -36,11 +38,14 @@ class TestStepController extends Controller {
 	 */
 	public function store( Request $request)
 	{
+
 		$messages = [
 		    'tc_id.not_in' => 'The case field is required.'
 		];
+
+	 	$tc =  $request->tc_id;
 		$validator = \Validator::make($request->all(), array(
-			'name' => 'required',
+			'description' => 'required',
 			'tc_id' => 'not_in:none'        
 			), $messages);
 		if ($validator->fails())
@@ -53,23 +58,24 @@ class TestStepController extends Controller {
 			if( session()->has('email')){
 				//Process when validations pass
 				$content['ts_id']                 	= $this->genrateRandomInt();				
-				$content['ts_name']                 = $request->name;
+				$content['ts_name']                 = "";
 				//$content['created_by'] 			= session()->get('email');
 		        $content['description']             = $request->description;
 		        $content['expected_result']         = $request->expected_result;
 				$content['status']             		= $request->status;
 		        $content['tp_id']                 	= session()->get('open_project');
-		        $content['tc_id']                 	= $request->tc_id;
+		        $content['tc_id']                 	= $tc;
 				
 		        $create 							= \App\TestStep::create($content);
 		        //return redirect()->route('profile', ['message' => ""]);
-			 	return redirect()->route('profile');
+			 	return redirect()->route('testcase.show', ['id' => $tc] );
 		 	}else
 		 	{
 		 		$error[] = "Session expired. Please login to continue";
 		 	}
 	 	}
-	 	return redirect()->route('teststep.create', ['message' => $error])->withInput();
+
+	 	return redirect()->route('teststep.create', [ 'tc_id' => $tc, 'message' => $error ])->withInput();
 
 	}
 

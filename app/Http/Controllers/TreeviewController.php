@@ -48,7 +48,7 @@ class TreeviewController extends Controller {
 						$teststeps = \App\TestStep::where(['tp_id' => $p_value->tp_id , 'tc_id' => $case->tc_id ])->get();
 						foreach ($teststeps as $step) {
 							$st_node = array();
-							$st_node['text'] = $step->ts_name;	
+							$st_node['text'] = $step->description;	
 							$st_node['href'] = route('teststep.show' , ['id' => $step->ts_id] );
 							$c_node['nodes'][] = $st_node;
 						}

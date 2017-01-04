@@ -24,9 +24,7 @@ class FunctionalityController extends Controller {
 	 */
 	public function create()
 	{
-		//
-		//$projects = \App\TestProject::all();
-		return view('forms.functionality');//, ['projects' => $projects]);
+		return view('forms.functionality');
 	}
 
 	/**
@@ -102,7 +100,8 @@ class FunctionalityController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		$functionality = \App\TestFunctionality::find($id);
+		return view('forms.edit_functionality', ['functionality' => $functionality]);
 	}
 
 	/**
@@ -111,9 +110,32 @@ class FunctionalityController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($id, Request $request)
 	{
-		//
+		//Validations
+		$validator = \Validator::make($request->all(), array(
+			'name' => 'required'         
+			));
+		if ($validator->fails())
+		{
+			foreach ($validator->errors()->toArray() as $key => $value) {
+				$error[]=$value[0];
+			} 
+		}
+		else{
+			if( session()->has('email')){
+				//Process when validations pass
+				$content['tf_name']                 = $request->name;
+				$content['description']             = $request->description;
+		        \App\TestFunctionality::find($id)->update($content);
+		        //return redirect()->route('profile', ['message' => ""]);
+			 	return redirect()->route('functionality.show', ['id' => $id]);
+		 	}else
+		 	{
+		 		$error[] = "Session expired. Please login to continue";
+		 	}
+	 	}
+	 	return redirect()->route('functionality.edit', ['id' => $id, 'message' => $error])->withInput();
 	}
 
 	/**

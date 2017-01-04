@@ -15,11 +15,11 @@
 	 		</p>
 	 		 
         <div class="panel-body">
-         <div class="panel-title" style="font-style: italic; padding-bottom: 10px;" > Description 	</div>	
+         <!-- <div class="panel-title" style="font-style: italic; padding-bottom: 10px;" > Description 	</div>	
 			<p>
 	        	{{$project->description}}
 			</p>     
-        </div>       
+        </div> -->       
 		<div class="panel-body">
 			 <div class="panel-title" style="font-style: italic; padding-bottom: 10px;" > Summary 	</div>	
 			<div class="row">

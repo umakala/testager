@@ -5,7 +5,7 @@
 @section('content')
 <div class="wrapper">
   <div class="panel panel-default" style=" padding:10px">
-        <div class="panel-title" style="font-weight:bold;" >{{$functionality->tf_name}}
+        <div class="panel-title" style="font-weight:bold;" > Functionality : {{$functionality->tf_name}}
 		 </div>
 		 	<p style="float:right">
 		 		<a href="{{URL::route('functionality.edit', ['id' => $functionality->tf_id])}}"> <span id="" class="glyphicon glyphicon-edit"></span></a>

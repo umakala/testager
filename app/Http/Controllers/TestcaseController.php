@@ -68,7 +68,8 @@ class TestcaseController extends Controller {
 				
 		        $create 							= \App\TestCase::create($content);
 		        //return redirect()->route('profile', ['message' => ""]);
-			 	return redirect()->route('profile');
+		        //print_r($create); exit;
+			 	return redirect()->route('testcase.show', ['id' => $content['tc_id']]);
 		 	}else
 		 	{
 		 		$error[] = "Session expired. Please login to continue";
@@ -87,7 +88,7 @@ class TestcaseController extends Controller {
 	{
 		$case = \App\TestCase::find($id);
 
-		$case->steps = \App\TestStep::where('tc_id' , $id)->count();
+		$case->steps = \App\TestStep::where('tc_id' , $id)->orderBy('created_at' , 'asc')->get();
 		return view('show.case', ['case' => $case]);
 	}
 

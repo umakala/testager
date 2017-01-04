@@ -5,36 +5,33 @@
 <div class="wrapper" style="">
     <div class="col-sm-12 col-lg-12">
        <div class="panel panel-default" style=" padding-top:20px">
-        <div class="panel-title" style="text-align: center;">Project</div>
+        <div class="panel-title" style="text-align: center;"> Project : {{$project->tp_name}}</div>
          <hr/>
          <div class="panel-body">
-            <form action="{{URL::route('project.store')}}" method ="POST" class="form-horizontal" enctype='multipart/form-data' >               
-               <div class="form-group"> 
-                    <div class="col-xs-6"> 
-                  <!--   <label for="title" class="control-label col-xs-4">Release</label>  -->         
-                       <input type="text" class="form-control" value="" id="release"  name="release" placeholder="Release">
+            <form action="{{URL::route('project.update', ['id' => $project->tp_id])}}" method ="POST" class="form-horizontal" enctype='multipart/form-data' > 
+              <input type="hidden" name="_method" value="PUT">              
+               <div class="form-group">  
+                       <label for="title" class="control-label col-xs-4">Release</label> 
+                    <div class="col-xs-8">
+                       <input type="text" class="form-control" value="{{$project->release}}" id="release"  name="release" placeholder="Release">
                        <div class="help-line" id="release-help"></div>
                    </div>
-                   <div class="col-xs-6"> 
-                   <!--   <label for="title" class="control-label col-xs-4">Prefix</label>  -->   
-                      <input type="text" class="form-control" value="" id="prefix"  name="prefix" placeholder="Project prefix">
-                      <div class="help-line" id="prefix-help"></div>
-                  </div>
                 </div>
                 <div class="form-group"> 
                     <label for="title" class="control-label col-xs-4">Project Name</label>
                     <div class="col-xs-8">            
-                       <input type="text" class="form-control" value="" id="name"  name="name" placeholder="">
+                       <input type="text" class="form-control" value="{{$project->tp_name}}" id="name"  name="name" placeholder="" >
                        <div class="help-line" id="name-help"></div>
                    </div>
                </div>
                <!-- <div class="form-group">                
                  <label for="title" class="control-label col-xs-4">Description</label>
                  <div class="col-xs-8">            
-                   <textarea class="form-control"  name="description"  rows="4" ></textarea>
+                   <textarea class="form-control"  name="description"  rows="4" >{{$project->description}}</textarea>
                    <div class="help-line" id="text-help"></div>
-               </div>
-              </div>  -->          
+               </div> 
+              </div> -->
+                     
            <div class="form-group">
             @if(isset($_GET['message']))                           
             <div class="alert alert-danger">
@@ -46,7 +43,7 @@
             </div>
             @endif
         </div>
-        <button type="submit" id="loginButton" class="btn btn-primary" style="float:right" >Create</button>
+        <button type="submit" id="loginButton" class="btn btn-primary" style="float:right" >Update</button>
     </form>
 </div>
 </div>
