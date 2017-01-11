@@ -2,42 +2,23 @@
 @extends('layouts.app')
 
 @section('content')
-  <form action="{{URL::route('testcase.store')}}" method ="POST" class="form-horizontal" enctype='multipart/form-data' >   
-
+<form action="{{URL::route('testcase.update', ['id' => $case->tc_id])}}" method ="POST" class="form-horizontal" enctype='multipart/form-data' >   
+<input type="hidden" name="_method" value="PUT">
 <div class="wrapper" style="">
       <div class="panel panel-default" style=" padding:20px">
-         <div class="panel-title" style="text-align: center;">Test Case</div>
+         <div class="panel-title" style="text-align: center;">Update Testcase</div>
          <hr/>
 
          <div class="panel-body">
-      @if(count($scenarios) == 0)
-         <div class="alert alert-info">Please Create a Scenario first.</div>
-      @else
-
-        <div class="col-sm-12">
-              <div class="form-group"> 
-                    <label for="tsc_id" class="control-label col-xs-4">Scenario</label>
-                    <div class="col-xs-8">           
-                       <select class="form-control" name="tsc_id">
-                          <option value="none">Select Scenario</option>
-                          @foreach ($scenarios as $scenario)    
-                              <option value="{{$scenario->tsc_id}}" {{ ($scenario->tsc_id == old('tsc_id')) ? 'selected' : '' }}   >{{$scenario->tsc_name}} for {{$scenario->tf_name}}</span> </option>
-                          @endforeach     
-                      </select>   
-                       <div class="help-line" id="tsc-help"></div>
-                   </div>
-               </div>
-        </div>
-
         <div class="col-sm-12 col-lg-6">                                      
                 <div class="form-group"> 
                     <label for="title" class="control-label col-xs-4">Testcase Name</label>
                     <div class="col-xs-8">            
-                       <input type="text" class="form-control" value="{{old('name')}}" id="name"  name="name" placeholder="">
+                       <input type="text" class="form-control" value="{{$case->tc_name}}" id="name"  name="name" placeholder="">
                        <div class="help-line" id="name-help"></div>
                    </div>
                </div>
-               <!--  <div class="form-group"> 
+                <!-- <div class="form-group"> 
                     <label for="status" class="control-label col-xs-4">Status</label>
                     <div class="col-xs-8">            
                        <select class="form-control" name="status">
@@ -51,7 +32,7 @@
                <div class="form-group">                
                  <label for="title" class="control-label col-xs-4">Description</label>
                  <div class="col-xs-8">            
-                   <textarea class="form-control"  name="description"  rows="6" >{{old('description')}}</textarea>
+                   <textarea class="form-control"  name="description"  rows="6" >{{$case->description}}</textarea>
                    <div class="help-line" id="text-help"></div>
                </div>
            </div>           
@@ -62,7 +43,7 @@
                <div class="form-group">                
                  <label for="expected_result" class="control-label col-xs-4">Expected Result</label>
                  <div class="col-xs-8">            
-                   <textarea class="form-control"  name="expected_result"  rows="6" ></textarea>
+                   <textarea class="form-control"  name="expected_result"  rows="6" >{{$case->expected_result}}</textarea>
                    <div class="help-line" id="text-help"></div>
                </div>         
               </div>
@@ -77,12 +58,7 @@
             </div>
             @endif
           </div>
-
-
-
-        <button type="submit" id="loginButton" class="btn btn-primary" style="float:right" >Create</button>
-  @endif
-
+        <button type="submit" id="loginButton" class="btn btn-primary" style="float:right" >Update</button>
 </div>
 </div>
 </div>

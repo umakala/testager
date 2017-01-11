@@ -15,7 +15,7 @@
 			<p style="float:right">
 				<a href="{{URL::route('testcase.edit', ['id' => $case->tc_id])}}"> <span id="" class="glyphicon glyphicon-edit"></span> Edit</a>
 
-				<a href="{{URL::route('testcase.show', ['id' => $case->tc_id])}}"> <span id="" class="glyphicon glyphicon-play-circle"></span> Execute</a>
+				<a href="{{URL::route('lab.show', ['id' => $case->tc_id])}}"> <span id="" class="glyphicon glyphicon-play-circle"></span> Lab</a>
 			</p>			
 			<p>
 				Status : {{$case->status}} <!-- by {{$case->created_by}} -->
@@ -57,11 +57,11 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Step</th>
-                    <th>Description(Click/input/select)</th>
-                    <th>Execution Format</th>
-                    <th>Expected Result</th>
-                    <th>Status</th>
+                    <th  style="max-width: 5%">Step</th>
+                    <th style="max-width: 30%">Description</th>
+                    <th style="max-width: 30%">Expected Result</th>
+                    <th style="max-width: 5%">Status</th>                    
+                    <th style="max-width: 20%"> Actions <!-- Execution Format --></th>
                 </tr>
             </thead>
             <tbody>
@@ -69,20 +69,22 @@
             @foreach($case->steps as $step)
                 <tr>
                     <td class="col-sm-1">
-                     {{"Step ".$i++}}
+                     {{$i++}}
                     </td>
-                    <td class="col-sm-3">
-                    {{$step->description}}
+                    <td class="col-sm-3" >
+                     <a style="margin-right: 10px" href="{{URL::route('teststep.show' , ['id' => $step->ts_id])}}">{{$step->description}} </a>
                     </td>
-                    <td class="col-sm-3">
-                    {{$step->execution_format}}
+                    <td class="col-sm-3">               
+                    {{$step->expected_result}}
                     </td>
-                    <td class="col-sm-2">               
-                    {{$step->execution_result}}
-                    </td>
-
-                    <td class="col-sm-1"> 
+                    <td class="col-sm-2"> 
                     {{$step->status}}
+                    </td>
+                    <td class="col-sm-2" >
+                     <a class="glyphicon glyphicon-eye-open" style="margin-right: 10px" href="{{URL::route('teststep.show' , ['id' => $step->ts_id])}}"></a>
+          
+                    	 <a class="glyphicon glyphicon-pencil" style="margin-right: 10px" href="{{URL::route('teststep.edit' , ['id' => $step->ts_id])}}"></a>
+                	<!-- 	<a class="glyphicon glyphicon-trash" style="margin-right: 10px" href="#"></a> -->
                     </td>
                 </tr>
                @endforeach

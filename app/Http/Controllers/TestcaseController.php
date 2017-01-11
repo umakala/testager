@@ -42,7 +42,7 @@ class TestcaseController extends Controller {
 	public function store(Request $request)
 	{
 		$messages = [
-		    'tf_id.not_in' => 'The Scenario field is required.'
+		    'tsc_id.not_in' => 'The Scenario field is required.'
 		];
 		$validator = \Validator::make($request->all(), array(
 			'name' => 'required',
@@ -56,18 +56,22 @@ class TestcaseController extends Controller {
 		}
 		else{
 			if( session()->has('email')){
-				//Process when validations pass
+				//Process when validations pass then create test case
 				$content['tc_id']                 	= $this->genrateRandomInt();				
 				$content['tc_name']                 = $request->name;
-				//$content['created_by'] 			= session()->get('email');
+				$content['created_by'] 				= session()->get('email');
 		        $content['description']             = $request->description;
 		        $content['expected_result']         = $request->expected_result;
-				$content['status']             		= $request->status;
+				$content['status']             		= "not_executed";
 		        $content['tp_id']                 	= session()->get('open_project');
-		        $content['tsc_id']                 	= $request->tsc_id;
-				
+		        $content['tsc_id']                 	= $request->tsc_id;	
+		        $content['bug_id']					= "";
+		       	$content['execution_type']			= "NA" ;
+		       	$content['execution_by']			= "" ;
+		       	$content_lab['execution_by_name']	= "" ;
+		        //$create_lab 						= \App\Lab::create($content_lab);
 		        $create 							= \App\TestCase::create($content);
-		        //return redirect()->route('profile', ['message' => ""]);
+
 		        //print_r($create); exit;
 			 	return redirect()->route('testcase.show', ['id' => $content['tc_id']]);
 		 	}else
@@ -100,7 +104,9 @@ class TestcaseController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		$case = \App\TestCase::find($id);
+		return view('forms.edit_testcase', ['case' => $case]);
+
 	}
 
 	/**
@@ -109,9 +115,37 @@ class TestcaseController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($id, Request $request)
 	{
-		//
+		$validator = \Validator::make($request->all(), array(
+			'name' => 'required'
+			/*'description' => 'required',
+			'expected_result' => 'required'  */   
+			));
+		if ($validator->fails())
+		{
+			foreach ($validator->errors()->toArray() as $key => $value) {
+				$error[]=$value[0];
+			} 
+		}
+		else{
+			if( session()->has('email')){
+				//Process when validations pass
+				$content['tc_name']                 = $request->name;
+				//$content['created_by'] 			= session()->get('email');
+		        $content['description']             = $request->description;
+		        $content['expected_result']         = $request->expected_result;
+				//$content['status']             		= $request->status;
+		        
+		        \App\TestCase::find($id)->update($content);
+			 	return redirect()->route('testcase.show', ['id' => $id]);
+		 	}else
+		 	{
+		 		$error[] = "Session expired. Please login to continue";
+		 	}
+	 	}
+	 	return redirect()->route('testcase.edit', ['id' => $id, 'message' => $error])->withInput();
+		
 	}
 
 	/**

@@ -22,7 +22,7 @@ class TreeviewController extends Controller {
 	  	//foreach ($projects as $key => $p_value) {
 	  		//Take each project node and find associated functionalities 
 	  		$tree_node = array();
-	  		$tree_node['text'] = $p_value->tp_name;
+	  		$tree_node['text'] =  "P - ". $p_value->tp_name;
 	  		$url = route('project.show' , ['id' => $id] );
 			$tree_node['href'] = $url;//"#".$p_value->tp_id;
 			
@@ -30,28 +30,30 @@ class TreeviewController extends Controller {
 			foreach ($testfunctionalities as $functionality) {
 				//Repeat same for scenarios
 				$f_node = array();
-				$f_node['text'] = $functionality->tf_name;
+				$f_node['text'] = "F - ".$functionality->tf_name;
 				$f_node['href'] = route('functionality.show' , ['id' => $functionality->tf_id] );
 			
 				$testscenarios = \App\TestScenario::where(['tp_id' => $p_value->tp_id , 'tf_id' => $functionality->tf_id ])->get();
 				foreach ($testscenarios as $scenario) {
 					//Repeat same for cases				
 					$s_node = array();
-					$s_node['text'] = $scenario->tsc_name;
+					$s_node['text'] = "S - ".$scenario->tsc_name;
 					$s_node['href'] = route('scenario.show' , ['id' => $scenario->tsc_id] );
 			
 					$testcases = \App\TestCase::where(['tp_id' => $p_value->tp_id , 'tsc_id' => $scenario->tsc_id ])->get();
 					foreach ($testcases as $case) {
 						$c_node = array();
-						$c_node['text'] = $case->tc_name;	
+						$c_node['text'] = "C - ".$case->tc_name;	
 						$c_node['href'] = route('testcase.show' , ['id' => $case->tc_id] );
+						/*
+						//Child node of test cases is test step and there node details added below
 						$teststeps = \App\TestStep::where(['tp_id' => $p_value->tp_id , 'tc_id' => $case->tc_id ])->get();
 						foreach ($teststeps as $step) {
 							$st_node = array();
-							$st_node['text'] = $step->description;	
+							$st_node['text'] = "St - ".$step->description;	
 							$st_node['href'] = route('teststep.show' , ['id' => $step->ts_id] );
 							$c_node['nodes'][] = $st_node;
-						}
+						}*/
 						//create node for case and add to scenario
 						$s_node['nodes'][] = $c_node;			
 					}

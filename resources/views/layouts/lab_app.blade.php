@@ -30,33 +30,18 @@
             document.location.href = "{{URL::route('logout')}}";
         }
 
-       function make_tree(path) {
-           $.ajax({
-             type: "GET",
-             url: path,
-             success: function(result){
-                  defaultData = result;
-                  $('#tree').treeview({
-                    data: defaultData,
-                    color: "#428bca",
-                    backColor: '#7d4627',
-                    //backColor: '#c9d8c5',
-                    onhoverColor: "#a8b6bf",
-                    selectedBackColor:"#a8b6bf",
-                    showBorder: false,
-                    expandIcon: 'glyphicon glyphicon-chevron-right',
-                    collapseIcon: 'glyphicon glyphicon-chevron-down',
-                    enableLinks: true,
-                    levels :3
-                  });
-              }
-          });
-      }
+        function hideSummary() {      
+          if( $('#icontoggle').hasClass('glyphicon-eye-close')){
+             $('#icontoggle').removeClass('glyphicon-eye-close').addClass('glyphicon-eye-open');
+          }else if( $('#icontoggle').hasClass('glyphicon-eye-open')){
+              $('#icontoggle').removeClass('glyphicon-eye-open').addClass('glyphicon-eye-close');
+          }        
+        }      
     </script>
 </head>
 
 <body>
-    <div class="col-lg-9 fixed" >
+        <div class="col-lg-9 col-sm-12" >
         <header class="header" style="display: block;">
         <span id="headerTitle" class="headerTitle"></span>
         <span class="headerMenus">  
@@ -112,7 +97,7 @@
                          Lab
                     </a></li>
                 </ul>                   
-                <a href="#" data-toggle="dropdown" class="dropdown-toggle">                    
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle">
                     TESTLAB <b class="caret" style="color: #000;"></b>
                 </a>
             </span>
@@ -126,7 +111,7 @@
                     <!-- Add more options here -->
 
                 </ul>                   
-                <a href="#" data-toggle="dropdown" class="dropdown-toggle">                    
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle">
                     DEFECT <b class="caret" style="color: #000;"></b>
                 </a>
             </span>
@@ -163,35 +148,26 @@
               @endif
 
         </header>
-             <div class="dynTemplate">
+        </div>
+        <div class="col-lg-3 col-sm-12" >
+            <ul class="hamburgerMenu">
+                <a href="{{URL::route('profile')}}">
+                    <li style="background-color:#7d4627;font-size: 16px; font-weight: bold ">
+                      AUTOMANAGER </span>               
+                  </li>      
+                </a>              
+            </ul>  
+        </div>
+    <div class="col-lg-12 fixed" >
+             <div class="dynTemplate" style="margin-top: 20px;">
                  @if(isset($info)) 
                 <p class="alert alert-info" >{{$info}}</p>
                 @endif
                 @yield('content')
                 </div>
             </div>
-        </div>
-
-             
-        <div class="col-lg-3 col-sm-4 hamburger" >
-            <ul class="hamburgerMenu">
-                <a href="{{URL::route('profile')}}">
-                    <li style="background-color:#7d4627;font-size: 16px; font-weight: bold ">
-                      AUTOMANAGER  <span id="" class="glyphicon glyphicon-menu-hamburger hamburgerIcons" onclick="toggleHamburger()"></span>               
-                  </li>      
-                </a>
-               @if(session()->has('open_project'))
-               <script type="text/javascript">
-                        <?php 
-                          $url = URL::route('tree_value',['id'=> session()->get('open_project')]);
-                        ?>
-                        make_tree('{{$url}}');
-                      </script>
-                    <div id="tree" style="margin:0px">                
-                    </div>
-                @endif 
-            </ul>  
-        </div>
+        </div>            
+        
     </div>
 </body>
 </html>

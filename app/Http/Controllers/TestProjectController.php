@@ -73,6 +73,9 @@ class TestProjectController extends Controller {
 	 */
 	public function show($id)
 	{
+		/*if($id == "{project}")
+			$id = session()->get('open_project');
+*/
 		$project = \App\TestProject::find($id);
 		$project->functionalities = \App\TestFunctionality::where('tp_id' , $id)->count();
 		$project->scenarios = \App\TestScenario::where('tp_id' , $id)->count();

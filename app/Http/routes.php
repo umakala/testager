@@ -36,4 +36,7 @@ Route::resource('scenario', 'TestScenarioController');
 Route::resource('testcase', 'TestcaseController');
 Route::resource('teststep', 'TestStepController');
 
+
+Route::resource('lab', 'TestLabController');
+
 Route::get('teststep/create/{tc_id}', array("as"=>"teststep.create" , 'uses' =>'TestStepController@create'));

@@ -132,19 +132,18 @@ class TestScenarioController extends Controller {
 		else{
 			if( session()->has('email')){
 				//Process when validations pass
-				$content['tp_name']                 = $request->name;
-				$content['release']                 = $request->release;				
-		        //$content['description']             = $request->description;
-		        \App\TestProject::find($id)->update($content);
-		        //$create 							= \App\TestProject::create($content);
-		        //return redirect()->route('profile', ['message' => ""]);
-			 	return redirect()->route('project.show', ['id' => $id]);
+				$content['tsc_name']                = $request->name;
+				$content['description']             = $request->description;
+		        $content['expected_result']         = $request->expected_result;				
+		        
+		        \App\TestScenario::find($id)->update($content);
+			 	return redirect()->route('scenario.show', ['id' => $id]);
 		 	}else
 		 	{
 		 		$error[] = "Session expired. Please login to continue";
 		 	}
 	 	}
-	 	return redirect()->route('project.edit', ['id' => $id, 'message' => $error])->withInput();
+	 	return redirect()->route('scenario.edit', ['id' => $id, 'message' => $error])->withInput();
 	}
 
 	/**

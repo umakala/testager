@@ -59,14 +59,32 @@ class TestStepController extends Controller {
 				//Process when validations pass
 				$content['ts_id']                 	= $this->genrateRandomInt();				
 				$content['ts_name']                 = "";
-				//$content['created_by'] 			= session()->get('email');
+				$content['created_by'] 				= session()->get('email');
 		        $content['description']             = $request->description;
 		        $content['expected_result']         = $request->expected_result;
-				$content['status']             		= $request->status;
+				$content['status']             		= "not_executed";
 		        $content['tp_id']                 	= session()->get('open_project');
-		        $content['tc_id']                 	= $tc;
-				
+		        $content['tc_id']                 	= $tc;				
 		        $create 							= \App\TestStep::create($content);
+
+		        //Add entry in execution table for this step
+		        $execution_content['scroll']		= $request->scroll;
+		        $execution_content['resource_id']	= $request->resource_id;
+		        $execution_content['text']			= $request->text;
+		        $execution_content['content_desc']	= $request->content_desc;
+		        $execution_content['class']			= $request->class;
+		        $execution_content['index']			= $request->index;
+		        $execution_content['sendkey']		= $request->sendkey;
+		        $execution_content['screenshot']	= $request->screenshot;
+		        $execution_content['checkpoint']	= $request->checkpoint;
+		        $execution_content['wait']			= $request->wait;
+		        $execution_content['tc_id']			= $tc;
+		        $execution_content['tp_id']			= $content['tp_id'];
+		        $execution_content['ts_id']			= $content['ts_id'];
+		        $execution_content['e_id']			= $this->genrateRandomInt();
+
+		        $create 							= \App\Execution::create($execution_content);
+
 		        //return redirect()->route('profile', ['message' => ""]);
 			 	return redirect()->route('testcase.show', ['id' => $tc] );
 		 	}else
@@ -76,7 +94,6 @@ class TestStepController extends Controller {
 	 	}
 
 	 	return redirect()->route('teststep.create', [ 'tc_id' => $tc, 'message' => $error ])->withInput();
-
 	}
 
 	/**
@@ -88,7 +105,9 @@ class TestStepController extends Controller {
 	public function show($id)
 	{
 		$step = \App\TestStep::find($id);
-		return view('show.step', ['step' => $step]);
+		$execution = \App\Execution::where('ts_id', $id)->first(); 	
+
+		return view('show.step', ['step' => $step, 'execution' => $execution]);
 	}
 
 	/**
@@ -99,7 +118,16 @@ class TestStepController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		$step = \App\TestStep::find($id);
+		$step->tc_name = \App\TestCase::select('tc_name')->where('tc_id', $step->tc_id)->get()[0]['tc_name'];
+		//return $step;
+
+		$execution = \App\Execution::where('ts_id', $id)->first(); 
+
+		if($execution == null)
+			 $execution = (object) array();
+		
+		return view('forms.edit_teststep', ['step' => $step , 'execution' => $execution]);
 	}
 
 	/**
@@ -108,9 +136,47 @@ class TestStepController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($id, Request $request)
 	{
-		//
+		$validator = \Validator::make($request->all(), array(
+			'description' => 'required',
+			'expected_result' => 'required'    
+			));
+		if ($validator->fails())
+		{
+			foreach ($validator->errors()->toArray() as $key => $value) {
+				$error[]=$value[0];
+			} 
+		}
+		else{
+			if( session()->has('email')){
+				//Process when validations pass
+
+				$content['description']             = $request->description;
+		        $content['expected_result']         = $request->expected_result;
+		        \App\TestStep::find($id)->update($content);
+
+
+		        $execution_content['scroll']		= $request->scroll;
+		        $execution_content['resource_id']	= $request->resource_id;
+		        $execution_content['text']			= $request->text;
+		        $execution_content['content_desc']	= $request->content_desc;
+		        $execution_content['class']			= $request->class;
+		        $execution_content['index']			= $request->index;
+		        $execution_content['sendkey']		= $request->sendkey;
+		        $execution_content['screenshot']	= $request->screenshot;
+		        $execution_content['checkpoint']	= $request->checkpoint;
+		        $execution_content['wait']			= $request->wait;		        
+
+		        $result = \App\Execution::where('ts_id', $id)->update($execution_content);
+
+			 	return redirect()->route('teststep.show', ['id' => $id]);
+		 	}else
+		 	{
+		 		$error[] = "Session expired. Please login to continue";
+		 	}
+	 	}
+	 	return redirect()->route('teststep.edit', ['id' => $id, 'message' => $error])->withInput();
 	}
 
 	/**
