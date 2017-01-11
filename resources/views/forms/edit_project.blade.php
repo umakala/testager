@@ -11,19 +11,45 @@
             <form action="{{URL::route('project.update', ['id' => $project->tp_id])}}" method ="POST" class="form-horizontal" enctype='multipart/form-data' > 
               <input type="hidden" name="_method" value="PUT">              
                <div class="form-group">  
-                       <label for="title" class="control-label col-xs-4">Release</label> 
+                       <label for="title" class="control-label col-xs-4">Release version</label> 
                     <div class="col-xs-8">
                        <input type="text" class="form-control" value="{{$project->release}}" id="release"  name="release" placeholder="Release">
                        <div class="help-line" id="release-help"></div>
                    </div>
                 </div>
                 <div class="form-group"> 
-                    <label for="title" class="control-label col-xs-4">Project Name</label>
+                    <label for="title" class="control-label col-xs-4">Project name</label>
                     <div class="col-xs-8">            
                        <input type="text" class="form-control" value="{{$project->tp_name}}" id="name"  name="name" placeholder="" >
                        <div class="help-line" id="name-help"></div>
                    </div>
                </div>
+              <div class="form-group"> 
+                    <label for="title" class="control-label col-xs-4">Package name</label>
+                    <div class="col-xs-8">            
+                       <input type="text" class="form-control" value="{{$project->package_name}}" id="package_name"  name="package_name" placeholder="" >
+                       <div class="help-line" id="name-help"></div>
+                   </div>
+               </div>
+
+               <div class="form-group"> 
+                    <label for="title" class="control-label col-xs-4">Activity name</label>
+                    <div class="col-xs-8">            
+                       <input type="text" class="form-control" value="{{$project->activity_name}}" id="activity_name"  name="activity_name" placeholder="" >
+                       <div class="help-line" id="name-help"></div>
+                   </div>
+               </div>
+
+               <div class="form-group"> 
+                    <label for="title" class="control-label col-xs-4">App wait activity</label>
+                    <div class="col-xs-8">            
+                       <input type="text" class="form-control" value="{{$project->app_wait_activity}}" id="app_wait_activity"  name="app_wait_activity" placeholder="" >
+                       <div class="help-line" id="name-help"></div>
+                   </div>
+               </div>
+
+
+
                <!-- <div class="form-group">                
                  <label for="title" class="control-label col-xs-4">Description</label>
                  <div class="col-xs-8">            

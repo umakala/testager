@@ -15,11 +15,19 @@
 	 		</p>
 	 		 
         <div class="panel-body">
-         <!-- <div class="panel-title" style="font-style: italic; padding-bottom: 10px;" > Description 	</div>	
+         <div style="font-style: italic; padding-bottom: 10px;" > Package name 	
 			<p>
-	        	{{$project->description}}
+	        	{{$project->package_name}}
 			</p>     
-        </div> -->       
+		</div>
+
+		 <div style="font-style: italic; padding-bottom: 10px;" > Activity name 	
+			<p>
+	        	{{$project->activity_name}}
+			</p>     
+		</div>
+
+        </div>       
 		<div class="panel-body">
 			 <div class="panel-title" style="font-style: italic; padding-bottom: 10px;" > Summary 	</div>	
 			<div class="row">

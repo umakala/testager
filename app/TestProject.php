@@ -28,7 +28,7 @@ class TestProject extends Model {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['tp_id', 'tp_name', 'release', 'created_by'];
+	protected $fillable = ['tp_id', 'tp_name', 'release', 'created_by', 'package_name', 'activity_name', 'app_wait_activity'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.

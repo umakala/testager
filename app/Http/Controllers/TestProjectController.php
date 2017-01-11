@@ -118,12 +118,12 @@ class TestProjectController extends Controller {
 			if( session()->has('email')){
 				//Process when validations pass
 				$content['tp_name']                 = $request->name;
-				$content['release']                 = $request->release;				
-		        //$content['description']             = $request->description;
+				$content['release']                 = $request->release;
+				$content['package_name']            = $request->package_name;
+				$content['activity_name']           = $request->activity_name;
+				$content['app_wait_activity']       = $request->app_wait_activity;
 		        \App\TestProject::find($id)->update($content);
-		        //$create 							= \App\TestProject::create($content);
-		        //return redirect()->route('profile', ['message' => ""]);
-			 	return redirect()->route('project.show', ['id' => $id]);
+		        return redirect()->route('project.show', ['id' => $id]);
 		 	}else
 		 	{
 		 		$error[] = "Session expired. Please login to continue";
