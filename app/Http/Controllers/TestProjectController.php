@@ -2,8 +2,10 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Handlers\DeleteQueryHandler;
 
 use Illuminate\Http\Request;
+use Toast;
 
 class TestProjectController extends Controller {
 
@@ -37,7 +39,7 @@ class TestProjectController extends Controller {
 	{
 		//Validations
 		$validator = \Validator::make($request->all(), array(
-			'prefix' => 'required',
+			'release' => 'required',
 			'name' => 'required'         
 			));
 		if ($validator->fails())
@@ -49,14 +51,17 @@ class TestProjectController extends Controller {
 		else{
 			if( session()->has('email')){
 				//Process when validations pass
-				$content['tp_id']                 	= $request->prefix.$this->genrateRandomInt();				
+				$id = $content['tp_id']            	= $this->genrateRandomInt();
 				$content['tp_name']                 = $request->name;
-				$content['release']                 = $request->release;				
+				$content['release']                 = $request->release;	
+				$content['package_name']            = $request->package_name;
+				$content['activity_name']           = $request->activity_name;							
 		        $content['created_by'] 				= session()->get('email');
 		        $content['description']             = $request->description;
 		        $create 							= \App\TestProject::create($content);
-		        //return redirect()->route('profile', ['message' => ""]);
-			 	return redirect()->route('profile');
+		        $user = \App\User::where('email',session()->get('email'))->update(['open_project' => $id]);
+				session(['open_project' => $id]);
+		        return redirect()->route('profile');
 		 	}else
 		 	{
 		 		$error[] = "Session expired. Please login to continue";
@@ -73,9 +78,9 @@ class TestProjectController extends Controller {
 	 */
 	public function show($id)
 	{
-		/*if($id == "{project}")
+		if($id == "{project}" || !isset($id))
 			$id = session()->get('open_project');
-*/
+
 		$project = \App\TestProject::find($id);
 		$project->functionalities = \App\TestFunctionality::where('tp_id' , $id)->count();
 		$project->scenarios = \App\TestScenario::where('tp_id' , $id)->count();
@@ -121,7 +126,7 @@ class TestProjectController extends Controller {
 				$content['release']                 = $request->release;
 				$content['package_name']            = $request->package_name;
 				$content['activity_name']           = $request->activity_name;
-				$content['app_wait_activity']       = $request->app_wait_activity;
+				//$content['app_wait_activity']       = $request->app_wait_activity;
 		        \App\TestProject::find($id)->update($content);
 		        return redirect()->route('project.show', ['id' => $id]);
 		 	}else
@@ -140,7 +145,26 @@ class TestProjectController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+		$item = \App\TestProject::find($id);
+		if($item){
+        	$del_obj = new DeleteQueryHandler();
+        	$del_res = $del_obj->deleteFunctionalityByProjectId($id);
+			if($del_res == 0)
+			{
+				$message = $this->getMessage('messages.delete_failed');
+				Toast::message($message, 'danger');
+			}  else{      	
+	        	//Delete testcase
+	        	$item->delete();
+				$message = $this->getMessage('messages.delete_success');
+				Toast::success($message);
+			}
+        }
+		else{
+			$message = $this->getMessage('messages.delete_failed');
+			Toast::message($message, 'danger');
+		}
+		return redirect()->route('profile');
 	}
 
 }

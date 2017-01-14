@@ -238,6 +238,13 @@ textarea.form-control {
 }
 
 /* hamburger */
+.badge{
+	font-size: 9px;
+}
+.hamburger{
+	width: 100%;
+	margin: 0px;
+}
 .hamburgerMenu {
 	background-color: #7d4627;!important
 }
@@ -250,7 +257,7 @@ textarea.form-control {
 	height: 50px;
 	line-height: 55px;
 	color: #fff;
-	font-size: 14px;
+	font-size: 12px;
 	text-indent: 10px;
 	border-bottom: 1px solid rgba(169, 169, 169, 0.31);
 }

@@ -2,16 +2,39 @@
 @extends('layouts.app')
 
 
+@section('upload_modal')
+		<?php $call_page = 'project'; $id = $project->tp_id;?>
+	    @include('modals.upload_modal')
+@endsection
+
+
+@section('delete_modal')
+	<?php $delete_type = 'project'; $id =  $project->tp_id;?>
+    @include('modals.delete_modal')
+@endsection
+
+
 @section('content')
 <div class="wrapper">
   <div class="panel panel-default" style=" padding:10px">
         <div class="panel-title" style="font-weight:bold;" > Project : {{$project->tp_name}}   {{$project->release}}
 		 </div>
 	 		 <p style="float:right">
-	        	<a href="{{URL::route('project.edit', ['id' => $project->tp_id])}}"> <span id="" class="glyphicon glyphicon-edit"></span></a>
+	        	<a href="{{URL::route('project.edit', ['id' => $project->tp_id])}}"> <span id="" class="glyphicon glyphicon-edit" title="Edit Project" ></span></a>
+	        	<a type="button" data-toggle="modal" data-target="#uploadModal"> <i class="glyphicon glyphicon-upload"  title="Upload Functionalities"></i>                                           
+                </a>
+                <a type="button" data-toggle="modal" data-target="#deleteModal"> <i class="glyphicon glyphicon-trash"  title="Delete Project"></i>
+                </a>
 	 		</p>
 			 <p>
-	        	Created at - {{$project->created_at}} by {{$project->created_by}}
+	        	Created at - {{date($dt_format, strtotime($project->created_at))}} by {{$project->created_by}}
+	 		</p>
+
+	 		<p>
+	        	@include('toast::messages')
+				@if(Session::has('toasts'))
+				        {{Session::forget('toasts')}}
+				@endif
 	 		</p>
 	 		 
         <div class="panel-body">

@@ -19,4 +19,9 @@ abstract class Controller extends BaseController {
 		$value = rand($min, $max);
 		return $value;
 	}
+
+	public function getMessage($value)
+	{
+		return \Config::get($value);
+	}
 }

@@ -163,6 +163,9 @@
                  @if(isset($info)) 
                 <p class="alert alert-info" >{{$info}}</p>
                 @endif
+
+                
+
                 @yield('content')
                 </div>
             </div>

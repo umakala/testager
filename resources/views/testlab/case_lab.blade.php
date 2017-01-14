@@ -8,8 +8,16 @@
 		 </div>
 
 	 		 <p>
-	        	Created at - {{$case->created_at}} by {{$case->created_by}}
+	        	Created at - {{date($dt_format, strtotime($case->created_at))}} by {{$case->created_by}}
 	 		</p>
+
+	 		<!-- Toast -->
+			<p>
+			@include('toast::messages')
+			@if(Session::has('toasts'))
+			        {{Session::forget('toasts')}}
+			@endif
+			</p>
 	 		<!--  <div class="panel-body">
 			<p  onclick="hideSummary()">
 		      <a data-toggle="collapse" data-parent="#panel" href="#summary_body" class="panel-toggle">
@@ -46,7 +54,7 @@
 				
 				<div class="row">
 					<div class="col-lg-4">
-						 Test Steps
+						 Teststeps Summary
 					</div>
 					<div class="col-lg-2">
 	        			{{ isset($case->steps['total']) ? $case->steps['total'] : 0 }}
@@ -73,9 +81,11 @@
       	@else
 
         <div class="panel-body">
-	         <div class="panel-title" style="font-style: bold; padding-bottom: 10px;" > Testcases 
+	         <div class="panel-title" style="font-style: bold; padding-bottom: 10px;" > Teststeps Details 
 	         <p style="float:right">
-		        	<a href="{{URL::route('testcase.edit', ['id' => $case->tc_id])}}"> <span id="" class="glyphicon glyphicon-play-circle"></span> Execute</a>
+
+				<a href="{{URL::route('download.show', ['id' => $case->tc_id])}}"> <span id="" class="glyphicon glyphicon-download"></span> Download</a>
+		        	<a href="{{URL::route('execute.show', ['id' => $case->tc_id])}}"> <span id="" class="glyphicon glyphicon-play-circle"></span> Execute</a>
 		 	 </p>
 	 	</div>
 

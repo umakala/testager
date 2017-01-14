@@ -2,7 +2,11 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Handlers\DeleteQueryHandler;
+
 use DB;
+use Toast;
+
 use Illuminate\Http\Request;
 
 class FunctionalityController extends Controller {
@@ -146,7 +150,27 @@ class FunctionalityController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+		$tp_id = session()->get('open_project');
+		$item = \App\TestFunctionality::find($id);
+		if($item){
+        	$del_obj = new DeleteQueryHandler();
+        	$del_res = $del_obj->deleteScenarioByFunctionalityId($id);
+			if($del_res == 0)
+			{
+				$message = $this->getMessage('messages.delete_failed');
+				Toast::message($message, 'danger');
+			}  else{      	
+	        	//Delete testcase
+	        	$item->delete();
+				$message = $this->getMessage('messages.delete_success');
+				Toast::success($message);
+			}
+        }
+		else{
+			$message = $this->getMessage('messages.delete_failed');
+			Toast::message($message, 'danger');
+		}
+		return redirect()->route('project.show', $tp_id);
 	}
 
 }

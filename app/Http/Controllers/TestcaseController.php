@@ -2,8 +2,9 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use Toast;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Handlers\DeleteQueryHandler;
 
 class TestcaseController extends Controller {
 
@@ -91,7 +92,6 @@ class TestcaseController extends Controller {
 	public function show($id)
 	{
 		$case = \App\TestCase::find($id);
-
 		$case->steps = \App\TestStep::where('tc_id' , $id)->orderBy('created_at' , 'asc')->get();
 		return view('show.case', ['case' => $case]);
 	}
@@ -156,7 +156,28 @@ class TestcaseController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+		$tp_id = session()->get('open_project');
+		$item = \App\TestCase::find($id);
+		$sc_id = $item->tsc_id;
+        if($item){
+        	$del_obj = new DeleteQueryHandler();
+        	$del_res = $del_obj->deleteStepsByCaseId($id);
+			if($del_res == 0)
+			{
+				$message = $this->getMessage('messages.delete_failed');
+				Toast::message($message, 'danger');
+			}  else{      	
+	        	//Delete testcase
+	        	$item->delete();
+				$message = $this->getMessage('messages.delete_success');
+				Toast::success($message);
+			}
+        }
+		else{
+			$message = $this->getMessage('messages.delete_failed');
+			Toast::message($message, 'danger');
+		}
+		return redirect()->route('scenario.show', $sc_id);
 	}
 
 }

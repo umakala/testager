@@ -10,45 +10,41 @@
          <div class="panel-body">
             <form action="{{URL::route('project.store')}}" method ="POST" class="form-horizontal" enctype='multipart/form-data' >               
                <div class="form-group"> 
-                    <div class="col-xs-6"> 
-                  <!--   <label for="title" class="control-label col-xs-4">Release</label>  -->         
-                       <input type="text" class="form-control" value="" id="release"  name="release" placeholder="*Release Version">
+
+                    <label for="release" class="control-label col-xs-4">Release</label>  
+                    <div class="col-xs-6">    
+                    <input type="text" class="form-control" value="" id="release"  name="release" placeholder="*Release Version">
                        <div class="help-line" id="release-help"></div>
                    </div>
-                   <div class="col-xs-6"> 
-                   <!--   <label for="title" class="control-label col-xs-4">Prefix</label>  -->   
-                      <input type="text" class="form-control" value="" id="prefix"  name="prefix" placeholder="*Project prefix">
-                      <div class="help-line" id="prefix-help"></div>
-                  </div>
                 </div>
                 <div class="form-group"> 
                     <label for="title" class="control-label col-xs-4">*Project Name</label>
-                    <div class="col-xs-8">            
+                    <div class="col-xs-6">            
                        <input type="text" class="form-control" value="" id="name"  name="name" placeholder="*Project Name">
                        <div class="help-line" id="name-help"></div>
                    </div>
                </div>
                 <div class="form-group"> 
                     <label for="package_name" class="control-label col-xs-4">Package Name</label>
-                    <div class="col-xs-8">            
+                    <div class="col-xs-6">            
                        <input type="text" class="form-control" value="" id="package_name"  name="package_name" placeholder="(optional)">
                        <div class="help-line" id="name-help"></div>
                    </div>
                </div>
                 <div class="form-group"> 
                     <label for="title" class="control-label col-xs-4">Activity Name</label>
-                    <div class="col-xs-8">            
+                    <div class="col-xs-6">            
                        <input type="text" class="form-control" value="" id="activity_name"  name="activity_name" placeholder="(optional)">
                        <div class="help-line" id="name-help"></div>
                    </div>
                </div>
-                <div class="form-group"> 
+                <!-- <div class="form-group"> 
                     <label for="title" class="control-label col-xs-4">App wait Activity</label>
-                    <div class="col-xs-8">            
+                    <div class="col-xs-6">            
                        <input type="text" class="form-control" value="" id="app_wait_name"  name="app_wait_name" placeholder="(optional)">
                        <div class="help-line" id="name-help"></div>
                    </div>
-               </div>               
+               </div> -->              
                          
            <div class="form-group">
             @if(isset($_GET['message']))                           
@@ -61,7 +57,13 @@
             </div>
             @endif
         </div>
-        <button type="submit" id="loginButton" class="btn btn-primary" style="float:right" >Create</button>
+         <div class="form-group"> 
+                    <span class="col-xs-4"></span>
+                    <div class="col-xs-6">            
+                        <button type="submit" id="loginButton" class="btn btn-primary" style="float:right" >Create</button>
+                   </div>
+               </div>
+       
     </form>
 </div>
 </div>

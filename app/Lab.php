@@ -18,7 +18,7 @@ class Lab extends Model {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['tl_id', 'tp_id', 'tf_id', 'tsc_id' ,'tc_id', 'bug_id', 'tc_status', 'execution_type', 'executed_by', 'created_at', 'updated_at'];
+	protected $fillable = ['tl_id', 'tp_id', 'tf_id', 'tsc_id' ,'tc_id', 'bug_id', 'tc_status', 'execution_type', 'executed_by', 'created_at', 'updated_at', '	execution_result', 'checkpoint_result', 'executed_filename'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.

@@ -42,7 +42,7 @@ class TestLabController extends Controller {
 		//Get details about test cases
 		//$lab_details = [];
 		//$lab_details = \App\Lab::where('tp_id' , $id)->get();
-		$lab_details = \App\TestCase::where('tp_id' , $id)->get();
+		$lab_details = \App\TestCase::where('tp_id' , $id)->orderBy('created_at', 'asc')->get();
 		return view('testlab.lab', ['project' => $project, 'lab_details' => $lab_details]);	  	
 	}
 
@@ -103,7 +103,7 @@ class TestLabController extends Controller {
 		$case->steps = $this->getCountFormat($steps_counts);
 		
 		//$lab_details = \App\Lab::where('tp_id' , $id)->get();
-		$lab_details = \App\TestStep::where('tc_id' , $id)->get();
+		$lab_details = \App\TestStep::where('tc_id' , $id)->orderBy('created_at', 'asc')->get();
 		return view('testlab.case_lab', ['case' => $case, 'lab_details' => $lab_details]);
 	}
 

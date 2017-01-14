@@ -1,0 +1,15 @@
+
+Main Groups -> (with Cross project linking) 
+1. Functionality 
+2. Test Labs (All test scenarios)
+3. Execution Lab
+4. Defects
+5. Reports
+
+
+
+Functionality (English) - Pay
+	SubFunctionality 	- Type of Pay to be used (VPA or IFSC) 
+		Scenario 		- Login->Pay->Enter Input -> 
+			TestCases	- Login
+				TestStep- 1. Enter valid input 2. Click input

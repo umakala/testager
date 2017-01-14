@@ -21,33 +21,49 @@ class TreeviewController extends Controller {
 	  	$tree = array();
 	  	//foreach ($projects as $key => $p_value) {
 	  		//Take each project node and find associated functionalities 
+	  		$testfunctionalities = \App\TestFunctionality::where('tp_id', $p_value->tp_id)->get();
+			$tp_count = count($testfunctionalities);
+			
 	  		$tree_node = array();
-	  		$tree_node['text'] =  "P - ". $p_value->tp_name;
+	  		$tree_node['text'] =  $p_value->tp_name;
+			$tree_node['tags']  = [$tp_count];
+			$tree_node['backColor']  = '#dddfd4';
+
 	  		$url = route('project.show' , ['id' => $id] );
 			$tree_node['href'] = $url;//"#".$p_value->tp_id;
 			
-			$testfunctionalities = \App\TestFunctionality::where('tp_id', $p_value->tp_id)->get();
 			foreach ($testfunctionalities as $functionality) {
 				//Repeat same for scenarios
-				$f_node = array();
-				$f_node['text'] = "F - ".$functionality->tf_name;
-				$f_node['href'] = route('functionality.show' , ['id' => $functionality->tf_id] );
-			
 				$testscenarios = \App\TestScenario::where(['tp_id' => $p_value->tp_id , 'tf_id' => $functionality->tf_id ])->get();
+				$tsc_count = count($testscenarios);
+
+				$f_node = array();
+				$f_node['text'] = $functionality->tf_name;
+				$f_node['href'] = route('functionality.show' , ['id' => $functionality->tf_id] );
+				$f_node['tags']  = [$tsc_count];
+				$f_node['backColor']  = '#c9d8c5';
+
 				foreach ($testscenarios as $scenario) {
-					//Repeat same for cases				
-					$s_node = array();
-					$s_node['text'] = "S - ".$scenario->tsc_name;
-					$s_node['href'] = route('scenario.show' , ['id' => $scenario->tsc_id] );
-			
+					//Repeat same for cases	
 					$testcases = \App\TestCase::where(['tp_id' => $p_value->tp_id , 'tsc_id' => $scenario->tsc_id ])->get();
+					$tc_count = count($testcases);
+
+					$s_node = array();
+					$s_node['text'] = $scenario->tsc_name;
+					$s_node['href'] = route('scenario.show' , ['id' => $scenario->tsc_id] );
+					$s_node['tags']  = [$tc_count];
+					$s_node['backColor']  = '#e9ece5';
+			
 					foreach ($testcases as $case) {
+						$teststeps = \App\TestStep::where(['tp_id' => $p_value->tp_id , 'tc_id' => $case->tc_id ])->get();
+						$ts_count = count($teststeps);
 						$c_node = array();
-						$c_node['text'] = "C - ".$case->tc_name;	
+						$c_node['text'] = $case->tc_name;	
 						$c_node['href'] = route('testcase.show' , ['id' => $case->tc_id] );
+						$c_node['tags']  = [$ts_count];
+
 						/*
 						//Child node of test cases is test step and there node details added below
-						$teststeps = \App\TestStep::where(['tp_id' => $p_value->tp_id , 'tc_id' => $case->tc_id ])->get();
 						foreach ($teststeps as $step) {
 							$st_node = array();
 							$st_node['text'] = "St - ".$step->description;	

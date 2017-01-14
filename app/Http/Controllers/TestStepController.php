@@ -2,8 +2,11 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Handlers\DeleteQueryHandler;
 
 use Illuminate\Http\Request;
+use Toast;
+
 
 class TestStepController extends Controller {
 
@@ -187,7 +190,28 @@ class TestStepController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+		//echo "Deleting this Step";
+		$tp_id = session()->get('open_project');
+		$item = \App\TestStep::find($id);
+        if($item){
+        	$del_obj = new DeleteQueryHandler();
+        	$del_res = $del_obj->deleteExecutionByStepId($id);
+			if($del_res == 0)
+			{
+				$message = $this->getMessage('messages.delete_failed');
+				Toast::message($message, 'danger');
+			}  else{      	
+	        	//Delete testcase
+	        	$item->delete();
+				$message = $this->getMessage('messages.delete_success');
+				Toast::success($message);
+			}
+        }
+		else{
+			$message = $this->getMessage('messages.delete_failed');
+			Toast::message($message, 'danger');
+		}
+		return redirect()->back();
 	}
 
 }

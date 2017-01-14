@@ -2,13 +2,14 @@
 @extends('layouts.lab_app')
 
 @section('content')
+
+
 <div class="wrapper">
   <div class="panel panel-default" style=" padding:10px">
         <div class="panel-title" style="font-weight:bold;" > Project : {{$project->tp_name}}   {{$project->release}}
 		 </div>
-
 	 		 <p>
-	        	Created at - {{$project->created_at}} by {{$project->created_by}}
+	        	Created at - {{date($dt_format, strtotime($project->created_at))}} by {{$project->created_by}} 
 	 		</p>
 	 		 <div class="panel-body">
 			<p  onclick="hideSummary()">
@@ -172,7 +173,7 @@
          				{{$detail->executed_by}}       				
          			</td>
          			<td> 
-         				{{$detail->updated_at}}        				
+         				{{date($dt_format, strtotime($detail->created_at))}}        				
          			</td>
          			<td> 
          				{{$detail->execution_result}} 

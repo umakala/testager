@@ -40,13 +40,13 @@
                    </div>
                </div>
 
-               <div class="form-group"> 
+               <!-- <div class="form-group"> 
                     <label for="title" class="control-label col-xs-4">App wait activity</label>
                     <div class="col-xs-8">            
                        <input type="text" class="form-control" value="{{$project->app_wait_activity}}" id="app_wait_activity"  name="app_wait_activity" placeholder="" >
                        <div class="help-line" id="name-help"></div>
                    </div>
-               </div>
+               </div> -->
 
 
 

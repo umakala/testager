@@ -7,6 +7,13 @@ use  App\Http\Controllers\Handlers\EmailHandler;
 
 class UserController extends Controller {
 
+
+	public function index()
+	{
+		return view('welcome');	
+	}
+
+
 	/**
 	 * Display a listing of the resource.
 	 *

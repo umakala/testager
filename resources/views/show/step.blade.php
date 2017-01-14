@@ -12,7 +12,14 @@
 	 		</p>
 			 
 			 <p>
-	        	Created at - {{$step->created_at}} <!-- by {{$step->created_by}} -->
+	        	Created at - {{date($dt_format, strtotime($step->created_at))}} <!-- by {{$step->created_by}} -->
+	 		</p>
+
+	 		<p>
+	        	@include('toast::messages')
+				@if(Session::has('toasts'))
+				        {{Session::forget('toasts')}}
+				@endif
 	 		</p>
  			<p>
 	        	Status : {{$step->status}} 

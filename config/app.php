@@ -147,6 +147,8 @@ return [
 		'Barryvdh\DomPDF\ServiceProvider',
 		'willvincent\Feeds\FeedsServiceProvider',		
         //'Intervention\Image\ImageServiceProvider',
+        'Maatwebsite\Excel\ExcelServiceProvider',
+         'Grimthorr\LaravelToast\ServiceProvider'
 
 	],
 
@@ -197,8 +199,9 @@ return [
 		'View'      => 'Illuminate\Support\Facades\View',
 		'Feeds'     => 'willvincent\Feeds\Facades\FeedsFacade',
 		'PDF' 		=> 'Barryvdh\DomPDF\Facade',
+		'Excel' 	=> 'Maatwebsite\Excel\Facades\Excel',
 		//'Image'     => 'Intervention\Image\Facades\Image'
-       
+        'Toast' => 'Grimthorr\LaravelToast\Facade',   
 
 	],
 

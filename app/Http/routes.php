@@ -12,31 +12,35 @@
 */
 
 
-Route::get('/', 'NewsController@index');
-Route::get('home', array("as"=>"home" , 'uses' =>'NewsController@index'));
+//Route::get('/', 'NewsController@index');
+Route::get('home', array("as"=>"home" , 'uses' =>'UserController@index'));
 Route::get('user/register', array("as"=>"user.register" , 'uses' =>'UserController@create'));
 Route::post('store', array("as"=>"store" , 'uses' =>'UserController@store'));
 Route::get('user/verify_email', 'UserController@verify_email');
 Route::post('reset_password', array("as"=>"reset",'uses' =>'UserController@reset_password'));
 
 Route::post('login', array("as"=>"login" , 'uses' =>'UserController@login'));
+
+
+
+//Gaurded Routes
+Route::group(['middleware' => 'user'], function () {
 Route::get('logout', array("as"=>"logout" , 'uses' =>'UserController@signout'));
 Route::get('profile', array("as"=>"profile" , 'uses' =>'UserController@profile'));
 
 Route::resource('news', 'NewsController');
 Route::get('news/delete/{id}', array("as"=>"news.delete" , 'uses' =>'NewsController@destroy'));
 
-Route::get('download/{id}', array("as"=>"news.download" , 'uses' =>'NewsController@download'));
-
 Route::get('tree_value/{id}', array("as"=>"tree_value" , 'uses' =>'TreeviewController@index'));
+Route::resource('upload','UploadController');
+Route::resource('download','DownloadController');
 
+Route::resource('execute','ExecutionController');
 Route::resource('project', 'TestProjectController');
 Route::resource('functionality', 'FunctionalityController');
 Route::resource('scenario', 'TestScenarioController');
 Route::resource('testcase', 'TestcaseController');
 Route::resource('teststep', 'TestStepController');
-
-
 Route::resource('lab', 'TestLabController');
-
 Route::get('teststep/create/{tc_id}', array("as"=>"teststep.create" , 'uses' =>'TestStepController@create'));
+});
