@@ -10,6 +10,7 @@
 				        {{Session::forget('toasts')}}
 				@endif
 	 		</p> 
+	 	
 <!--   <div class="panel panel-default" style=" padding:10px">
 
 

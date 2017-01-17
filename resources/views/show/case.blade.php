@@ -12,6 +12,13 @@
 @endsection
 
 @section('content')
+<script type="text/javascript">
+/*$(function () {
+  $('[data-toggle="tooltip"]').tooltip();
+});
+*/		
+</script>
+
 <div class="wrapper">
 	<div class="panel panel-default" style=" padding:10px">
 
@@ -34,7 +41,7 @@
 			<p style="float:right">
 				<a href="{{URL::route('testcase.edit', ['id' => $case->tc_id])}}" title="Edit Testcase"> <span id="" class="glyphicon glyphicon-edit"></span> Edit</a>
 
-				<a href="{{URL::route('lab.show', ['id' => $case->tc_id])}}" title="Go to Testlab" > <span id="" class="glyphicon glyphicon-play-circle" ></span> Lab</a>
+				
 
 				<a  data-toggle="modal" data-target="#deleteModal" title="Delete Testcase"> <i class="glyphicon glyphicon-trash"  ></i>Delete
                 </a>
@@ -71,6 +78,8 @@
 				<a href="{{url('teststep/create',['tc_id' => $case->tc_id])}}" title="Add New Teststep"><span id="" class="glyphicon glyphicon-plus"></span> Add Step </a>
 				<a type="button" data-toggle="modal" data-target="#uploadModal" title="Upload Teststeps"> <i class="glyphicon glyphicon-upload"></i>Upload                                         
 				</a>
+
+				<a href="{{URL::route('lab.show', ['id' => $case->tc_id])}}" title="Go to Testlab" > <span id="" class="glyphicon glyphicon-play-circle" ></span> Lab</a>
 				
 				</div>				
 			</div>
@@ -82,13 +91,18 @@
 		<div class="panel-body">
 			<div class="panel-title" style="font-weight:bold; padding-bottom: 10px;" > Teststeps 	</div>
 			<div class="row">
-    <div class="col-sm-12">
+    	
+    	<div class="col-sm-12">
+	 	<form action="{{URL::route('step.reorder', ['id' => $case->tc_id])}}" method="POST">
+
         <table class="table">
             <thead>
                 <tr>
-                    <th  style="max-width: 5%">Step</th>
+                    <th  style="max-width: 10%">
+                    	<a data-toggle="tooltip"  title="Click on values to change order" class="glyphicon glyphicon-ok" style="font-size: 10px" ></a><button class="link_button" type="submit"  title="Click to save reorder changes" >Reorder</button>
+                    	</th>
                     <th style="max-width: 30%">Description</th>
-                    <th style="max-width: 30%">Expected Result</th>
+                    <th style="max-width: 25%">Expected Result</th>
                     <th style="max-width: 5%">Status</th>                    
                     <th style="max-width: 20%"> Actions <!-- Execution Format --></th>
                 </tr>
@@ -98,7 +112,7 @@
             @foreach($case->steps as $step)
                 <tr>
                     <td class="col-sm-1">
-                     {{$i++}}
+                     <input type="number" name="{{$step->ts_id}}" id="{{'input'.$step->seq_no}}" value="{{$step->seq_no}}"  onkeypress='return event.charCode >= 48 && event.charCode <= 57' style="width: 40px; border:none;"   min="1"  max="{{count($case->steps)}}" onchange="validate_order(this.value)">
                     </td>
                     <td class="col-sm-3" >
                      <a style="margin-right: 10px" href="{{URL::route('teststep.show' , ['id' => $step->ts_id])}}">{{$step->description}} </a>
@@ -109,7 +123,7 @@
                     <td class="col-sm-2"> 
                     {{$step->status}}
                     </td>
-                    <td class="col-sm-2" >
+                    <td class="col-sm-1" >
                      <a class="glyphicon glyphicon-eye-open" style="margin-right: 10px" href="{{URL::route('teststep.show' , ['id' => $step->ts_id])}}"></a>
           
                     	 <a class="glyphicon glyphicon-pencil" style="margin-right: 10px" href="{{URL::route('teststep.edit' , ['id' => $step->ts_id])}}"></a>     
@@ -120,6 +134,7 @@
                @endforeach
             </tbody>
         </table>
+        </form>
     </div>
 </div>
 
@@ -128,4 +143,6 @@
 		</div>
 	</div>    
 </div>
+
+
 @endsection

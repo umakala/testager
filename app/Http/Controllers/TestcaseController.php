@@ -92,7 +92,7 @@ class TestcaseController extends Controller {
 	public function show($id)
 	{
 		$case = \App\TestCase::find($id);
-		$case->steps = \App\TestStep::where('tc_id' , $id)->orderBy('created_at' , 'asc')->get();
+		$case->steps = \App\TestStep::where('tc_id' , $id)->orderBy('seq_no' , 'asc')->get();
 		return view('show.case', ['case' => $case]);
 	}
 

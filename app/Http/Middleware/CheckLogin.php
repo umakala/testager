@@ -14,7 +14,7 @@ class CheckLogin {
 	 */
 	public function handle($request, Closure $next)
 	{
-		if (!session()->has('_token')) {
+		if (!session()->has('email')) {
 			$message = \Config::get('messages.session_expired');
 			Toast::message($message, 'danger');
             return redirect('home');

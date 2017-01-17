@@ -36,11 +36,20 @@ Route::resource('upload','UploadController');
 Route::resource('download','DownloadController');
 
 Route::resource('execute','ExecutionController');
+
+
+
+
 Route::resource('project', 'TestProjectController');
 Route::resource('functionality', 'FunctionalityController');
 Route::resource('scenario', 'TestScenarioController');
 Route::resource('testcase', 'TestcaseController');
 Route::resource('teststep', 'TestStepController');
+
 Route::resource('lab', 'TestLabController');
+
+Route::post('sc_lab', array("as"=>"sc_lab" , 'uses' =>'TestLabController@store'));
+Route::post('step/reorder/{tc_id}', array("as"=>"step.reorder" , 'uses' =>'TestStepController@reorder'));
+
 Route::get('teststep/create/{tc_id}', array("as"=>"teststep.create" , 'uses' =>'TestStepController@create'));
 });

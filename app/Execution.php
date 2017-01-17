@@ -18,7 +18,7 @@ class Execution extends Model {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['e_id', 'tp_id', 'ts_id' ,'tc_id', 'scroll', 'resouce_id', 'text', 'content_desc','class', 'index', 'send_key', 'screenshot', 'checkpoint', 'wait', 'executed_by', '	executed_by_name', 'execution_result', 'checkpoint_result',  'created_at', 'updated_at'];
+	protected $fillable = ['e_id', 'tp_id', 'ts_id' ,'tc_id', 'scroll', 'resouce_id', 'text', 'content_desc','class', 'index', 'send_key', 'screenshot', 'checkpoint', 'wait', 'executed_by', '	executed_by_name', 'execution_result', 'checkpoint_result',  'created_at', 'updated_at', 'seq_no'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.

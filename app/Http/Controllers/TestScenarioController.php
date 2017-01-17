@@ -97,7 +97,9 @@ class TestScenarioController extends Controller {
 								'testcases.tc_id', '=', 'teststeps.tc_id')
 								->whereIn('testcases.tc_id', $f_cases)
 								->count();
-		return view('show.scenario', ['scenario' => $scenario]);
+		$case_details = \App\TestCase::where('tsc_id' , $id)->orderBy('created_at', 'asc')->get();
+
+		return view('show.scenario', ['scenario' => $scenario, 'case_details'=> $case_details]);
 	}
 
 	/**

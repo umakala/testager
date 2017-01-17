@@ -31,13 +31,19 @@
 
 				<div class="row" style="padding: 10px">
 					
-					<div class="col-lg-4">
-					
-	 
+					<div class="col-lg-2">
 					</div>
 					<div class="col-lg-2">
 						<span class="alert alert-info" style="padding: 5px">Total</span>
-					</div>		
+					</div>	
+
+					<div class="col-lg-2">
+						<span class="alert alert-warning" style="padding: 5px">Executed</span>
+					</div>
+
+					<div class="col-lg-2">
+						<span class="alert alert-warning" style="padding: 5px">Not Executed</span>
+					</div>	
 
 					<div class="col-lg-2">
 						<span class="alert alert-success" style="padding: 5px">Passed</span>
@@ -45,47 +51,45 @@
 
 					<div class="col-lg-2">
 						<span class="alert alert-danger" style="padding: 5px">Failed</span>			
-					</div>	
-
-					<div class="col-lg-2">
-						<span class="alert alert-warning" style="padding: 5px">Not Executed</span>
-					</div>			
+					</div>				
 				</div>
 				
 				<div class="row">
-					<div class="col-lg-4">
+					<div class="col-lg-2">
 						 Teststeps Summary
 					</div>
 					<div class="col-lg-2">
 	        			{{ isset($case->steps['total']) ? $case->steps['total'] : 0 }}
 					</div>
 					<div class="col-lg-2">
+					{{ isset($case->steps['executed']) ? $case->steps['executed'] : 0 }}
+	        		</div>	
+	        		<div class="col-lg-2">
+					{{ isset($case->steps['not_executed']) ? $case->steps['not_executed'] : 0 }}
+	        		</div>	
+					<div class="col-lg-2">
 	        			{{ isset($case->steps['passed']) ? $case->steps['passed'] : 0 }}
 					</div>
 					<div class="col-lg-2">
 	        			{{ isset($case->steps['failed']) ? $case->steps['failed'] : 0 }}
-	        		
 					</div>
-					<div class="col-lg-2">
-					{{ isset($case->steps['not_executed']) ? $case->steps['not_executed'] : 0 }}
-	        		</div>				
+								
 				</div>
 	        </div>
 		</div>
 
-		@if(!isset($case->steps['not_executed']) || count($case->steps['not_executed']) == 0)
+		@if(!isset($case->steps['total']) || count($case->steps['total']) == 0)
          <div class="alert alert-warning" style="text-align: center;">Please Add Test Steps first. 
-
-        		<a href="{{url('teststep/create',['tc_id' => $case->tc_id])}}"><span id="" class="glyphicon glyphicon-plus" tooltip="Click here to add step"></span> Add Step </a>
+         		<a href="{{url('teststep/create',['tc_id' => $case->tc_id ])}}"><span id="" class="glyphicon glyphicon-plus" tooltip="Click here to add step"></span> Add Step </a>
 				</div>
       	@else
 
         <div class="panel-body">
 	         <div class="panel-title" style="font-style: bold; padding-bottom: 10px;" > Teststeps Details 
 	         <p style="float:right">
-
-				<a href="{{URL::route('download.show', ['id' => $case->tc_id])}}"> <span id="" class="glyphicon glyphicon-download"></span> Download</a>
-		        	<a href="{{URL::route('execute.show', ['id' => $case->tc_id])}}"> <span id="" class="glyphicon glyphicon-play-circle"></span> Execute</a>
+	         	<?php $tc_ids =  $case->tc_id."_";?>
+				<a href="{{URL::route('download.show', ['id' => $tc_ids])}}"> <span id="" class="glyphicon glyphicon-download"></span> Download</a>
+		        	<a href="{{URL::route('execute.show', ['id' => $tc_ids])}}"> <span id="" class="glyphicon glyphicon-play-circle"></span> Execute</a>
 		 	 </p>
 	 	</div>
 
@@ -96,10 +100,10 @@
          	<thead>
          		<tr>
          			<th>#</th>
-         			<th>Description</th>
+         			<th>Teststep</th>
          			<th>Status</th>
 					<th>Executed by</th>
-					<th>Execution at</th>					
+					<th >Execution at</th>					
 					<th>Execution Result</th>
 					<th>Checkpoint Result</th>
 					<th>Defect ID</th>
@@ -118,20 +122,23 @@
          			<td> 
          				{{$detail->description}}        				
          			</td>
-         			<td class="alert alert-warning">  
+         			<td>
+         			<!-- 
+         				class= "alert alert-{{$detail->status == 'not_executed' ? 'warning' : 'success'}}" 
+         			-->  
          				{{$detail->status}}          				
          			</td>
          			<td> 
-         				{{$detail->executed_by}}       				
+         				{{$detail->execution->executed_by}}       				
          			</td>
          			<td> 
-         				{{$detail->executed_at}}        				
+         				{{date($dt_format, strtotime($detail->execution->updated_at))}}   
          			</td>
          			<td> 
-         				{{$detail->execution_result}} 
+         			{{$detail->execution->execution_result == '' ? 'Not Available Yet' : $detail->execution->execution_result}}
          			</td>
          			<td> 
-         				{{$detail->checkpoint_result}}  
+         			{{$detail->execution->checkpoint_result == '' ? 'Not Available Yet' : $detail->execution->checkpoint_result}}  
          			</td>
          			<td> 
          				-      				

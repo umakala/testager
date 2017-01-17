@@ -82,11 +82,13 @@ class TestProjectController extends Controller {
 			$id = session()->get('open_project');
 
 		$project = \App\TestProject::find($id);
-		$project->functionalities = \App\TestFunctionality::where('tp_id' , $id)->count();
+		$functionalities = \App\TestFunctionality::where('tp_id' , $id)->get();
+
+		$project->functionalities = count($functionalities);
 		$project->scenarios = \App\TestScenario::where('tp_id' , $id)->count();
 		$project->cases = \App\TestCase::where('tp_id' , $id)->count();
 		$project->steps = \App\TestStep::where('tp_id' , $id)->count();		
-		return view('show.project', ['project' => $project]);	  	
+		return view('show.project', ['project' => $project, 'functionalities' => $functionalities]);	  	
 	}
 
 	/**

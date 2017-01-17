@@ -45,11 +45,14 @@
      
            <div class="col-sm-12 col-lg-6">  
           <div class="form-group"> 
-                    <label for="title" class="control-label col-xs-3">Scroll</label>
+                    <label for="title" class="control-label col-xs-3">Options</label>
                     <div class="col-xs-9">            
                       <select class="form-control" name="scroll">
-                          <option value="no" selected>No</option>
-                          <option value="yes">Yes</option>                          
+                          <option value="No" selected>Scroll No</option>
+                          <option value="Yes">Scroll Yes</option>   
+                          <option value="Back" >Back Button</option>                      
+                          <option value="tap" >Tap</option>                      
+                          <option value="otp" >OTP</option> 
                       </select>
                        <div class="help-line" id="name-help"></div>
                    </div>

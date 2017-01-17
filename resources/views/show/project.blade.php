@@ -86,6 +86,69 @@
 				</div>				
 			</div>
         </div>
-    </div>    
+        <div class="panel-body" style="overflow-x: scroll">
+	       <div class="panel-title" style="font-weight: bold; padding-bottom: 10px;" > All Functionality </div>	
+
+	 	<!--  Column details of test case to show 
+	 	id, name, status(executed or not executed), executed type (manual/automation), executed by, executed date-time, checkpoint_result, execution_result(pass_fail), defect(if any), defect_status, (checkbox to select )
+	 	-->
+	 	<form action="{{URL::route('lab.store')}}" method="POST">
+ 			<div class="panel-title" style="font-weight: bold; float: right; " > 
+	 	
+	 		</div>
+	 		<input type="hidden" name="tsc_id" value="{{$id}}">
+
+         <table class="table table-striped" cellspacing="0"  >
+         	<thead>
+         		<tr>
+         			<th style="max-width:10px">#</th>
+         			<th style="min-width:150px">Case Name</th>
+         			<th style="max-width:100px">Status</th>
+					<th style="max-width:100px">Execution type</th>
+					<th>Execution Result</th>
+					<th>Checkpoint Result</th>
+					<th><button type="submit"  title="Select cases and Go to Testlab" > <span id="" class="glyphicon glyphicon-play-circle" ></span> Lab</button>
+					</th>
+         		</tr>
+         	</thead>
+         	<tbody>
+         		<?php
+         		 $i =1; 
+         		?>
+         		@foreach($functionalities as $detail)
+         		<tr>
+         			<td> 
+         				{{$i++}}        				
+         			</td>
+         			<td> 
+         			<a href="{{URL::route('functionality.show', ['id' => $detail->tf_id])}}"> <span id="" class="glyphicon glyphicon-eye-open"></span>
+         				{{$detail->tf_name}}</a>     				
+         			</td>
+         			<td class="alert alert-warning">  
+         				{{$detail->status}}          				
+         			</td>
+         			<td> 
+         				{{$detail->execution_type}}
+         			</td>
+         			<td> 
+         				{{$detail->execution_result}} 
+         			</td>
+         			<td> 
+         				{{$detail->checkpoint_result}}  
+         			</td>
+         			
+         			<td> 
+					    <input type="checkbox" id="checkbox_{{$detail->tc_id}}" name="checkbox_{{$detail->tc_id}}">     				
+         			</td>
+         		</tr>
+         		@endforeach
+         	</tbody>
+         </table>
+         </form>
+		
+        </div>
+
+</div>
+    </div> 
 </div>
 @endsection

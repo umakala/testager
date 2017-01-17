@@ -94,16 +94,26 @@ td {
 }
 
 button {
-    background-color: #1e1e1e!important;
+    background-color: #1e1e1e;
     border-color: #1e1e1e;
     color: #fff;
 }
 button:hover {
-    background-color: #404040!important;
+    background-color: #404040;
     border-color: #404040;
     color: #fff;
 }
 
+.link_button{
+	background-color: transparent;
+    color: #555;
+    border: none;	
+}
+.link_button:hover{
+	color: #23527c;
+    border: none;
+	background-color: transparent;	
+}
 select {
 	cursor: pointer;
 }

@@ -29,7 +29,7 @@ class TestStep extends Model {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['ts_id', 'ts_name','description', 'execution_format', 'expected_result', 'status', 'tc_id', 'tp_id', 'created_by'];
+	protected $fillable = ['ts_id', 'ts_name','description', 'execution_format', 'expected_result', 'status', 'tc_id', 'tp_id', 'created_by', 'seq_no'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.

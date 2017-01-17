@@ -67,7 +67,9 @@ class TestStepController extends Controller {
 		        $content['expected_result']         = $request->expected_result;
 				$content['status']             		= "not_executed";
 		        $content['tp_id']                 	= session()->get('open_project');
-		        $content['tc_id']                 	= $tc;				
+		        $content['tc_id']                 	= $tc;
+		        $count 								= \App\TestStep::where('tc_id', $tc)->count();
+		       	$content['seq_no'] 	        		= $count+1;		
 		        $create 							= \App\TestStep::create($content);
 
 		        //Add entry in execution table for this step
@@ -84,8 +86,8 @@ class TestStepController extends Controller {
 		        $execution_content['tc_id']			= $tc;
 		        $execution_content['tp_id']			= $content['tp_id'];
 		        $execution_content['ts_id']			= $content['ts_id'];
+		        $execution_content['seq_no']		= $content['seq_no'];
 		        $execution_content['e_id']			= $this->genrateRandomInt();
-
 		        $create 							= \App\Execution::create($execution_content);
 
 		        //return redirect()->route('profile', ['message' => ""]);
@@ -211,6 +213,33 @@ class TestStepController extends Controller {
 			$message = $this->getMessage('messages.delete_failed');
 			Toast::message($message, 'danger');
 		}
+		return redirect()->back();
+	}
+
+
+
+	/**
+	 * commits reorder changes to db.
+	 *
+	 * @return Response
+	 */
+	public function reorder( Request $request)
+	{
+		$order_values = $request->all();
+		//print_r($order_values);
+		if(count($order_values) === count(array_unique($order_values)))
+		{
+			foreach ($request->all() as $key => $value) {
+				echo " key = $key and value = $value";
+				\App\TestStep::find($key)->update(['seq_no'=> $value]);
+				\App\Execution::where('ts_id', $key)->update(['seq_no' => $value]);
+			}
+			$message = $this->getMessage('messages.reorder_success');
+			Toast::message($message, 'success');
+		}else{
+			$message = $this->getMessage('messages.reorder_duplication');
+			Toast::message($message, 'danger');
+		}	
 		return redirect()->back();
 	}
 
