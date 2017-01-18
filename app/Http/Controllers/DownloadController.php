@@ -145,7 +145,7 @@ class DownloadController extends Controller {
 		  			$execution 				=  \App\Execution::where(['tc_id' => $id, 'ts_id' => $ts_id, 'tl_id' => 0])->get()->toArray();
 
 		  			$exe_data 				= $execution[0];
-		  			$exe_data['e_id']		= $this->genrateRandomInt(10);
+		  			$exe_data['e_id']		= $this->genrateRandomInt(8);
 		  			$exe_data['tl_id']		= $lab['tl_id'];
 		  			$exe_data['execution_result'] = '';
 		  			$exe_data['checkpoint_result'] = '';

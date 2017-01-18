@@ -88,6 +88,15 @@ class UploadController extends Controller {
 							$error = true; break;
 						}*/
 						//echo " <br/> ";
+						break;
+
+						case 'teststep':
+						if ($call_page == "teststep") {
+							$tc_id = $call_page_id;
+						}
+						//if(isset($row['test_step'])
+						$ts_id = $int_obj->handleExecution($row, $tc_id, $ts_id);
+
 						default:
 						break;
 					}

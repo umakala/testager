@@ -222,8 +222,6 @@ class TestStepController extends Controller {
 		return redirect()->route('testcase.show', ['id' => $tc_id ]);
 	}
 
-
-
 	/**
 	 * commits reorder changes to db.
 	 *

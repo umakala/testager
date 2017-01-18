@@ -86,6 +86,10 @@
 		</div>
 
 
+		<?php $call_teststep_page = 'teststep'; $id = $case->tc_id; ?>
+	    @include('modals.upload_execution_modal')
+
+
 		<!-- Details of test steps -->
 
 		<div class="panel-body">

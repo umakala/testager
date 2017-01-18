@@ -114,12 +114,18 @@ class IntegrationHandler extends Controller{
         return $tc_id;
     }
 
+  public function handleExecution($row, $tc_id, $ts_id)
+  {
+       
+
+  }
+
 /**
 	 * Handles the teststep part of the row from excel
 	 *
 	 * @return ts_id
 	 */
-public function handleTeststep($row, $tc_id, $ts_id)
+public function handleTeststep  ($row, $tc_id, $ts_id)
 {
    $ts = [];
   /* if( isset($row['test_step'])){
