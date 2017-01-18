@@ -2,11 +2,14 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Handlers\ChartsHandler;
 
 use Lava;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller {
+
+
 
 	/**
 	 * Display a listing of the resource.
@@ -19,10 +22,11 @@ class ReportController extends Controller {
 		$project = \App\TestProject::find($id);
 		$project->functionalities = \App\TestFunctionality::where('tp_id' , $id)->get();
 
+		$charts_obj = new ChartsHandler();
 		
 		//Get details about test cases
 		$lab_details = \App\TestCase::where('tp_id' , $id)->orderBy('seq_no', 'asc')->get();
-		$chart_details = $this->initChartDetails();		
+		$chart_details = $charts_obj->initChartDetails();		
 	
 		foreach ($lab_details as $key => $value) {
 			$lab = \App\Lab::where('tc_id' , $value->tc_id)->orderBy('created_at', 'desc')->first();
@@ -38,14 +42,14 @@ class ReportController extends Controller {
 			$chart_value['execution_result'] = $value->lab->execution_result;
 			$chart_value['checkpoint_result'] = $value->lab->checkpoint_result;
 
-			$chart_details = $this->getChartSummary($chart_value, $chart_details);
+			$chart_details = $charts_obj->getChartSummary($chart_value, $chart_details);
 		}
 
 		/* 
 			Pie Charts showing summary of results 
 		*/
-		$this->createExecutionPieChart($chart_details);
-		$this->createCheckpointPieChart($chart_details);
+		$charts_obj->createExecutionPieChart($chart_details);
+		$charts_obj->createCheckpointPieChart($chart_details);
 		return view('reports.scenario_report', ['project' => $project, 'lab_results' => $lab_details]);	  	
 	}
 
@@ -77,11 +81,16 @@ class ReportController extends Controller {
 	 */
 	public function show_lab($id)
 	{
+
+		$charts_obj = new ChartsHandler();
+
+
 		$p_id = session()->get('open_project');
 		$project = \App\TestProject::find($p_id);
 		//$project->functionalities = \App\TestFunctionality::where('tp_id' , $id)->count();
 		$lab_details = [];
-		$chart_details = $this->initChartDetails();
+		$chart_details = $charts_obj->initChartDetails();
+
 	
 		//Get details about testlabs
 		$lab_details = \App\Lab::where('tc_id' , $id)->orderBy('created_at', 'desc')->get();
@@ -100,15 +109,15 @@ class ReportController extends Controller {
 			$chart_value['checkpoint_result'] = $value->checkpoint_result;
 
 
-			$chart_details = $this->getChartSummary($chart_value, $chart_details
+			$chart_details = $charts_obj->getChartSummary($chart_value, $chart_details
 				);
 		}			
 		/* 
 			Pie Charts showing summary of results 
 		*/
 
-		$this->createExecutionPieChart($chart_details);
-		$this->createCheckpointPieChart($chart_details);
+		$charts_obj->createExecutionPieChart($chart_details);
+		$charts_obj->createCheckpointPieChart($chart_details);
 
 		return view('reports.lab_report', ['project' => $project, 'lab_results' => $lab_details]);	  	
 	
@@ -116,12 +125,16 @@ class ReportController extends Controller {
 
 	public function show_case($id)
 	{
+
+		$charts_obj = new ChartsHandler();
+		 
 		$p_id = session()->get('open_project');
 		$project = \App\TestProject::find($p_id);
 		//$project->functionalities = \App\TestFunctionality::where('tp_id' , $id)->count();
 		$lab_details = [];
-		$chart_details = $this->initChartDetails();
-	
+		$chart_details = $charts_obj->initChartDetails();
+
+
 		//Get details about testlabs
 		$lab_details = \App\Execution::where('tl_id' , $id)->orderBy('seq_no', 'asc')->get();
 		
@@ -148,7 +161,7 @@ class ReportController extends Controller {
 			$chart_value['tc_status'] = 	$value->ts_status;
 			$chart_value['execution_result'] = $value->execution_result;
 			$chart_value['checkpoint_result'] = $value->checkpoint_result;
-			$chart_details = $this->getChartSummary($chart_value, $chart_details
+			$chart_details = $charts_obj->getChartSummary($chart_value, $chart_details
 				);
 		}			
 	
@@ -156,86 +169,13 @@ class ReportController extends Controller {
 			Pie Charts showing summary of results 
 		*/
 
-		$this->createExecutionPieChart($chart_details);
-		$this->createCheckpointPieChart($chart_details);
+		$charts_obj->createExecutionPieChart($chart_details);
+		$charts_obj->createCheckpointPieChart($chart_details);
 
 		return view('reports.case_report', ['project' => $project, 'lab_results' => $lab_details]);	  	
 	
 	}
 
-	public function initChartDetails()
-	{
-		$chart_details['ex_pass'] = $chart_details['ex_fail'] = $chart_details['ex_not_avail']  = 0;
-		$chart_details['cp_pass'] = $chart_details['cp_fail'] = $chart_details['cp_not_avail']  = 0;
-		$chart_details['status_executed'] = $chart_details['status_not_executed'] = 0;
-		return $chart_details;
-	}
-
-	public function createExecutionPieChart($chart_details)
-	{
-		$exe_data = Lava::DataTable();
-		$exe_data->addStringColumn('Summary')
-		        ->addNumberColumn('Percent')
-		        ->addRow(['Pass', $chart_details['ex_pass']])
-		        ->addRow(['Fail', $chart_details['ex_fail']])
-		        ->addRow(['Not Available', $chart_details['ex_not_avail']])
-		        ->addRow(['Not Executed', $chart_details['status_not_executed']]);
-		Lava::PieChart('exe_result', $exe_data, [
-		    'title' => 'Execution Results : Total Executed Labs = '.$chart_details['status_executed'],
-		    'colors' => ['#43a047', '#e53935', '#fb8c00', '#1e88e5']
-		]);
-
-	}
-
-	public function createCheckpointPieChart($chart_details)
-	{
-		$cp_data = Lava::DataTable();
-		$cp_data->addStringColumn('Summary')
-		        ->addNumberColumn('Percent')
-		        ->addRow(['Pass', $chart_details['cp_pass']])
-		        ->addRow(['Fail', $chart_details['cp_fail']])
-		        ->addRow(['Not Available', $chart_details['cp_not_avail']])
-		        ->addRow(['Not Executed', $chart_details['status_not_executed']]);
-		Lava::PieChart('cp_result', $cp_data, [
-		    'title' => 'Checkpoint Results : Total Executed Labs =  '.$chart_details['status_executed'],
-		    'colors' => ['#43a047', '#e53935', '#fb8c00', '#1e88e5']
-		]);
-	}
-
-
-	public function getChartSummary($value, $chart_details)
-	{
-		if(strtolower($value['tc_status']) == "executed")
-		{
-			$chart_details['status_executed']++;
-			switch (strtolower($value['execution_result'])) {
-				case 'pass':
-					$chart_details['ex_pass']++;
-					break;
-				case 'fail':
-					$chart_details['ex_fail']++;
-					break;
-				case '':				
-					$chart_details['ex_not_avail']++;
-					break;
-			}
-			switch (strtolower($value['checkpoint_result'])) {
-				case 'pass':
-					$chart_details['cp_pass']++;
-					break;
-				case 'fail':
-					$chart_details['cp_fail']++;
-					break;
-				case '':
-					$chart_details['cp_not_avail']++;
-					break;
-			}
-		}
-		else
-			$chart_details['status_not_executed']++;
-
-		return $chart_details;
-	}
 
 	/**
 	 * Show the form for editing the specified resource.

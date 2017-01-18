@@ -49,6 +49,7 @@ Route::resource('testcase', 'TestcaseController');
 Route::resource('teststep', 'TestStepController');
 
 Route::resource('lab', 'TestLabController');
+Route::resource('defect', 'DefectController');
 
 Route::post('sc_lab', array("as"=>"sc_lab" , 'uses' =>'TestLabController@store'));
 Route::post('step/reorder/{tc_id}', array("as"=>"step.reorder" , 'uses' =>'TestStepController@reorder'));

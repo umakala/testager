@@ -70,7 +70,7 @@ class DeleteQueryHandler {
         	}
 
         	//Delete associated teststeps       	
-        	$case = \App\TestCase::where('tsc_id' , $id)->delete();		
+        	$case = \App\TestCase::where('tsc_id' , $id)->delete();	
 
 
 		}catch(Exception $e)
