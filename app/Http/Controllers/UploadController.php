@@ -49,10 +49,9 @@ class UploadController extends Controller {
 				$fn_id = ""; $sc_id ="";  $tc_id =""; $ts_id = "";
 				$int_obj = new IntegrationHandler ();
 				foreach ($reader->toArray() as $row) {
-
 					switch ($call_page) {
 						case 'project':
-						if(isset($row['functionality_name'])
+						if(isset($row['functionality_name']))
 							$fn_id = $int_obj->handleFunctionality($row, $fn_id);
 						/*if($fn_id == 0){
 							$error = true; break;
@@ -62,7 +61,7 @@ class UploadController extends Controller {
 						if ($call_page == "functionality") {
 							$fn_id = $call_page_id;
 						}
-						if(isset($row['sceanrio_brief'])
+						if(isset($row['sceanrio_brief']))
 							$sc_id = $int_obj->handleScenario($row, $fn_id, $sc_id);
 						/*if($sc_id == 0){
 							$error = true; break;
@@ -72,7 +71,7 @@ class UploadController extends Controller {
 						if ($call_page == "scenario") {
 							$sc_id = $call_page_id;
 						}
-						if(isset($row['test_case_name'])
+						if(isset($row['test_case_name']))
 							$tc_id = $int_obj->handleTestcase($row, $sc_id, $tc_id);
 						/*if($tc_id == 0){
 							$error = true; break;
@@ -82,7 +81,7 @@ class UploadController extends Controller {
 						if ($call_page == "testcase") {
 							$tc_id = $call_page_id;
 						}
-						if(isset($row['test_step'])
+						if(isset($row['test_step']))
 							$ts_id = $int_obj->handleTeststep($row, $tc_id, $ts_id);
 						/*if($ts_id == 0){
 							$error = true; break;
@@ -95,7 +94,9 @@ class UploadController extends Controller {
 							$tc_id = $call_page_id;
 						}
 						//if(isset($row['test_step'])
+						echo "Handling row<br/>";
 						$ts_id = $int_obj->handleExecution($row, $tc_id, $ts_id);
+
 
 						default:
 						break;

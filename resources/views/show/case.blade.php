@@ -76,12 +76,20 @@
 
 				<div class="col-lg-4" style="text-align: right">					
 				<a href="{{url('teststep/create',['tc_id' => $case->tc_id])}}" title="Add New Teststep"><span id="" class="glyphicon glyphicon-plus"></span> Add Step </a>
-				<a type="button" data-toggle="modal" data-target="#uploadModal" title="Upload Teststeps"> <i class="glyphicon glyphicon-upload"></i>Upload                                         
+				
+				<a type="button" data-toggle="modal" data-target="#uploadModal" title="Upload Teststeps"> <i class="glyphicon glyphicon-upload"></i>Upload                                        
 				</a>
 
 				<a href="{{URL::route('lab.show', ['id' => $case->tc_id])}}" title="Go to Testlab" > <span id="" class="glyphicon glyphicon-play-circle" ></span> Lab</a>
 				
-				</div>				
+
+	
+				</div>	
+					<div  style="text-align: right; padding-top: 50px;">					
+				
+					<a type="button" data-toggle="modal" data-target="#uploadExecutionModal" title="Upload Teststeps using Execution Input Sheet"> <i class="glyphicon glyphicon-upload"></i>Upload  Execution Sheet                                       
+					</a>	
+					</div>		
 			</div>
 		</div>
 
