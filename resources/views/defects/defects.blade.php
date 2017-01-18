@@ -21,8 +21,18 @@
                     {{Session::forget('toasts')}}
             @endif
             </p>
-        
+
         <div class="panel-body" >
+
+        @if(count ($lab_results) == 0)
+
+             <div class="panel-title" style="font-weight: bold; padding-bottom: 10px;" > No Defects Available
+            
+             <p style="float:right">
+             </p>
+            </div>      
+        @else
+        
             <div class="panel-title" style="font-weight: bold;" >  Summary 
 
             <div class="row">
@@ -37,13 +47,13 @@
                 </div>                             
             </div>
         </div>
+            <div class="panel-body"  id ="top">
 
-        <div class="panel-body"  id ="top">
-             <div class="panel-title" style="font-weight: bold; padding-bottom: 10px;" > All TestLabs 
+            <div class="panel-title" style="font-weight: bold; padding-bottom: 10px;" > All Defects 
             
              <p style="float:right">
              </p>
-        </div>
+            </div>
 
         <!--  Column details of test case to show 
         id, name, status(executed or not executed), executed type (manual/automation), executed by, executed date-time, checkpoint_result, execution_result(pass_fail), defect(if any), defect_status, (checkbox to select )
@@ -52,15 +62,11 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Testcase</th>
-                    <th>TestScenario</th>
-                    <th>Functionality</th>
+                    <th>Defects id</th>
+                    <th>Description</th>
                     <th>Release</th>
                     <th>Status</th>
-                    <th  width="200px">Execution Details</th>
-                    <th>Execution Result</th>
-                    <th>Checkpoint Result</th>
-                   <!--  <th>Run</th> -->
+                    <th>Reported Details</th>
                 </tr>
             </thead>
             <tbody>
@@ -73,14 +79,10 @@
                         {{$i++}}                        
                     </td>
                     <td> 
-                    <a href="{{URL::route('report.case', ['id' => $detail->tl_id])}}">
-                        {{$detail->case[0]->tc_name}}</a>                     
+                    <a href="{{URL::route('defect.show', ['id' => $detail->id])}}">
+                        {{$detail->defect_id}}</a>                     
                     </td>
-                    <td> {{$detail->tsc_name}}</td>
-                    
-                    <td> 
-                        {{$detail->tf_name}}                     
-                    </td>
+                    <td> {{$detail->description}}</td>
                     <td>  
                         {{$detail->release_version}}                         
                     </td>
@@ -88,16 +90,10 @@
                         {{$detail->status}}                         
                     </td>
                     <td> 
-                        {{$detail->execution_type}} by                     
-                        {{$detail->executed_by}} at {{date($exe_dt_format, strtotime($detail->created_at))}}               
+                        Reported by                     
+                        {{$detail->reported_by}} at {{date($exe_dt_format, strtotime($detail->created_at))}}               
                     </td>
                   
-                    <td class="alert alert-{{$detail->execution_result == 'Pass'? 'success' : ($detail->execution_result == '' ? 'warning' : 'danger')}}"   > 
-                        {{$detail->execution_result}} 
-                    </td>
-                    <td class="alert alert-{{$detail->checkpoint_result == 'Pass'? 'success' : ($detail->checkpoint_result == '' ? 'warning' : 'danger')}}" > 
-                        {{$detail->checkpoint_result}}  
-                    </td>
                    <!--  <td> 
                         <input type="checkbox" id="checkbox_{{$detail->tc_id}}">                    
                     </td> -->
@@ -105,6 +101,7 @@
                 @endforeach
             </tbody>
          </table>
+         @endif
         </div>
     </div>    
 </div>
