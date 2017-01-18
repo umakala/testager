@@ -60,7 +60,7 @@ class UploadController extends Controller {
 						if ($call_page == "functionality") {
 							$fn_id = $call_page_id;
 						}
-						echo $sc_id = $int_obj->handleScenario($row, $fn_id, $sc_id);
+						$sc_id = $int_obj->handleScenario($row, $fn_id, $sc_id);
 						/*if($sc_id == 0){
 							$error = true; break;
 						}*/
@@ -69,7 +69,7 @@ class UploadController extends Controller {
 						if ($call_page == "scenario") {
 							$sc_id = $call_page_id;
 						}
-						echo $tc_id = $int_obj->handleTestcase($row, $sc_id, $tc_id);
+						$tc_id = $int_obj->handleTestcase($row, $sc_id, $tc_id);
 						/*if($tc_id == 0){
 							$error = true; break;
 						}*/
@@ -78,11 +78,11 @@ class UploadController extends Controller {
 						if ($call_page == "testcase") {
 							$tc_id = $call_page_id;
 						}
-						echo $ts_id = $int_obj->handleTeststep($row, $tc_id, $ts_id);
+						$ts_id = $int_obj->handleTeststep($row, $tc_id, $ts_id);
 						/*if($ts_id == 0){
 							$error = true; break;
 						}*/
-						echo " <br/> ";
+						//echo " <br/> ";
 						default:
 						break;
 					}
