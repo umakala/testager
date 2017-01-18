@@ -60,14 +60,20 @@ class ReportController extends Controller {
 			
 			$tsc = \App\TestScenario::select('tsc_name')->where('tsc_id' , $value->tsc_id)->get();
 			$value->tsc_name = $tsc[0]->tsc_name;
+			if(isset($lab->tf_id))
+			{$fn  = \App\TestFunctionality::select('tf_name')->where('tf_id' , $lab->tf_id)->get();
 
-			$fn  = \App\TestFunctionality::select('tf_name')->where('tf_id' , $lab->tf_id)->get();
 			$value->tf_name = $fn[0]->tf_name;
-
-			$chart_value['tc_status'] = $value->status;
+						$chart_value['tc_status'] = $value->status;
 			$chart_value['execution_result'] = $value->lab->execution_result;
 			$chart_value['checkpoint_result'] = $value->lab->checkpoint_result;
 
+		}else{
+			$value->tf_name = "";
+			$chart_value['tc_status'] = $value->status;
+			$chart_value['execution_result'] = 0;
+			$chart_value['checkpoint_result'] = 0;
+		}
 			$chart_details = $charts_obj->getChartSummary($chart_value, $chart_details);
 		}
 

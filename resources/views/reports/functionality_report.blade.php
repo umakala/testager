@@ -163,6 +163,7 @@
                  $i =1; 
                 ?>
                 @foreach($lab_results as $detail)
+                @if(isset($lab_results->lab))
                 <tr>
                     <td> 
                         {{$i++}}                        
@@ -177,14 +178,17 @@
                     {{$detail->tf_name}}                     
                     </td>
                     <td>  
-                        {{$detail->lab->release_version}}                         
+                        {{isset($detail->lab->release_version)? $detail->lab->release_version : ""}}                         
                     </td>
                     <td>  
                         {{$detail->status}}                         
                     </td>
                     <td> 
-                        {{$detail->lab->execution_type}} by                     
-                        {{$detail->lab->executed_by}} at {{date($exe_dt_format, strtotime($detail->lab->created_at))}}               
+                        {{isset($detail->lab->execution_type)? $detail->lab->execution_type : ""}}                         
+                         by  
+                        {{isset($detail->lab->executed_by)? $detail->lab->executed_by : ""}}                         
+                        at 
+                        {{isset($detail->lab->created_at)? date($exe_dt_format, strtotime($detail->lab->created_at)) : ""}}                                    
                     </td>
                   
                     <td class="alert alert-{{$detail->lab->execution_result == 'Pass'? 'success' : ($detail->lab->execution_result == '' ? 'warning' : 'danger')}}"   > 
@@ -198,6 +202,7 @@
                         </a>           
                     </td>
                 </tr>
+                @endif
                 @endforeach
             </tbody>
          </table>

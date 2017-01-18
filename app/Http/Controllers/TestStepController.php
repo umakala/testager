@@ -197,7 +197,9 @@ class TestStepController extends Controller {
 		//echo "Deleting this Step";
 		$tp_id = session()->get('open_project');
 		$item = \App\TestStep::find($id);
+
         if($item){
+        	$tc_id = $item->tc_id;
         	$del_obj = new DeleteQueryHandler();
         	$del_res = $del_obj->deleteExecutionByStepId($id);
 			if($del_res == 0)
@@ -214,8 +216,10 @@ class TestStepController extends Controller {
 		else{
 			$message = $this->getMessage('messages.delete_failed');
 			Toast::message($message, 'danger');
+			return back();
 		}
-		return redirect()->back();
+
+		return redirect()->route('testcase.show', ['id' => $tc_id ]);
 	}
 
 

@@ -44,6 +44,7 @@ class UploadController extends Controller {
 		$ext                = $file->getClientOriginalExtension();
 		if($ext == "xls" || $ext == "xlsx"){
 			Excel::load(Input::file('file'), function ($reader) use($call_page, $call_page_id) {
+				try{
 				$i=0; $error =false;
 				$fn_id = ""; $sc_id ="";  $tc_id =""; $ts_id = "";
 				$int_obj = new IntegrationHandler ();
@@ -51,7 +52,8 @@ class UploadController extends Controller {
 
 					switch ($call_page) {
 						case 'project':
-						$fn_id = $int_obj->handleFunctionality($row, $fn_id);
+						if(isset($row['functionality_name'])
+							$fn_id = $int_obj->handleFunctionality($row, $fn_id);
 						/*if($fn_id == 0){
 							$error = true; break;
 						}*/
@@ -60,7 +62,8 @@ class UploadController extends Controller {
 						if ($call_page == "functionality") {
 							$fn_id = $call_page_id;
 						}
-						$sc_id = $int_obj->handleScenario($row, $fn_id, $sc_id);
+						if(isset($row['sceanrio_brief'])
+							$sc_id = $int_obj->handleScenario($row, $fn_id, $sc_id);
 						/*if($sc_id == 0){
 							$error = true; break;
 						}*/
@@ -69,7 +72,8 @@ class UploadController extends Controller {
 						if ($call_page == "scenario") {
 							$sc_id = $call_page_id;
 						}
-						$tc_id = $int_obj->handleTestcase($row, $sc_id, $tc_id);
+						if(isset($row['test_case_name'])
+							$tc_id = $int_obj->handleTestcase($row, $sc_id, $tc_id);
 						/*if($tc_id == 0){
 							$error = true; break;
 						}*/
@@ -78,7 +82,8 @@ class UploadController extends Controller {
 						if ($call_page == "testcase") {
 							$tc_id = $call_page_id;
 						}
-						$ts_id = $int_obj->handleTeststep($row, $tc_id, $ts_id);
+						if(isset($row['test_step'])
+							$ts_id = $int_obj->handleTeststep($row, $tc_id, $ts_id);
 						/*if($ts_id == 0){
 							$error = true; break;
 						}*/
@@ -90,9 +95,12 @@ class UploadController extends Controller {
 						break;
 				}
 				$i++;
-
+				}catch(Exception $e){
+					$message = $this->getMessage('messages.upload_failed');
+					Toast::message($message, 'danger');
+				}
 			});
-			$message = $this->getMessage('messages.upload_success');
+			$message = $this->getMessage('messages.upload_completed');
 			Toast::message($message, 'success');
 		}else{
 			//echo $error = "Invalid File";

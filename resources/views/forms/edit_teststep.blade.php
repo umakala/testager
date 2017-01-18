@@ -1,17 +1,30 @@
 
 @extends('layouts.app')
 
+
+@section('delete_modal')
+  <?php $delete_type = 'teststep'; $id = $step->ts_id ;?>
+    @include('modals.delete_modal')
+@endsection
+
 @section('content')
 <form action="{{URL::route('teststep.update', ['id' => $step->ts_id])}}" method ="POST" class="form-horizontal" enctype='multipart/form-data' >   
 <input type="hidden" name="_method" value="PUT">
 <div class="wrapper" style="">
       <div class="panel panel-default" style=" padding:20px">
          <div class="panel-title" style="text-align: center;">Update Teststep</div>
+
          <hr/>
+        
+
+        <a style="float:right; padding-top:10px" data-toggle="modal" data-target="#deleteModal" title="Delete Testcase"> <i class="glyphicon glyphicon-trash"  ></i>Delete
+        </a>
+
          <ol class="breadcrumb">
           <li><a href="{{URL::route('testcase.show' , ['id' => $step->tc_id] )}}">{{$step->tc_name}}</a></li>
           <li class="active">  <a href="{{URL::route('teststep.show' , ['id' => $step->ts_id] )}}">Teststep</a></li>
         </ol>
+
 
 
          <div class="panel-body">      

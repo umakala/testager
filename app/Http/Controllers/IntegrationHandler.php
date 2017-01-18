@@ -19,7 +19,7 @@ class IntegrationHandler extends Controller{
        $fn = [];
        /*if(isset($row['functionality_name']))
        {*/
-           if( $row['functionality_name']  == null ||  $row['functionality_name'] == ""){
+           if(!isset($row['functionality_name']) || $row['functionality_name']  == null ||  $row['functionality_name'] == ""){
 			//If nothing to process then do nothing
 			//return $fn_id;
            }else{
@@ -52,7 +52,7 @@ class IntegrationHandler extends Controller{
 	{		
        $sc = [];
        /*if( isset($row['sceanrio_brief'] )){*/
-           if( $row['sceanrio_brief']  == null ||  $row['sceanrio_brief'] == ""){
+           if(!isset($row['sceanrio_brief']) || $row['sceanrio_brief']  == null ||  $row['sceanrio_brief'] == ""){
 			//If nothing to process then do nothing
 			//return $fn_id;
            }else{
@@ -87,7 +87,7 @@ class IntegrationHandler extends Controller{
 	{
        $tc = [];
       /* if( isset($row['test_case_name'])){
-        */   if( $row['test_case_name']  == null ||  $row['test_case_name'] == ""){
+        */   if( !isset($row['test_case_name'])  || $row['test_case_name']  == null ||  $row['test_case_name'] == ""){
 			//If nothing to process then do nothing
 			//return $fn_id;
            }else{
@@ -123,7 +123,7 @@ public function handleTeststep($row, $tc_id, $ts_id)
 {
    $ts = [];
   /* if( isset($row['test_step'])){
-    */   if( $row['test_step']  == null ||  $row['test_step'] == ""){
+    */   if(!isset($row['test_step'])|| $row['test_step']  == null ||  $row['test_step'] == ""){
 			//If nothing to process then do nothing
 			//return $ts_id;
        }else{

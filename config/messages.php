@@ -18,6 +18,7 @@ return [
 	'delete_failed'				=> "Deletion request failed. Please try after some time.",
 	'lab_not_found'				=> "No NON Executed lab found. Please click on download to add new lab first.",
 	'reorder_duplication'		=> "Steps Order cannot have duplicate values.",
+	'upload_failed'				=> "Upload failed. Something went wrong. Please try again.",
 
 	/* 
 	  	Success Messages
@@ -32,7 +33,9 @@ return [
 	/*
 		Info Messages
 	*/
-	'execution_start'			=> "Autorun launched for execution. Copy this path to Autorun input file and select your screenshot location."
+	'execution_start'			=> "Autorun launched for execution. Copy this path to Autorun input file and select your screenshot location.",
+	'upload_completed' 			=> "File upload complete.",
+
 
 
 ];
