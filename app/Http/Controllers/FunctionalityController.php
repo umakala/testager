@@ -76,7 +76,9 @@ class FunctionalityController extends Controller {
 		$functionality = \App\TestFunctionality::find($id);
 		$project =  \App\TestProject::find($functionality->tp_id);
 		$functionality->tp_name  = $project->tp_name;
-		$functionality->scenarios = \App\TestScenario::where('tf_id' , $id)->count();
+
+		$scenarios = \App\TestScenario::where('tf_id' , $id)->get();
+		$functionality->scenarios = count($scenarios);
 
 		$cases_id = \App\TestScenario::join('testcases', 
 								'testscenarios.tsc_id', '=', 'testcases.tsc_id')
@@ -93,7 +95,7 @@ class FunctionalityController extends Controller {
 								->whereIn('testcases.tc_id', $f_cases)
 								->count();
 
-		return view('show.functionality', ['functionality' => $functionality]);
+		return view('show.functionality', ['functionality' => $functionality, 'scenarios' => $scenarios]);
 	}
 
 	/**

@@ -71,6 +71,7 @@ public function getCountFormat($scenarios_counts)
 			case 'executed':
 			$ary['executed'] = $value['count'];
 			break;
+
 		}
 		$ary['total'] +=  $value['count'];
 	}

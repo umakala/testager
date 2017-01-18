@@ -35,8 +35,28 @@ class DownloadController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(Request $request)
 	{	
+		$dt 			= Carbon::now()->format('dmyhis');
+		$tp_id 			= session()->get('open_project');
+		$id 			= $request->tc_ids;
+
+		if($id == $tp_id)
+		{
+			$cases = \App\TestCase::select('tc_id')->where('tp_id', $id)->get()->toArray();
+			foreach ($cases as $key => $value) {
+				$ids[] = $value['tc_id'];
+			}
+		}else{
+			$ids 			= explode("_",$id,-1);			
+		}
+		
+		$count 			= count($ids);
+		$filename 		= $tp_id."_".$count."_".$dt;
+		$data 			= $this->createExcelData($ids, $filename, $request);
+		session()->save();
+		$this->processDownload($data, $filename); 		
+		return redirect()->back();
 	}
 
 	/**
@@ -47,7 +67,7 @@ class DownloadController extends Controller {
 	 */
 	public function show($id)
 	{
-		$dt 			= Carbon::now()->format('dmyhis');
+		/*$dt 			= Carbon::now()->format('dmyhis');
 		$tp_id 			= session()->get('open_project');
 
 		if($id == $tp_id)
@@ -64,12 +84,12 @@ class DownloadController extends Controller {
 		$filename 		= $tp_id."_".$count."_".$dt;
 		$data 			= $this->createExcelData($ids, $filename);
 		session()->save();
-		$this->processDownload($data, $filename); 		
+		$this->processDownload($data, $filename); */		
 		return redirect()->back();
 	}
 	
 
-  	public function createExcelData($ids, $filename)
+  	public function createExcelData($ids, $filename, $request)
   	{
   		$tp_id 							=  session()->get('open_project');
   		$project 						= \App\TestProject::find($tp_id);
@@ -101,11 +121,19 @@ class DownloadController extends Controller {
   				$lab['executed_by_name']	= session()->get('name');
   				$lab['executed_result'] 	= '';
   				$lab['checkpoint_result'] 	= '';
+  				$lab['seq_no']				= $case->seq_no;
 	  			$lab['executed_filename'] 	= $filename; //.".xls";
+	  			if($request->release == '' || $request->release == null)
+	  				$lab['release_version']	= $project->release;
+	  			else
+	  				$lab['release_version']	= $request->release;
+	  			$lab['os_version']			= $request->os_version;
+	  			$lab['network_type']		= $request->network_type;
+	  			$lab['device_name']			= $request->device_name;
 
 		  		$steps 						= \App\TestStep::where(['tc_id'=>$id])->orderBy('seq_no', 'asc')->get()->toArray();
 		  		if(count($steps) > 0)
-		  			$c_lab 						=\App\Lab::create($lab);
+		  			$c_lab 					=\App\Lab::create($lab);
 		  		foreach ($steps as $s_value) {
 					//print_r($s_value);
 		  			$data['Project Name'] 	= $project->tp_name;
@@ -114,19 +142,29 @@ class DownloadController extends Controller {
 		  			$data['Description']  	= "";
 		  			$data['Test Case'] 		= $i;
 		  			$ts_id 					=  $s_value['ts_id'];
-		  			$execution 				=  \App\Execution::where(['tc_id' => $id, 'ts_id' => $ts_id])->orderBy('created_at', 'asc')->first();
-		  			$data['Scroll'] 		= $execution->scroll;
-		  			$data['resource-id'] 	= $execution->resource_id;
-		  			$data['text'] 			= $execution->text;
-		  			$data['Content-desc'] 	= $execution->content_desc;
-		  			$data['class'] 			= $execution->class;
-		  			$data['index'] 			= $execution->index;
-		  			$data['Sendkey'] 		= $execution->sendkey;	
-		  			$data['screenshot'] 	= $execution->screenshot;	
-		  			$data['Check point'] 	= $execution->checkpoint;
-		  			$data['Wait'] 			= $execution->wait;	
+		  			$execution 				=  \App\Execution::where(['tc_id' => $id, 'ts_id' => $ts_id, 'tl_id' => 0])->get()->toArray();
+
+		  			$exe_data 				= $execution[0];
+		  			$exe_data['e_id']		= $this->genrateRandomInt(10);
+		  			$exe_data['tl_id']		= $lab['tl_id'];
+		  			$exe_data['execution_result'] = '';
+		  			$exe_data['checkpoint_result'] = '';
+		  			unset($exe_data['created_at']);
+		  			unset($exe_data['updated_at']);
+		  			$created_exe 			= \App\Execution::create($exe_data);
+
+		  			$data['Scroll'] 		= $exe_data['scroll'];
+		  			$data['resource-id'] 	= $exe_data['resource_id'];
+		  			$data['text'] 			= $exe_data['text'];
+		  			$data['Content-desc'] 	= $exe_data['content_desc'];
+		  			$data['class'] 			= $exe_data['class'];
+		  			$data['index'] 			= $exe_data['index'];
+		  			$data['Sendkey'] 		= $exe_data['sendkey'];	
+		  			$data['screenshot'] 	= $exe_data['screenshot'];	
+		  			$data['Check point'] 	= $exe_data['checkpoint'];
+		  			$data['Wait'] 			= $exe_data['wait'];
 		  			$data['Expected Value'] = $s_value['expected_result'];
-		  			$data['e_id'] 			= $execution['e_id'];
+		  			$data['e_id'] 			= $exe_data['e_id'];
 		  			$data['tl_id'] 			= $lab['tl_id'];
 		  			$excel_data[] 			= $data;
 		  		}

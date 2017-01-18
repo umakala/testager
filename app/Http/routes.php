@@ -13,6 +13,7 @@
 
 
 //Route::get('/', 'NewsController@index');
+Route::get('/', array( "as"=>"/" , 'uses' =>'UserController@index'));
 Route::get('home', array("as"=>"home" , 'uses' =>'UserController@index'));
 Route::get('user/register', array("as"=>"user.register" , 'uses' =>'UserController@create'));
 Route::post('store', array("as"=>"store" , 'uses' =>'UserController@store'));
@@ -36,8 +37,9 @@ Route::resource('upload','UploadController');
 Route::resource('download','DownloadController');
 
 Route::resource('execute','ExecutionController');
-
-
+Route::resource('report','ReportController');
+Route::get('report/lab/{id}', array("as"=>"report.lab" , 'uses' =>'ReportController@show_lab'));
+Route::get('report/case/{id}', array("as"=>"report.case" , 'uses' =>'ReportController@show_case'));
 
 
 Route::resource('project', 'TestProjectController');
@@ -50,6 +52,5 @@ Route::resource('lab', 'TestLabController');
 
 Route::post('sc_lab', array("as"=>"sc_lab" , 'uses' =>'TestLabController@store'));
 Route::post('step/reorder/{tc_id}', array("as"=>"step.reorder" , 'uses' =>'TestStepController@reorder'));
-
 Route::get('teststep/create/{tc_id}', array("as"=>"teststep.create" , 'uses' =>'TestStepController@create'));
 });

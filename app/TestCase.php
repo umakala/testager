@@ -30,7 +30,7 @@ class TestCase extends Model {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['tc_id', 'tc_name','description', 'expected_result', 'status', 'tsc_id', 'tp_id', 'execution_type', 'executed_by', 'bug_id'];
+	protected $fillable = ['tc_id', 'tc_name','description', 'expected_result', 'status', 'tsc_id', 'tp_id', 'execution_type', 'bug_id','seq_no'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.

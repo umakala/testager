@@ -89,43 +89,41 @@
                 </a>
             </span>
 
-
             <!-- Test lab dropdown options  -->
             <span class="btn headerButt dropdown">
-              <ul class="dropdown-menu">
+             <!--  <ul class="dropdown-menu">
                     <li > <a href="{{url('lab')}}" style="">
                          Lab
                     </a></li>
-                </ul>                   
-                <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                    TESTLAB <b class="caret" style="color: #000;"></b>
+                </ul>  <b class="caret" style="color: #000;"></b>-->                  
+                <a href="{{url('lab')}}" ><!--  data-toggle="dropdown" class="dropdown-toggle">   -->                  
+                    TESTLAB 
                 </a>
             </span>
 
             <!-- Defect dropdown options  -->
-            <span class=" btn headerButt dropdown">  
+            <!-- <span class=" btn headerButt dropdown">  
               <ul class="dropdown-menu">
                     <li > <a href="{{url('project/create')}}" style="">
                          Add Project
                     </a></li>
-                    <!-- Add more options here -->
+                    Add more options here
 
                 </ul>                   
                 <a href="#" data-toggle="dropdown" class="dropdown-toggle">
                     DEFECT <b class="caret" style="color: #000;"></b>
                 </a>
-            </span>
+            </span> -->
 
             <!-- Reports dropdown options  -->
-            <span class=" btn headerButt dropdown">  
-              <ul class="dropdown-menu">
-                    <li > <a href="#" style="">
-                         SHOW 
+             <span class="btn headerButt dropdown">
+             <!--  <ul class="dropdown-menu">
+                    <li > <a href="{{url('lab')}}" style="">
+                         Lab
                     </a></li>
-                    <!-- Add more options here -->
-                </ul>                   
-                <a href="#" data-toggle="dropdown" class="dropdown-toggle">                    
-                    REPORTS<b class="caret" style="color: #000;"></b>
+                </ul>  <b class="caret" style="color: #000;"></b>-->                  
+                <a href="{{url('report')}}" ><!--  data-toggle="dropdown" class="dropdown-toggle">   -->                  
+                    Reports 
                 </a>
             </span>
 

@@ -14,6 +14,9 @@ class AppServiceProvider extends ServiceProvider {
 	{
 		//
 		View::share('dt_format', 'H:i:s F d, Y');
+		View::share('small_dt_format', 'd/m/y H:i:s');
+		View::share('exe_dt_format', 'H:i d/m');
+
 	}
 
 	/**

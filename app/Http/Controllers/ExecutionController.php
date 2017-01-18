@@ -47,6 +47,8 @@ class ExecutionController extends Controller{
 	 */
 	public function show($id)
 	{	
+
+
 		$tp_id =  session()->get('open_project');
 		$call_from = "";
 		if($id == $tp_id)
@@ -80,7 +82,7 @@ class ExecutionController extends Controller{
 			}else{
 				$filename  = $lab_item->executed_filename;
 				$result = $this->validatePreRequirements($filename);
-				if($result == "valid"){				
+				if($result != "error"){				
 					$lab_item->tc_status = 'executed';
 					$lab_item->execution_type = 'autorun';
 					$lab_item->save();
@@ -113,7 +115,7 @@ class ExecutionController extends Controller{
 			$message = $this->getMessage('messages.xls_not_found');
 			Toast::message($message, 'danger');			
 		}else if($error == false){
-			$this->execute($filename);
+			$this->execute($filename, $result);
 		}
 		return back();
 	}
@@ -122,26 +124,33 @@ class ExecutionController extends Controller{
 	{
 		$cmd = 'echo %home%';
 		$home = shell_exec($cmd);
-		$exe_location = trim($home)."\Desktop\AutoRun.appref-ms";
-		if(File::exists($exe_location)){		
+		$exe_location  			 	= trim($home)."\Desktop\AutoRun.appref-ms";
+		$exe_location_shorcut 		= trim($home)."\Desktop\AutoRun - Shortcut.lnk";
+		$exe_location_autorun_shorcut = trim($home)."\Desktop\AutoRun.lnk";		
+		if(File::exists($exe_location)){
+			return $exe_location;		
 		}		
-		else
+		elseif(File::exists($exe_location_shorcut))
 		{
+			//echo "Found $exe_location_shorcut";
+			return $exe_location_shorcut;
+		}elseif(File::exists($exe_location_autorun_shorcut))
+		{
+			return $exe_location_autorun_shorcut;
+		}else{
 			$message = $this->getMessage('messages.exe_not_found');
 			Toast::message($message, 'danger');
 			return "error";
 		}
-		return "valid";
 	}
 
 
-	public function execute($filename)
+	public function execute($filename, $exe_location)
 	{
 		$argument = $filename;
 		$cmd = 'echo %home%';
 		$home = shell_exec($cmd);
-		$exe_location = trim($home)."\Desktop\AutoRun.appref-ms";
-		
+		//$exe_location = trim($home)."\Desktop\AutoRun.appref-ms";		
 		//echo $exe_location = "C:\Users\sony\Desktop\autorun\app_publish\AutoRun.application";
 		//$exe_location = "W:\Work\ATIS\Autorun\AutoRun_code_for_mindgate_HSBC_poc_21_11_2016v06-Copy_share_with_sonu\AutoRun_code_for_mindgate_HSBC_poc_21_11_2016v06-Copy_share_with_sonu\AutoRun\bin\Debug\autorun.exe";
 		$xls_location = trim($home)."\Downloads\\".$filename;
@@ -159,7 +168,7 @@ class ExecutionController extends Controller{
 			$message = $this->getMessage('messages.execution_start');
 			$message = $message." - ".$xls_location;
 			Toast::message($message, '');
-			$answer = shell_exec($exe_location.' "abc"');
+			$answer = shell_exec($exe_location);
 			//var_dump($answer);
 			//echo $argument;			
 		}

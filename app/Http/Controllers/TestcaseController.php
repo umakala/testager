@@ -70,6 +70,8 @@ class TestcaseController extends Controller {
 		       	$content['execution_type']			= "NA" ;
 		       	$content['execution_by']			= "" ;
 		       	$content_lab['execution_by_name']	= "" ;
+		       	$count 								= \App\TestCase::where('tsc_id',  $content['tsc_id'])->count();
+		       	$content['seq_no'] 	        		= $count+1;	
 		        //$create_lab 						= \App\Lab::create($content_lab);
 		        $create 							= \App\TestCase::create($content);
 

@@ -155,11 +155,14 @@
              <div class="panel-title" style="font-style: bold; padding-bottom: 10px;" > All Testcases 
             
              <p style="float:right">
-             <a href="{{URL::route('download.show', ['id' => $project->tp_id])}}"> <span id="" class="glyphicon glyphicon-download"></span> Download</a>
-            
-                    <a href="{{URL::route('execute.show', ['id' => $project->tp_id])}}"> <span id="" class="glyphicon glyphicon-play-circle"></span> Execute</a>
+                <?php $tc_ids = $project->tp_id ?>
+                <a  data-toggle="modal" data-target="#downloadModal" title="Download Excel"> <i class="glyphicon glyphicon-cloud-download"  ></i> Download
+                </a>        
+                <a href="{{URL::route('execute.show', ['id' => $project->tp_id])}}"> <span id="" class="glyphicon glyphicon-play-circle"></span> Execute</a>
              </p>
         </div>
+        @include('modals.download_modal')
+        
 
         <!--  Column details of test case to show 
         id, name, status(executed or not executed), executed type (manual/automation), executed by, executed date-time, checkpoint_result, execution_result(pass_fail), defect(if any), defect_status, (checkbox to select )

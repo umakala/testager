@@ -27,7 +27,7 @@ class TestFunctionality extends Model {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['tf_id', 'tf_name','description','tp_id'];
+	protected $fillable = ['tf_id', 'tf_name','description','tp_id', 'created_by'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.

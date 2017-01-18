@@ -148,7 +148,8 @@ return [
 		'willvincent\Feeds\FeedsServiceProvider',		
         //'Intervention\Image\ImageServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',
-         'Grimthorr\LaravelToast\ServiceProvider'
+         'Grimthorr\LaravelToast\ServiceProvider',
+         "Khill\Lavacharts\Laravel\LavachartsServiceProvider"
 
 	],
 
@@ -201,8 +202,8 @@ return [
 		'PDF' 		=> 'Barryvdh\DomPDF\Facade',
 		'Excel' 	=> 'Maatwebsite\Excel\Facades\Excel',
 		//'Image'     => 'Intervention\Image\Facades\Image'
-        'Toast' => 'Grimthorr\LaravelToast\Facade',   
-
+        'Toast' 	=> 'Grimthorr\LaravelToast\Facade',  
+        'Lava'		=> "Khill\Lavacharts\Lavacharts"
 	],
 
 ];

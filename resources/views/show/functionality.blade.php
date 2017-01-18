@@ -70,6 +70,8 @@
 				</div>				
 			</div>
         </div>
+        @include('lists.scenarios')
+       
     </div>    
 </div>
 @endsection

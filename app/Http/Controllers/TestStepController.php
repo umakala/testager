@@ -48,7 +48,7 @@ class TestStepController extends Controller {
 
 	 	$tc =  $request->tc_id;
 		$validator = \Validator::make($request->all(), array(
-			'description' => 'required',
+			//'description' => 'required',
 			'tc_id' => 'not_in:none'        
 			), $messages);
 		if ($validator->fails())
@@ -86,6 +86,8 @@ class TestStepController extends Controller {
 		        $execution_content['tc_id']			= $tc;
 		        $execution_content['tp_id']			= $content['tp_id'];
 		        $execution_content['ts_id']			= $content['ts_id'];
+		        $execution_content['tl_id']			= 0;
+
 		        $execution_content['seq_no']		= $content['seq_no'];
 		        $execution_content['e_id']			= $this->genrateRandomInt();
 		        $create 							= \App\Execution::create($execution_content);
