@@ -118,7 +118,7 @@ public function show($id)
 	
 	$case->steps = $this->getCountFormat($steps_counts);
 	//$lab_details = \App\Lab::where('tp_id' , $id)->get();
-	$lab_details = \App\TestStep::where('tc_id' , $id)->orderBy('seq_no', 'desc')->get();
+	$lab_details = \App\TestStep::where('tc_id' , $id)->orderBy('seq_no', 'asc')->get();
 	
 	foreach ($lab_details as $key => $value) {
 		$execution = \App\Execution::where('ts_id' , $value->ts_id)->orderBy('created_at', 'asc')->first();

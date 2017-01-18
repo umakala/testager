@@ -114,26 +114,39 @@ class IntegrationHandler extends Controller{
         return $tc_id;
     }
 
-  public function handleExecution($row, $tc_id, $ts_id)
+  public function handleExecution($row, $tc_id, $ts_id, $seq)
   {
   $ts = [];
+  $execution_content = [];
   /* if( isset($row['test_step'])){
     */   
     if(!isset($row['description'])|| $row['description']  == null ||  $row['description'] == ""){
       //If nothing to process then do nothing
       //return $ts_id;
        }else{
+
+
+    //print_r($row); 
+
           $ts['description']    = $row['description'];
           $ts['expected_result']  = $row['expected_value'];
           $ts['tp_id']      = session()->get('open_project');
           $ts['tc_id']      = $tc_id;
+
+
           //$check          =  \App\TestStep::where($ts)->first();        
           //echo "its null";
           $ts_id = $ts['ts_id'] = $this->genrateRandomInt();
           $ts['status']         = 'not_executed';
           $ts['created_by']     = session()->get('email');
+          $ts['seq_no']         = $seq;
           \App\TestStep::create($ts);
+
+
           $execution_content['scroll']        = $row['scroll'];
+          if($row['resource_id'] == null)
+          $execution_content['resource_id']   = '';
+          else
           $execution_content['resource_id']   = $row['resource_id'];
           if($row['text'] == null)
             $execution_content['text']          = '';
@@ -144,9 +157,12 @@ class IntegrationHandler extends Controller{
           $execution_content['content_desc']  = '';
           else 
           $execution_content['content_desc']  = $row['content_desc'];
+
           $execution_content['class']         = $row['class'];
           $execution_content['index']         = $row['index'];
           $execution_content['sendkey']       = $row['sendkey'];
+          //echo ($row['sendkey']);
+    
           $execution_content['screenshot']    = $row['screenshot'];
           if($row['check_point'] == null)
             $execution_content['checkpoint']    = '';
@@ -161,8 +177,9 @@ class IntegrationHandler extends Controller{
           $execution_content['tc_id']         = $tc_id;
           $execution_content['tp_id']         = session()->get('open_project');
           $execution_content['ts_id']         = $ts_id;
-          $execution_content['e_id']          = $this->genrateRandomInt();
-          \App\Execution::create($execution_content);      
+          $execution_content['e_id']          = $this->genrateRandomInt(8);
+
+          \App\Execution::create($execution_content); 
       }
  /* }else{
     $ts_id =0;
@@ -197,19 +214,20 @@ public function handleTeststep  ($row, $tc_id, $ts_id)
               $ts['created_by']     = session()->get('email');
 
               \App\TestStep::create($ts);
-              $execution_content['scroll']        = 'no';
+              $execution_content['scroll']        = 'No';
               $execution_content['resource_id']   = '';
               $execution_content['text']          = '';
               $execution_content['content_desc']  = '';
               $execution_content['class']         = '';
               $execution_content['index']         = '';
               $execution_content['sendkey']       = '';
-              $execution_content['screenshot']    = 'no';
+              $execution_content['screenshot']    = 'No';
               $execution_content['checkpoint']    = '';
               $execution_content['wait']          = '';
               $execution_content['tc_id']         = $tc_id;
               $execution_content['tp_id']         = session()->get('open_project');
               $execution_content['ts_id']         = $ts_id;
+              $execution_content['tl_id']         = 0;
               $execution_content['e_id']          = $this->genrateRandomInt();
               \App\Execution::create($execution_content);
           }

@@ -45,7 +45,7 @@ class UploadController extends Controller {
 		if($ext == "xls" || $ext == "xlsx"){
 			Excel::load(Input::file('file'), function ($reader) use($call_page, $call_page_id) {
 				try{
-				$i=0; $error =false;
+				$i=0; $error =false; $seq = 1;
 				$fn_id = ""; $sc_id ="";  $tc_id =""; $ts_id = "";
 				$int_obj = new IntegrationHandler ();
 				foreach ($reader->toArray() as $row) {
@@ -94,9 +94,9 @@ class UploadController extends Controller {
 							$tc_id = $call_page_id;
 						}
 						//if(isset($row['test_step'])
-						echo "Handling row<br/>";
-						$ts_id = $int_obj->handleExecution($row, $tc_id, $ts_id);
-
+						//echo "Handling row<br/>";
+						$ts_id = $int_obj->handleExecution($row, $tc_id, $ts_id, $seq);
+						$seq++;
 
 						default:
 						break;
