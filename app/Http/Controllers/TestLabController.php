@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 use DB;
 use Illuminate\Http\Request;
 use Toast;
+
+
 class TestLabController extends Controller {
 
 /**
@@ -49,33 +51,6 @@ public function index()
 	}
 
 	return view('testlab.lab', ['project' => $project, 'lab_details' => $lab_details]);	  	
-}
-
-public function getCountFormat($scenarios_counts)
-{
-	$ary['total'] = 0;
-	foreach ($scenarios_counts as  $value) {
-		switch ($value['status']) {
-			case 'failed':
-			$ary['failed'] =  $value['count'];
-			break;
-
-			case 'passed':
-			$ary['passed'] =  $value['count'];
-			break;
-
-			case 'not_executed':
-			$ary['not_executed'] = $value['count'];
-			break;
-
-			case 'executed':
-			$ary['executed'] = $value['count'];
-			break;
-
-		}
-		$ary['total'] +=  $value['count'];
-	}
-	return $ary;
 }
 
 /**

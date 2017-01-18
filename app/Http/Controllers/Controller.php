@@ -24,4 +24,58 @@ abstract class Controller extends BaseController {
 	{
 		return \Config::get($value);
 	}
+
+	public function getCountFormatLabs($scenarios_counts, $key)
+	{
+		$ary['total'] = 0;
+		foreach ($scenarios_counts as  $value) {
+			switch ($value[$key]) {
+				case 'Fail':
+				$ary['fail'] =  $value['count'];
+				break;
+
+				case 'Pass':
+				$ary['pass'] =  $value['count'];
+				break;
+
+				case 'not_executed':
+				$ary['not_executed'] = $value['count'];
+				break;
+
+				case 'executed':
+				$ary['executed'] = $value['count'];
+				break;
+
+			}
+			$ary['total'] +=  $value['count'];
+		}
+		return $ary;
+	}
+
+	public function getCountFormat($scenarios_counts)
+	{
+		$ary['total'] = 0;
+		foreach ($scenarios_counts as  $value) {
+			switch ($value['status']) {
+				case 'failed':
+				$ary['failed'] =  $value['count'];
+				break;
+
+				case 'passed':
+				$ary['passed'] =  $value['count'];
+				break;
+
+				case 'not_executed':
+				$ary['not_executed'] = $value['count'];
+				break;
+
+				case 'executed':
+				$ary['executed'] = $value['count'];
+				break;
+
+			}
+			$ary['total'] +=  $value['count'];
+		}
+		return $ary;
+	}
 }

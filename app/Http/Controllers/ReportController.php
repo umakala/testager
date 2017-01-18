@@ -3,13 +3,12 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Handlers\ChartsHandler;
-
 use Lava;
+use DB;
+
 use Illuminate\Http\Request;
 
 class ReportController extends Controller {
-
-
 
 	/**
 	 * Display a listing of the resource.
@@ -17,6 +16,79 @@ class ReportController extends Controller {
 	 * @return Response
 	 */
 	public function index()
+	{
+		$id = session()->get('open_project');
+		$project = \App\TestProject::find($id);
+		$project->functionalities = \App\TestFunctionality::where('tp_id' , $id)->get();
+
+		foreach ($project->functionalities as $fn) {
+			/*$scenarios_counts =  \App\TestScenario::groupBy('status')->select('status', DB::raw('count(*) as count'))->where("tp_id" , $id)->get();*/
+			$cases_counts 	=  \App\Lab::groupBy('execution_result')
+									->select('execution_result', DB::raw('count(*) as count'))
+									->where("tf_id" , $fn->tf_id)
+									->get();
+
+
+			$cases_counts 	=  \App\Lab::groupBy('execution_result')
+									->select('execution_result', DB::raw('count(*) as count'))
+									->where("tf_id" , $fn->tf_id)
+									->get();
+
+			$steps_counts  	= \App\Execution::join('labs', 
+								'labs.tc_id', '=', 'executions.tc_id')
+								->select('executions.execution_result', DB::raw('count(*) as count'))
+								->where('labs.tf_id', $fn->tf_id)
+								->groupBy('executions.execution_result')
+								->get()->toArray();
+
+			//$fn->scenarios 		= $this->getCountFormat($scenarios_counts);
+			$fn->testcases = $this->getCountFormatLabs($cases_counts,'execution_result' );
+			$fn->teststeps = $this->getCountFormatLabs($steps_counts, 'execution_result');
+		}
+
+
+
+		$charts_obj = new ChartsHandler();
+		
+		//Get details about test cases
+		$lab_details = \App\TestCase::where('tp_id' , $id)->orderBy('seq_no', 'asc')->get();
+		$chart_details = $charts_obj->initChartDetails();		
+	
+		foreach ($lab_details as $key => $value) {
+			$lab = \App\Lab::where('tc_id' , $value->tc_id)->orderBy('created_at', 'desc')->first();
+			$value->lab = $lab;
+			
+			$tsc = \App\TestScenario::select('tsc_name')->where('tsc_id' , $value->tsc_id)->get();
+			$value->tsc_name = $tsc[0]->tsc_name;
+
+			$fn  = \App\TestFunctionality::select('tf_name')->where('tf_id' , $lab->tf_id)->get();
+			$value->tf_name = $fn[0]->tf_name;
+
+			$chart_value['tc_status'] = $value->status;
+			$chart_value['execution_result'] = $value->lab->execution_result;
+			$chart_value['checkpoint_result'] = $value->lab->checkpoint_result;
+
+			$chart_details = $charts_obj->getChartSummary($chart_value, $chart_details);
+		}
+
+
+		$column_details =[];
+		/* 
+			Pie Charts showing summary of results 
+		*/
+		$charts_obj->createExecutionPieChart($chart_details);
+		$charts_obj->createCheckpointPieChart($chart_details);
+		$charts_obj->createSummaryColumnChart($column_details);
+
+		return view('reports.functionality_report', ['project' => $project, 'lab_results' => $lab_details]);	  	
+	}
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function show_scenario()
 	{
 		$id = session()->get('open_project');
 		$project = \App\TestProject::find($id);
@@ -131,27 +203,25 @@ class ReportController extends Controller {
 		$p_id = session()->get('open_project');
 		$project = \App\TestProject::find($p_id);
 		//$project->functionalities = \App\TestFunctionality::where('tp_id' , $id)->count();
-		$lab_details = [];
 		$chart_details = $charts_obj->initChartDetails();
 
-
-		//Get details about testlabs
-		$lab_details = \App\Execution::where('tl_id' , $id)->orderBy('seq_no', 'asc')->get();
+		//Get details about execution of associated test lab
+		$execution_details = \App\Execution::where('tl_id' , $id)->orderBy('seq_no', 'asc')->get();
+		$execution_details->lab = \App\Lab::find($id);
 		
-		foreach ($lab_details as $key => $value) {
+		$case = \App\TestCase::find($execution_details->lab->tc_id);
+		$execution_details->case = $case;
+
+		$tsc = \App\TestScenario::select('tsc_name', 'tf_id')->where('tsc_id' , $case->tsc_id)->get();
+		$execution_details->tsc_name = $tsc[0]->tsc_name;
+		$tf_id = $tsc[0]->tf_id;
+
+		$fn  = \App\TestFunctionality::select('tf_name')->where('tf_id' , $tf_id)->get();
+		$execution_details->tf_name = $fn[0]->tf_name;
+		
+		foreach ($execution_details as $key => $value) {
 			$step = \App\TestStep::find($value->ts_id);
-			$value->step = $step;
-
-			$case = \App\TestCase::find($value->tc_id);
-			$value->case = $case;
-		
-			$tsc = \App\TestScenario::select('tsc_name', 'tf_id')->where('tsc_id' , $case->tsc_id)->get();
-			//print_r(); exit;
-			$value->tsc_name = $tsc[0]->tsc_name;
-			$tf_id = $tsc[0]->tf_id;
-
-			$fn  = \App\TestFunctionality::select('tf_name')->where('tf_id' , $tf_id)->get();
-			$value->tf_name = $fn[0]->tf_name;
+			$value->step = $step;			
 
 			if($value->executed_by == '' || $value->executed_by == null)
 				$value->ts_status = 'not_executed';
@@ -172,7 +242,7 @@ class ReportController extends Controller {
 		$charts_obj->createExecutionPieChart($chart_details);
 		$charts_obj->createCheckpointPieChart($chart_details);
 
-		return view('reports.case_report', ['project' => $project, 'lab_results' => $lab_details]);	  	
+		return view('reports.case_report', ['project' => $project, 'execution_results' => $execution_details]);	  	
 	
 	}
 

@@ -28,12 +28,12 @@
             <div class="panel-title" style="font-weight: bold;" >  Summary 
 
             <div class="row">
-                <div  class="col-lg-6" >
+                <div  class="col-lg-4 col-sm-12" >               
                     <div id="execution_result_chart"></div>
                     @piechart('exe_result', 'execution_result_chart')
                 </div>
 
-                <div  class="col-lg-6" >
+                <div  class="col-lg-4 col-sm-12" >               
                     <div id="checkpoint_result_chart"></div>
                     @piechart('cp_result', 'checkpoint_result_chart')
                 </div>                             
@@ -43,7 +43,7 @@
 
 
         <div class="panel-body"  id ="top">
-             <div class="panel-title" style="font-weight: bold; padding-bottom: 10px;" > All TestLabs 
+             <div class="panel-title" style="font-weight: bold; padding-bottom: 10px;" > All TestCases
             
              <p style="float:right">
              </p>
@@ -99,8 +99,8 @@
                     <td class="alert alert-{{$detail->lab->execution_result == 'Pass'? 'success' : ($detail->lab->execution_result == '' ? 'warning' : 'danger')}}"   > 
                         {{$detail->lab->execution_result}} 
                     </td>
-                    <td class="alert alert-{{$detail->lab->checkpoint_result == 'Pass'? 'success' : ($detail->lab->checkpoint_result == '' ? 'warning' : 'danger')}}" > 
-                        {{$detail->lab->checkpoint_result}}  
+                    <td class="alert alert-{{$detail->lab->checkpoint_result == 'Pass'? 'success' : ($detail->lab->checkpoint_result == '' ? 'warning': ($detail->lab->checkpoint_result == 'none' ? 'error' : 'danger'))}}" > 
+                         {{$detail->lab->checkpoint_result == 'none' ? 'Not Defined' : $detail->lab->checkpoint_result}}
                     </td>
                     <td> 
                         <a href="{{URL::route('report.lab', ['id' => $detail->tc_id] )}}">  <span class="glyphicon glyphicon-calendar"></span> Lab History

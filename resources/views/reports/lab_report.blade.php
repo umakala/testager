@@ -95,8 +95,8 @@
                     <td class="alert alert-{{$detail->execution_result == 'Pass'? 'success' : ($detail->execution_result == '' ? 'warning' : 'danger')}}"   > 
                         {{$detail->execution_result}} 
                     </td>
-                    <td class="alert alert-{{$detail->checkpoint_result == 'Pass'? 'success' : ($detail->checkpoint_result == '' ? 'warning' : 'danger')}}" > 
-                        {{$detail->checkpoint_result}}  
+                    <td class="alert alert-{{$detail->checkpoint_result == 'Pass'? 'success' : ($detail->checkpoint_result == '' ? 'warning' : ($detail->checkpoint_result == 'none' ? 'error' : 'danger'))}}" > 
+                        {{$detail->checkpoint_result == 'none' ? 'Not Defined' : $detail->checkpoint_result}}  
                     </td>
                    <!--  <td> 
                         <input type="checkbox" id="checkbox_{{$detail->tc_id}}">                    

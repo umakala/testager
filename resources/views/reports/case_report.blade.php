@@ -20,26 +20,49 @@
             @if(Session::has('toasts'))
                     {{Session::forget('toasts')}}
             @endif
-            </p>
+            </p>       
         
         <div class="panel-body" >
-            <div class="panel-title" style="font-weight: bold;" >  Summary 
+            <div class="panel-title" > Summary 
+            <div class="row" >                 
+                <div  class="col-lg-4 col-sm-12" style=" padding-top: 30px;">                
+                    <div class="panel-title" style="padding-bottom: 20px; font-size: 14px" >  
+                <div class="row">
+                    <div  class="col-lg-6" >
+                        <ul class="list-unstyled">
+                            <li>Testcase : <strong> {{$execution_results->case->tc_name}}</strong></li>
+                            <li>Scenario : <strong>{{$execution_results->tsc_name}}</strong></li>
+                            <li>Functionality :<strong> {{$execution_results->tf_name}}</strong></li>
+                            <li>Release : <strong>{{$execution_results->lab->release_version}}</strong></li>
+                        </ul>                       
+                    </div>
+                    <div  class="col-lg-6" >
+                        <ul class="list-unstyled">
+                            
+                            <li>Network :<strong> {{$execution_results->lab->network_type}}</strong></li>
+                            <li>OS : <strong>{{$execution_results->lab->os_version}}</strong></li>
+                            <li>Device :<strong> {{$execution_results->lab->device_name}}</strong></li>
+                            <li>Execution type :<strong> {{$execution_results->lab->execution_type}}</strong></li>
 
-            <div class="row">
-                <div  class="col-lg-6" >
+                        </ul>                       
+                    </div>                             
+                </div>
+                </div>
+                </div>
+                <div  class="col-lg-4 col-sm-12" >
                     <div id="execution_result_chart"></div>
                     @piechart('exe_result', 'execution_result_chart')
                 </div>
 
-                <div  class="col-lg-6" >
+                <div  class="col-lg-4 col-sm-12" >
                     <div id="checkpoint_result_chart"></div>
                     @piechart('cp_result', 'checkpoint_result_chart')
-                </div>                             
+                </div>
             </div>
         </div>
 
         <div class="panel-body"  id ="top">
-             <div class="panel-title" style="font-weight: bold; padding-bottom: 10px;" > All TestLabs 
+             <div class="panel-title" style="font-weight: bold; padding-bottom: 10px;" > All TestSteps 
             
              <p style="float:right">
              </p>
@@ -53,9 +76,6 @@
                 <tr>
                     <th>#</th>
                     <th>TestStep</th>   
-                    <th>TestScenario</th>
-                    <th>Functionality</th>
-                    <th>Release</th>
                     <th>Status</th>
                     <th  width="200px">Execution Details</th>
                     <th>Execution Result</th>
@@ -67,7 +87,7 @@
                 <?php
                  $i =1; 
                 ?>
-                @foreach($lab_results as $detail)
+                @foreach($execution_results as $detail)
                 <tr>
                     <td> 
                         {{$detail->seq_no}}
@@ -75,14 +95,6 @@
                     <td> 
                     <a href="{{URL::route('report.case', ['id' => $detail->tl_id])}}">
                         {{$detail->step->description}}</a>                     
-                    </td>
-                    <td> {{$detail->tsc_name}}</td>
-                    
-                    <td> 
-                    {{$detail->tf_name}}                     
-                    </td>
-                    <td>  
-                        {{$detail->release_version}}                         
                     </td>
                     <td> 
                         {{$detail->ts_status}}                          
@@ -95,8 +107,9 @@
                     <td class="alert alert-{{$detail->execution_result == 'Pass'? 'success' : ($detail->execution_result == '' ? 'warning' : 'danger')}}"   > 
                         {{$detail->execution_result}} 
                     </td>
-                    <td class="alert alert-{{$detail->checkpoint_result == 'Pass'? 'success' : ($detail->checkpoint_result == '' ? 'warning' : ($detail->checkpoint_result == 'none' ? 'info' : 'danger'))}}" > 
-                        {{$detail->checkpoint_result}}  
+                    <td class="alert alert-{{$detail->checkpoint_result == 'Pass'? 'success' : ($detail->checkpoint_result == '' ? 'warning' : ($detail->checkpoint_result == 'none' ? 'error' : 'danger'))}}" > 
+                         {{$detail->checkpoint_result == 'none' ? 'Not Defined' : $detail->checkpoint_result}} 
+
                     </td>
                    <!--  <td> 
                         <a href="{{URL::route('report.lab', ['id' => $detail->tc_id ])}}">  <span class="glyphicon glyphicon-calendar"></span> Lab History
