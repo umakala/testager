@@ -119,11 +119,13 @@ public function show($id)
 	$case->steps = $this->getCountFormat($steps_counts);
 	//$lab_details = \App\Lab::where('tp_id' , $id)->get();
 	$lab_details = \App\TestStep::where('tc_id' , $id)->orderBy('seq_no', 'asc')->get();
-	
 	foreach ($lab_details as $key => $value) {
-		$execution = \App\Execution::where('ts_id' , $value->ts_id)->orderBy('created_at', 'asc')->first();
+		$execution = \App\Execution::where(['ts_id' => $value->ts_id, 'tl_id' => 0])->orderBy('created_at', 'asc')->first();
 		$value->execution = $execution;
 	}
+	//print_r($lab_details[0]);
+
+	//print_r($case);
 	//print_r($lab_details[0]->execution->e_id);
 	return view('testlab.case_lab', ['case' => $case, 'lab_details' => $lab_details]);
 }

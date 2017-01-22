@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Excel;
 use Toast;
 use Session;
+use File;
 use Carbon\Carbon;
 
 class DownloadController extends Controller {
@@ -39,23 +40,41 @@ class DownloadController extends Controller {
 	{	
 		$dt 			= Carbon::now()->format('dmyhis');
 		$tp_id 			= session()->get('open_project');
+		$loc 			= session()->get('autorun_location');
 		$id 			= $request->tc_ids;
+		$page_loc		= $request->autorun;
 
-		if($id == $tp_id)
+		if($page_loc == "")
 		{
-			$cases = \App\TestCase::select('tc_id')->where('tp_id', $id)->get()->toArray();
-			foreach ($cases as $key => $value) {
-				$ids[] = $value['tc_id'];
-			}
+			$message = $this->getMessage('messages.autorun_location_required');
+  			Toast::message($message, 'danger'); 
+		}elseif(!File::exists($page_loc)){
+			$message = $this->getMessage('messages.autorun_location_incorrect');
+  			Toast::message($message, 'danger');			
 		}else{
-			$ids 			= explode("_",$id,-1);			
-		}
-		
-		$count 			= count($ids);
-		$filename 		= $tp_id."_".$count."_".$dt;
-		$data 			= $this->createExcelData($ids, $filename, $request);
-		session()->save();
-		$this->processDownload($data, $filename); 		
+			session()->set('autorun_location' , $page_loc);
+			if($page_loc != $loc)
+			{
+				$user_id = session()->get('id');
+				$user = \App\User::find($user_id)->update(['autorun_location' => $page_loc]);
+			}
+
+			if($id == $tp_id)
+			{
+				$cases = \App\TestCase::select('tc_id')->where('tp_id', $id)->get()->toArray();
+				foreach ($cases as $key => $value) {
+					$ids[] = $value['tc_id'];
+				}
+			}else{
+				$ids 			= explode("_",$id,-1);			
+			}
+			
+			$count 			= count($ids);
+			$filename 		= $tp_id."_".$count."_".$dt;
+			$data 			= $this->createExcelData($ids, $filename, $request);
+			session()->save();
+			$this->processDownload($data, $filename); 	
+		}	
 		return redirect()->back();
 	}
 
@@ -118,7 +137,7 @@ class DownloadController extends Controller {
   				$lab['tc_status'] 			= 'not_executed';
   				$lab['execution_type'] 		= '';
   				$lab['executed_by'] 		= session()->get('email');
-  				$lab['executed_by_name']	= session()->get('name');
+  				$lab['executed_by_name']	= session()->get('name'); 
   				$lab['executed_result'] 	= '';
   				$lab['checkpoint_result'] 	= '';
   				$lab['seq_no']				= $case->seq_no;
@@ -142,8 +161,10 @@ class DownloadController extends Controller {
 		  			$data['Description']  	= "";
 		  			$data['Test Case'] 		= $i;
 		  			$ts_id 					=  $s_value['ts_id'];
-		  			$execution 				=  \App\Execution::where(['tc_id' => $id, 'ts_id' => $ts_id, 'tl_id' => 0])->get()->toArray();
+		  			$execution 				=  \App\Execution::where(['tc_id' => $id, 'ts_id' => $ts_id])->get()->toArray();
 
+		  			if(count ($execution) != 0)
+{
 		  			$exe_data 				= $execution[0];
 		  			$exe_data['e_id']		= $this->genrateRandomInt(8);
 		  			$exe_data['tl_id']		= $lab['tl_id'];
@@ -167,6 +188,7 @@ class DownloadController extends Controller {
 		  			$data['e_id'] 			= $exe_data['e_id'];
 		  			$data['tl_id'] 			= $lab['tl_id'];
 		  			$excel_data[] 			= $data;
+		  		} 	
 		  		}
 		  	}
 	  	}

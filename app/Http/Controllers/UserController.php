@@ -34,18 +34,18 @@ class UserController extends Controller {
 		else{
 			$password =  $request->password;
 			//$hash_password = hash('sha256', $request->password);
-       		$result = \App\User::select('name', 'id', 'verification', 'open_project')->where(['email' =>  $request->email, 'password' =>   $password])->get()->toArray();
+       		$result = \App\User::select('name', 'id', 'autorun_location', 'open_project')->where(['email' =>  $request->email, 'password' =>   $password])->get()->toArray();
 			
 			//print_r($result);
 
 			if(isset($result[0]))
 			{
-				if($result[0]['verification'] != NULL)
+				/*if($result[0]['verification'] != NULL)
 					$error[] = "Email is not verified. Please verify email.";
-				else{		
-					session(['id' => $result[0]['id'], 'name'=>$result[0]['name'], 'email' => $request->email , 'open_project' => $result[0]['open_project'] ]);
-					return redirect()->route('profile'); 
-				}
+				else*/
+				session(['id' => $result[0]['id'], 'name'=>$result[0]['name'], 'email' => $request->email , 'open_project' => $result[0]['open_project'] , 'autorun' =>  $result[0]['autorun_location'] ]);
+				return redirect()->route('profile'); 
+			
 			}
 			else
 				$error[] = "Incorrect email or password!";

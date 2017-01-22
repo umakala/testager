@@ -98,11 +98,13 @@ class ExecutionController extends Controller{
 						$ex_conditions['tc_id'] 		= $id;
 						$ex_conditions['ts_id'] 		= $value->ts_id;
 						$execution = \App\Execution::where($ex_conditions)->orderBy('created_at', 'asc')->first();
+						if($execution != null){
 						$execution->executed_by = session()->get('email');
 						$execution->executed_by_name = session()->get('name');
 						$execution->save();
 						$value->status = "executed";
 						$value->save();
+						}
 					}
 				}else{
 					$error = true;
@@ -122,12 +124,13 @@ class ExecutionController extends Controller{
 
 	public function validatePreRequirements($filename)
 	{
-		$cmd = 'echo %home%';
+		/*$cmd = 'echo %home%';
 		$home = shell_exec($cmd);
 		$exe_location  			 	= trim($home)."\Desktop\AutoRun.appref-ms";
 		$exe_location_shorcut 		= trim($home)."\Desktop\AutoRun - Shortcut.lnk";
-		$exe_location_autorun_shorcut = trim($home)."\Desktop\AutoRun.lnk";		
-		if(File::exists($exe_location)){
+		$exe_location_autorun_shorcut = trim($home)."\Desktop\AutoRun.lnk";	*/	
+
+		/*if(File::exists($exe_location)){
 			return $exe_location;		
 		}		
 		elseif(File::exists($exe_location_shorcut))
@@ -141,32 +144,35 @@ class ExecutionController extends Controller{
 			$message = $this->getMessage('messages.exe_not_found');
 			Toast::message($message, 'danger');
 			return "error";
-		}
+		}*/
+		
+		$exe_location = session()->get('autorun_location');
+		return $exe_location;
 	}
 
 
 	public function execute($filename, $exe_location)
 	{
 		$argument = $filename;
-		$cmd = 'echo %home%';
+		/*$cmd = 'echo %home%';
 		$home = shell_exec($cmd);
 		//$exe_location = trim($home)."\Desktop\AutoRun.appref-ms";		
 		//echo $exe_location = "C:\Users\sony\Desktop\autorun\app_publish\AutoRun.application";
 		//$exe_location = "W:\Work\ATIS\Autorun\AutoRun_code_for_mindgate_HSBC_poc_21_11_2016v06-Copy_share_with_sonu\AutoRun_code_for_mindgate_HSBC_poc_21_11_2016v06-Copy_share_with_sonu\AutoRun\bin\Debug\autorun.exe";
-		$xls_location = trim($home)."\Downloads\\".$filename;
-		if(File::exists($xls_location.".xls"))
+		//$xls_location = trim($home)."\Downloads\\".$filename;
+		/*if(File::exists($xls_location.".xls"))
 		{
 			$xls_location = $xls_location.".xls";
 		}elseif(File::exists($xls_location.".xlsx") ){
 			$xls_location = $xls_location.".xlsx";
 		}else{
 			$message = $this->getMessage('messages.xls_not_found');
-			Toast::message($message." - $cls_location", 'danger');
-		}
+			Toast::message($message." - $xls_location", 'danger');
+		}*/
 
 		if(File::exists($exe_location)){	
 			$message = $this->getMessage('messages.execution_start');
-			$message = $message." - ".$xls_location;
+			$message = $message." - ".$filename;
 			Toast::message($message, '');
 			$answer = shell_exec($exe_location);
 			//var_dump($answer);

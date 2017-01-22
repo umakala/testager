@@ -127,25 +127,25 @@
          				{{$i++}}        				
          			</td>
          			<td> 
-         				{{$detail->description}}        				
+         				{{$detail['description']}}        				
          			</td>
          			<td>
          			<!-- 
          				class= "alert alert-{{$detail->status == 'not_executed' ? 'warning' : 'success'}}" 
          			-->  
-         				{{$detail->status}}          				
+         				{{$detail['status']}}          				
          			</td>
          			<td> 
-         				{{$detail->execution->executed_by}}       				
+         				{{$detail['execution']['executed_by']}}       				
          			</td>
          			<td> 
-         				{{date($dt_format, strtotime($detail->execution->updated_at))}}   
+         				{{date($dt_format, strtotime($detail['execution']['updated_at']))}}   
          			</td>
          			<td> 
-         			{{$detail->execution->execution_result == '' ? 'Not Available Yet' : $detail->execution->execution_result}}
+         			{{$detail['execution']['execution_result'] == '' ? 'Not Available Yet' : $detail['execution']['execution_result']}}
          			</td>
          			<td> 
-         			{{$detail->execution->checkpoint_result == '' ? 'Not Available Yet' : $detail->execution->checkpoint_result}}  
+         			{{$detail['execution']['checkpoint_result'] == '' ? 'Not Available Yet' : $detail['execution']['checkpoint_result']}}  
          			</td>
          			<td> 
          				-      				

@@ -11,6 +11,14 @@
 
             <div class="modal-body">
                 <div class="form-group">
+                    <label for="release" class="control-label col-xs-4">Aurotun Location</label>  
+                    <div class="col-xs-6">    
+                    <?php $loc = session()->get('autorun_location'); ?>
+                    <input type="text" class="form-control" value="{{$loc}}" id="autorun"  name="autorun" placeholder="">
+                       <div class="help-line" id="autorun-help"></div>
+                   </div>
+                </div>
+                <div class="form-group">
                     <label for="release" class="control-label col-xs-4">Release</label>  
                     <div class="col-xs-6">    
                     <input type="text" class="form-control" value="" id="release"  name="release" placeholder="Release Version">
@@ -54,7 +62,7 @@
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn-sm">
-                    Yes
+                    Yes <span data-dismiss="modal"></span>
                 </button>         
                 <button type="button" class="btn-sm" data-dismiss="modal">No</button>
             </div>

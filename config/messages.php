@@ -19,6 +19,9 @@ return [
 	'lab_not_found'				=> "No NON Executed lab found. Please click on download to add new lab first.",
 	'reorder_duplication'		=> "Steps Order cannot have duplicate values.",
 	'upload_failed'				=> "Upload failed. Something went wrong. Please try again.",
+	'autorun_location_required'	=> "Autorun location is required. Please fill in correct location.",
+	'autorun_location_incorrect'=> "Autorun could not be found on specified location. Please fill in correct location.",
+
 
 	/* 
 	  	Success Messages
@@ -33,7 +36,7 @@ return [
 	/*
 		Info Messages
 	*/
-	'execution_start'			=> "Autorun launched for execution. Copy this path to Autorun input file and select your screenshot location.",
+	'execution_start'			=> "Autorun launched for execution. Use this file as input to Autorun and select your screenshot location.",
 	'upload_completed' 			=> "File upload complete.",
 
 
