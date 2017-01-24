@@ -8,7 +8,7 @@
   <div class="panel panel-default" style=" padding:10px">
     <a href="#top" class="float_button"><span class="glyphicon glyphicon-upload"></span></a>
 
-        <div class="panel-title" style="font-weight:bold;" > TestLab Reports for Project {{$project->tp_name}}   {{$project->release}}
+        <div class="panel-title" style="font-weight:bold;" > Teststeps detail report for {{$execution_results->case->tc_name}} for release {{$execution_results->lab->release_version}}
          </div>
              <p>
                 Created at - {{date($dt_format, strtotime($project->created_at))}} by {{$project->created_by}} 
@@ -25,30 +25,79 @@
         <div class="panel-body" >
             <div class="panel-title" > Summary 
             <div class="row" >                 
-                <div  class="col-lg-4 col-sm-12" style=" padding-top: 30px;">                
-                    <div class="panel-title" style="padding-bottom: 20px; font-size: 14px" >  
-                <div class="row">
-                    <div  class="col-lg-8" >
-                        <ul class="list-unstyled">
-                            <li>Testcase : <strong> {{$execution_results->case->tc_name}}</strong></li>
-                            <li>Scenario : <strong>{{$execution_results->tsc_name}}</strong></li>
-                            <li>Functionality :<strong> {{$execution_results->tf_name}}</strong></li>
-                            <li>Release : <strong>{{$execution_results->lab->release_version}}</strong></li>
-                        </ul>                       
-                    </div>
-                    <div  class="col-lg-6" >
-                        <ul class="list-unstyled">
-                            
-                            <li>Network :<strong> {{$execution_results->lab->network_type}}</strong></li>
-                            <li>OS : <strong>{{$execution_results->lab->os_version}}</strong></li>
-                            <li>Device :<strong> {{$execution_results->lab->device_name}}</strong></li>
-                            <li>Execution type :<strong> {{$execution_results->lab->execution_type}}</strong></li>
+                <div  class="col-lg-4 col-sm-12" style=" padding-top: 30px;"><div class="panel-title" style="padding-bottom: 10px; font-size: 12px" >  
+                <div class="row" >
 
-                        </ul>                       
-                    </div>                             
+                    <div  class="col-lg-12">
+                      
+                      
+                        <div class="row">                    
+                            <div  class="col-lg-6" >Release
+                            </div>
+                            <div  class="col-lg-6" ><strong> {{$execution_results->lab->tp_name}} {{$execution_results->lab->release_version}} /</strong>
+                            </div>
+                        </div>
+                        <div class="row">                    
+                            <div  class="col-lg-6" >Functionality
+                            </div>
+                            <div  class="col-lg-6" ><strong> {{$execution_results->tf_name}} / </strong>
+                            </div>
+                        </div>
+
+                          <div class="row">                    
+                            <div  class="col-lg-6" >Scenario
+                            </div>
+                            <div  class="col-lg-6" ><strong> {{$execution_results->tsc_name}} / </strong>
+                            </div>
+                        </div>
+
+                          <div class="row">                    
+                            <div  class="col-lg-6" >Testcase
+                            </div>
+                            <div  class="col-lg-6" ><strong> {{$execution_results->case->tc_name}} </strong>
+                            </div>
+                        </div>
+
+
+
+                      
+                    </div>
+
+
+                    <div  class="col-lg-12"  style="padding-top: 10px;">
+                        <div class="row">                    
+                            <div  class="col-lg-6" >Network
+                            </div>
+                            <div  class="col-lg-6" >{{$execution_results->lab->network_type}}
+                            </div>
+                        </div>
+                        <div class="row">                    
+                            <div  class="col-lg-6" >OS
+                            </div>
+                            <div  class="col-lg-6" >{{$execution_results->lab->os_version}}
+                            </div>
+                        </div>
+
+                         <div class="row">                    
+                            <div  class="col-lg-6" >Device
+                            </div>
+                            <div  class="col-lg-6" >{{$execution_results->lab->device_name}}
+                            </div>
+                        </div>
+
+                        <div class="row">                    
+                            <div  class="col-lg-6" >Execution
+                            </div>
+                            <div  class="col-lg-6" >{{$execution_results->lab->execution_type}}
+                            </div>
+                        </div>
+                        </div>                            
                 </div>
                 </div>
+                
                 </div>
+
+
                 <div  class="col-lg-4 col-sm-12" >
                     <div id="execution_result_chart"></div>
                     @piechart('exe_result', 'execution_result_chart')
@@ -93,8 +142,8 @@
                         {{$detail->seq_no}}
                     </td>
                     <td> 
-                    <a href="{{URL::route('report.case', ['id' => $detail->tl_id])}}">
-                        {{$detail->step->description}}</a>                     
+                   <!--  <a href="{{URL::route('report.case', ['id' => $detail->tl_id])}}"> -->
+                        {{$detail->step->description}}<!-- </a>  -->                    
                     </td>
                     <td> 
                         {{$detail->ts_status}}                          

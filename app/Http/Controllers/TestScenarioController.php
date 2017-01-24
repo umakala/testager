@@ -3,6 +3,8 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Handlers\DeleteQueryHandler;
+use App\Http\Controllers\Handlers\CloneHandler;
+
 use Toast;
 
 use Illuminate\Http\Request;
@@ -17,6 +19,32 @@ class TestScenarioController extends Controller {
 	public function index()
 	{
 		//
+	}
+
+	public function cloneScenario(Request $request)
+	{
+		//echo 'cloning for '.$request->tsc_id;
+		if($request->tsc_id == "none")
+		{
+			$message = $this->getMessage('messages.tsc_required');
+			Toast::message($message, 'danger');
+		}
+		else{
+			$item = \App\TestScenario::find($request->tsc_id);
+			$item->tsc_id 	= $this->genrateRandomInt();
+			$item->tf_id 	= $request->tf_id;				
+			$item->tp_id 	= session()->get('open_project');
+			$item->status 	= 'not_executed';
+			\App\TestScenario::create($item->toArray());
+			
+			if($request->all_testcases == true){
+				$clone_obj = new CloneHandler();
+				$clone_obj->cloneAllCases($request->tsc_id , $item->tsc_id, true);
+			}
+			$message = $this->getMessage('messages.clone_success');
+			Toast::message($message, 'success');
+		}
+		return back();
 	}
 
 	/**
@@ -84,11 +112,12 @@ class TestScenarioController extends Controller {
 	{
 		$scenario = \App\TestScenario::find($id);
 
-		$cases = \App\TestCase::where('tsc_id' , $id)->get()->toArray();
-		$scenario->cases = count($cases);
+		$case_details = \App\TestCase::where('tsc_id' , $id)->orderBy('created_at', 'asc')->get();
+		//$cases = \App\TestCase::where('tsc_id' , $id)->get()->toArray();
+		$scenario->cases = count($case_details);
 
 		$f_cases = array();
-		foreach ($cases as $key => $value) {
+		foreach ($case_details as $key => $value) {
 			$f_cases[] = $value['tc_id'];
 		}
 
@@ -96,9 +125,9 @@ class TestScenarioController extends Controller {
 								'testcases.tc_id', '=', 'teststeps.tc_id')
 								->whereIn('testcases.tc_id', $f_cases)
 								->count();
-		$case_details = \App\TestCase::where('tsc_id' , $id)->orderBy('created_at', 'asc')->get();
 
-		return view('show.scenario', ['scenario' => $scenario, 'case_details'=> $case_details]);
+		$clone = \App\TestCase::all();
+		return view('show.scenario', ['scenario' => $scenario, 'case_details'=> $case_details, 'clone_case' => $clone]);
 	}
 
 	/**

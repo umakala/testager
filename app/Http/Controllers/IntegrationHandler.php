@@ -97,12 +97,17 @@ class IntegrationHandler extends Controller{
 			//If nothing to process then do nothing
 			//return $fn_id;
            }else{
-              $tc['tc_name'] 			= $row['test_case_name'];
-              $tc['description'] 		= $row['test_case'];
-              $tc['expected_result'] 	= $row['test_case_expected_result'];
-              $tc['tp_id'] 			= session()->get('open_project');
-              $tc['tsc_id'] 			= $sc_id;
-              $tc_check 				=  \App\TestCase::where($tc)->first();
+              $tc['tc_name'] 			      = $row['test_case_name'];
+              $tc['description'] 		    = $row['test_case'];
+              $tc['expected_result'] 	  = $row['test_case_expected_result'];
+              if(isset($row['priority']))
+                $tc['tc_priority']      = $row['priority'];
+              else
+                $tc['tc_priority']      = "";
+
+              $tc['tp_id'] 			        = session()->get('open_project');
+              $tc['tsc_id'] 			      = $sc_id;
+              $tc_check 				        =  \App\TestCase::where($tc)->first();
         	//print_r($tc_check);
               if($tc_check!= null && $tc_check->exists == 1)	{
                   $tc_id  = $tc_check->tc_id;

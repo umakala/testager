@@ -42,7 +42,6 @@
                         <span class="alert alert-info" style="padding: 5px">Total</span>
                     </div>      
 
-
                     <div class="col-lg-2">
                         <span class="alert alert-warning" style="padding: 5px">Executed</span>
                     </div>  

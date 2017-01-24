@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 use Toast;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Handlers\DeleteQueryHandler;
+use App\Http\Controllers\Handlers\CloneHandler;
+
 
 class TestcaseController extends Controller {
 
@@ -17,6 +19,35 @@ class TestcaseController extends Controller {
 	{
 		//
 	}
+
+
+	public function cloneCase(Request $request)
+	{
+		//echo 'cloning for '.$request->tsc_id;
+		if($request->tc_id == "none")
+		{
+			$message = $this->getMessage('messages.tc_required');
+			Toast::message($message, 'danger');
+		}
+		else{
+			$case = \App\TestCase::find($request->tc_id);
+			$case->tc_id 	= $this->genrateRandomInt();
+			$case->tsc_id 	= $request->tsc_id;	
+			$case->tp_id 	= session()->get('open_project');
+			$case->status 	= 'not_executed';
+			\App\TestCase::create($case->toArray());
+			if($request->all_teststeps == true){
+        		$clone_obj = new CloneHandler();
+				$clone_obj->cloneAllSteps($request->tc_id ,$case->tc_id);
+			}
+			$message = $this->getMessage('messages.clone_success');
+			Toast::message($message, 'success');
+		}
+		return back();
+	}
+
+
+	
 
 	/**
 	 * Show the form for creating a new resource.
@@ -72,6 +103,8 @@ class TestcaseController extends Controller {
 		       	$content['execution_type']			= "NA" ;
 		       	$content['execution_by']			= "" ;
 		       	$content_lab['execution_by_name']	= "" ;
+		       	$content['tc_priority']				= "" ;
+
 		       	$count 								= \App\TestCase::where('tsc_id',  $content['tsc_id'])->count();
 		       	$content['seq_no'] 	        		= $count+1;	
 		        //$create_lab 						= \App\Lab::create($content_lab);

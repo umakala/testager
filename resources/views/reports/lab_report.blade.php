@@ -8,7 +8,7 @@
   <div class="panel panel-default" style=" padding:10px">
     <a href="#top" class="float_button"><span class="glyphicon glyphicon-upload"></span></a>
 
-        <div class="panel-title" style="font-weight:bold;" > TestLab Reports for Project {{$project->tp_name}}   {{$project->release}}
+        <div class="panel-title" style="font-weight:bold;" > Lab Execution History report for Case - {{$lab_results[0]->case[0]->tc_name}}
          </div>
              <p>
                 Created at - {{date($dt_format, strtotime($project->created_at))}} by {{$project->created_by}} 

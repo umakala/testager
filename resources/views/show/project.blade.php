@@ -78,14 +78,23 @@
 				</div>				
 			</div>
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-2">
 					Total Steps
 				</div>
-				<div class="col-lg-6">
+				<div class="col-lg-2">
         			{{$project->steps}}
-				</div>				
+				</div>		
+				<div class="col-md-8" style="text-align: right">			
+
+				<a type="button" data-toggle="modal" data-target="#cloneModal" title="Copy existing Scenario"> <i class="glyphicon glyphicon-copy"></i> Clone Functionality                                          
+				</a>
+				</div>			
 			</div>
         </div>
+
+        <?php $clone_type = 'functionality'?>  
+    	@include('modals.clone_modal')
+
    		@include('lists.functionalities')
        
     </div> 

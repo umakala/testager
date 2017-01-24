@@ -60,4 +60,11 @@ Route::post('step/reorder/{tc_id}', array("as"=>"step.reorder" , 'uses' =>'TestS
 Route::get('teststep/create/{tc_id}', array("as"=>"teststep.create" , 'uses' =>'TestStepController@create'));
 Route::get('testcase/create/{tsc_id?}', array("as"=>"testcase.create" , 'uses' =>'TestcaseController@create'));
 
+Route::post('testcase/clone', array("as"=>"testcase.clone" , 'uses' =>'TestcaseController@cloneCase'));
+
+Route::post('scenario/clone', array("as"=>"scenario.clone" , 'uses' =>'TestScenarioController@cloneScenario'));
+
+Route::post('functionality/clone', array("as"=>"functionality.clone" , 'uses' =>'FunctionalityController@cloneFunctionality'));
+
+
 });

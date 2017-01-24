@@ -3,7 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Handlers\DeleteQueryHandler;
-
+use App\Http\Controllers\Handlers\CloneHandler;
 use DB;
 use Toast;
 
@@ -20,6 +20,34 @@ class FunctionalityController extends Controller {
 	{
 		//
 	}
+
+	public function cloneFunctionality(Request $request)
+	{
+		//echo 'cloning for '.$request->tsc_id;
+		if($request->tf_id == "none")
+		{
+			$message = $this->getMessage('messages.tf_required');
+			Toast::message($message, 'danger');
+		}
+		else{
+			$item = \App\TestFunctionality::find($request->tf_id);
+			$item->tf_id 	= $this->genrateRandomInt();
+			$item->tp_id 	= session()->get('open_project');
+			$item->status 	= 'not_executed';
+			$item->created_by 	= session()->get('email');
+
+			\App\TestFunctionality::create($item->toArray());
+			
+			if($request->all_scenarios == true){
+				$clone_obj = new CloneHandler();
+				$clone_obj->cloneAllScenarios($request->tf_id , $item->tf_id, true);
+			}
+			$message = $this->getMessage('messages.clone_success');
+			Toast::message($message, 'success');
+		}
+		return back();
+	}
+
 
 	/**
 	 * Show the form for creating a new resource.
@@ -79,6 +107,8 @@ class FunctionalityController extends Controller {
 		$project =  \App\TestProject::find($functionality->tp_id);
 		$functionality->tp_name  = $project->tp_name;
 
+		$clone_sc = \App\TestScenario::all();
+
 		$scenarios = \App\TestScenario::where('tf_id' , $id)->get();
 		$functionality->scenarios = count($scenarios);
 
@@ -102,7 +132,7 @@ class FunctionalityController extends Controller {
 								->whereIn('testcases.tc_id', $f_cases)
 								->count();
 
-		return view('show.functionality', ['functionality' => $functionality, 'scenarios' => $scenarios]);
+		return view('show.functionality', ['functionality' => $functionality, 'scenarios' => $scenarios , 'clone_sc' => $clone_sc]);
 	}
 
 	/**

@@ -23,10 +23,10 @@ class ReportController extends Controller {
 
 		foreach ($project->functionalities as $fn) {
 			/*$scenarios_counts =  \App\TestScenario::groupBy('status')->select('status', DB::raw('count(*) as count'))->where("tp_id" , $id)->get();*/
-			$cases_counts 	=  \App\Lab::groupBy('execution_result')
+			/*$cases_counts 	=  \App\Lab::groupBy('execution_result')
 									->select('execution_result', DB::raw('count(*) as count'))
 									->where("tf_id" , $fn->tf_id)
-									->get();
+									->get();*/
 
 
 			$cases_counts 	=  \App\Lab::groupBy('execution_result')
@@ -46,35 +46,34 @@ class ReportController extends Controller {
 			$fn->teststeps = $this->getCountFormatLabs($steps_counts, 'execution_result');
 		}
 
-
-
+		//Initiate chart objects
 		$charts_obj = new ChartsHandler();
+		$chart_details = $charts_obj->initChartDetails();
+
 		
 		//Get details about test cases
-		$lab_details = \App\TestCase::where('tp_id' , $id)->orderBy('seq_no', 'asc')->get();
-		$chart_details = $charts_obj->initChartDetails();	
+		$lab_details = \App\TestCase::where('tp_id' , $id)->orderBy('seq_no', 'asc')->get();	
 
-
-			
 		foreach ($lab_details as $key => $value) {
 			$lab = \App\Lab::where('tc_id' , $value->tc_id)->orderBy('created_at', 'desc')->first();
 			$value->lab = $lab;
+
 			$tsc = \App\TestScenario::select('tsc_name')->where('tsc_id' , $value->tsc_id)->get();
 			$value->tsc_name = $tsc[0]->tsc_name;
+
 			if(isset($lab->tf_id))
-			{$fn  = \App\TestFunctionality::select('tf_name')->where('tf_id' , $lab->tf_id)->get();
-
-			$value->tf_name = $fn[0]->tf_name;
-						$chart_value['tc_status'] = $value->status;
-			$chart_value['execution_result'] = $value->lab->execution_result;
-			$chart_value['checkpoint_result'] = $value->lab->checkpoint_result;
-
-		}else{
-			$value->tf_name = "";
-			$chart_value['tc_status'] = $value->status;
-			$chart_value['execution_result'] = 0;
-			$chart_value['checkpoint_result'] = 0;
-		}
+			{
+				$fn  = \App\TestFunctionality::select('tf_name')->where('tf_id' , $lab->tf_id)->get();
+				$value->tf_name = $fn[0]->tf_name;
+				$chart_value['tc_status'] 			= $value->status;
+				$chart_value['execution_result'] 	= $value->lab->execution_result;
+				$chart_value['checkpoint_result'] 	= $value->lab->checkpoint_result;
+			}else{
+				$value->tf_name = "";
+				$chart_value['tc_status'] = $value->status;
+				$chart_value['execution_result'] = 0;
+				$chart_value['checkpoint_result'] = 0;
+			}
 			$chart_details = $charts_obj->getChartSummary($chart_value, $chart_details);
 		}
 
@@ -229,8 +228,10 @@ class ReportController extends Controller {
 			$step = \App\TestStep::find($value->ts_id);
 			$value->step = $step;			
 
-			if($value->executed_by == '' || $value->executed_by == null)
+			if($value->execution_result == '' || $value->execution_result == null){
 				$value->ts_status = 'not_executed';
+				//echo "case not_executed , ";
+			}
 			else
 				$value->ts_status = 'executed';
 			
@@ -244,7 +245,6 @@ class ReportController extends Controller {
 		/* 
 			Pie Charts showing summary of results 
 		*/
-
 		$charts_obj->createExecutionPieChart($chart_details);
 		$charts_obj->createCheckpointPieChart($chart_details);
 

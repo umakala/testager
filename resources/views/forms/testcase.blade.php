@@ -21,7 +21,7 @@
                        <select class="form-control" name="tsc_id">
                           <option value="none">Select Scenario</option>
                           @foreach ($scenarios as $scenario)    
-                              <option value="{{$scenario->tsc_id}}" {{ ($scenario->tsc_id == old('tsc_id')) ? 'selected' : '' }}   >{{$scenario->tsc_name}} for {{$scenario->tf_name}}</span> </option>
+                              <option value="{{$scenario->tsc_id}}" {{ ($scenario->tsc_id == old('tsc_id')) ? 'selected' : '' }}   >{{$scenario->tsc_name}} <!-- for {{$scenario->tf_name}} --></span> </option>
                           @endforeach     
                       </select>   
                        <div class="help-line" id="tsc-help"></div>

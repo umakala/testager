@@ -46,7 +46,7 @@
 		<div class="panel-body">
 			 <div class="panel-title" style="font-style: italic; padding-bottom: 10px;" > Summary 	</div>	
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-2">
 					Total Scenarios
 				</div>
 				<div class="col-lg-6">
@@ -54,7 +54,7 @@
 				</div>				
 			</div>
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-2">
 					Total Testcases
 				</div>
 				<div class="col-lg-6">
@@ -62,16 +62,27 @@
 				</div>				
 			</div>
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-2">
 					Total Steps
 				</div>
-				<div class="col-lg-6">
+				<div class="col-lg-2">
         			{{$functionality->steps}}
+				</div>
+				<div class="col-md-8" style="text-align: right">			
+
+				<a type="button" data-toggle="modal" data-target="#cloneModal" title="Copy existing Scenario"> <i class="glyphicon glyphicon-copy"></i> Clone Scenario                                          
+				</a>
 				</div>				
 			</div>
         </div>
+
+        <?php $clone_type = 'scenario'?>  
+    	@include('modals.clone_modal')
+    	
+
         @include('lists.scenarios')
        
-    </div>    
+    </div> 
+
 </div>
 @endsection

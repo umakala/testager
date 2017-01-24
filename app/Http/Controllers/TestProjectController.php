@@ -92,9 +92,9 @@ class TestProjectController extends Controller {
 			$value->scenarios = \App\TestScenario::where('tf_id' , $value->tf_id)->count();
 		}
 
-
-
-		return view('show.project', ['project' => $project, 'functionalities' => $functionalities]);	  	
+		$fn = \App\TestFunctionality::all();
+		
+		return view('show.project', ['project' => $project, 'functionalities' => $functionalities, 'clone_fn' => $fn]);	  	
 	}
 
 	/**
