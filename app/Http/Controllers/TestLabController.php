@@ -83,7 +83,7 @@ public function store(Request $request)
 		return redirect()->back();	
 	}
 	else{
-		foreach ($request->except('tsc_id', 'checkbox_all') as $check_key => $check_value) {
+		foreach ($request->except('tsc_id', 'select_all') as $check_key => $check_value) {
 
 			$testcase 	= explode('_', $check_key);
 			$id 		= $testcase[1];

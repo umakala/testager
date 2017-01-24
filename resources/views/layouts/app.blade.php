@@ -53,17 +53,15 @@
               }
           });
       }
+      
+      function checkAll(select_all) {
+        var status = select_all.checked;
+        //alert('checkAll called - '+status);
+        $(':checkbox').each(function() {
+                this.checked = status;                        
+        });
+      }
 
-     /* $('#select_all').click(function(event) {  
-      //alert('called'); 
-        if(this.checked) {
-            // Iterate each checkbox
-            $(':checkbox').each(function() {
-                this.checked = true;                        
-            });
-        }
-    });
-*/
      $(function() {
       // We can attach the `fileselect` event to all file inputs on the page
       $(document).on('change', ':file', function() {

@@ -138,7 +138,7 @@
 						}
 					}*/
 					</script>
-					 <input type="checkbox" id="select_all" name="select_all" title="Select all" />   
+					 <input type="checkbox" id="select_all" name="select_all" title="Select all" onclick="checkAll(this)" />   
 
 					<button type="submit"  title="Select cases and Go to Testlab" > <span id="" class="glyphicon glyphicon-play-circle" ></span> Lab</button>
 					</th>
