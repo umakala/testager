@@ -52,12 +52,13 @@ class ReportController extends Controller {
 		
 		//Get details about test cases
 		$lab_details = \App\TestCase::where('tp_id' , $id)->orderBy('seq_no', 'asc')->get();
-		$chart_details = $charts_obj->initChartDetails();		
-	
+		$chart_details = $charts_obj->initChartDetails();	
+
+
+			
 		foreach ($lab_details as $key => $value) {
 			$lab = \App\Lab::where('tc_id' , $value->tc_id)->orderBy('created_at', 'desc')->first();
 			$value->lab = $lab;
-			
 			$tsc = \App\TestScenario::select('tsc_name')->where('tsc_id' , $value->tsc_id)->get();
 			$value->tsc_name = $tsc[0]->tsc_name;
 			if(isset($lab->tf_id))
@@ -76,7 +77,6 @@ class ReportController extends Controller {
 		}
 			$chart_details = $charts_obj->getChartSummary($chart_value, $chart_details);
 		}
-
 
 		$column_details =[];
 		/* 

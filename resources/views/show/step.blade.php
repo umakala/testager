@@ -9,6 +9,10 @@
 		 </div>
 			<p style="float:right">
 	        	<a href="{{URL::route('teststep.edit', ['id' => $step->ts_id])}}"> <span id="" class="glyphicon glyphicon-edit"></span></a>
+
+	        	<a data-toggle="modal" data-target="#deleteModal" title="Delete Testcase"> <i class="glyphicon glyphicon-trash"  ></i>
+        		</a>
+
 	 		</p>
 			 
 			 <p>
@@ -70,7 +74,12 @@
          	</table>
         </div>      
 		     
-        </div>       
+        </div>  
+        @section('delete_modal')
+		  <?php $delete_type = 'teststep'; $id = $step->ts_id ;?>
+		    @include('modals.delete_modal')
+		@endsection
+     
     </div>    
 </div>
 @endsection

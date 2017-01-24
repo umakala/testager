@@ -28,7 +28,6 @@ class TestScenarioController extends Controller {
 	{
 
 		$functionalities = \App\TestFunctionality::where('tp_id' , session()->get('open_project'))->get();
-
 		return view('forms.testscenario', ['functionalities' =>$functionalities]);
 	}
 
@@ -60,11 +59,11 @@ class TestScenarioController extends Controller {
 				//Process when validations pass
 				$content['tp_id']               	= session()->get('open_project');
 				$content['tf_id']               	= $request->tf_id;				
-				$content['tsc_id']                 	= $this->genrateRandomInt(3);		
+				$content['tsc_id']                 	= $this->genrateRandomInt(4);		
 				$content['tsc_name']                = $request->name;
 				$content['description']             = $request->description;
-		        $content['expected_result']         = $request->expected_result;				
-		        $content['status'] 					= $request->status;
+		        $content['expected_result']         = $request->expected_result;		
+		        $content['status'] 					= "not_executed";
 			 	$create 							= \App\TestScenario::create($content);
 		        return redirect()->route('profile');
 		 	}else

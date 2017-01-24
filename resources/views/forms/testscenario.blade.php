@@ -6,7 +6,7 @@
 
 <div class="wrapper" style="">
        <div class="panel panel-default" style=" padding-top:20px">
-        <div class="panel-title" style="text-align: center;">Test Scenario</div>
+        <div class="panel-title" style="text-align: center;">Add New Scenario</div>
         <hr/>
 
         <div class="panel-body">
@@ -33,7 +33,7 @@
                        <div class="help-line" id="name-help"></div>
                    </div>
                </div>
-               <div class="form-group"> 
+               <!-- <div class="form-group"> 
                     <label for="status" class="control-label col-xs-4">Status</label>
                     <div class="col-xs-8">         
                           <select class="form-control" name="status">
@@ -41,15 +41,13 @@
                               <option value="open">Open</option>
                               <option value="close">Close</option>
                           </select> 
-
-                      <!--  <input type="text" class="form-control" value="{{old('status')}}" id="status"  name="status" placeholder=""> -->
                        <div class="help-line" id="status-help"></div>
                    </div>
-               </div>  
+               </div>   -->
                <div class="form-group">                
                  <label for="title" class="control-label col-xs-4">Description</label>
                  <div class="col-xs-8">            
-                   <textarea class="form-control"  name="description"  rows="2"  value="{{old('description')}}"></textarea>
+                   <textarea class="form-control"  name="description"  rows="4"  value="{{old('description')}}"></textarea>
                    <div class="help-line" id="text-help"></div>
                </div>
                </div>
@@ -59,7 +57,7 @@
                <div class="form-group">                
                  <label for="expected_result" class="control-label col-xs-4">Expected Result</label>
                  <div class="col-xs-8">            
-                   <textarea class="form-control"  name="expected_result"  rows="6" ></textarea>
+                   <textarea class="form-control"  name="expected_result"  rows="4" ></textarea>
                    <div class="help-line" id="text-help"></div>
                </div>         
               </div>

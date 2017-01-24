@@ -10,7 +10,12 @@ class UserController extends Controller {
 
 	public function index()
 	{
-		return view('welcome');	
+		if(isset($_GET['info']))
+			return view('welcome', ['list' => $news, 'info' => $_GET['info'] ]);
+		if(isset($_GET['message']))
+			return view('welcome', ['message' => $_GET['message'] ]);
+		else
+			return view('welcome');
 	}
 
 
@@ -43,9 +48,11 @@ class UserController extends Controller {
 				/*if($result[0]['verification'] != NULL)
 					$error[] = "Email is not verified. Please verify email.";
 				else*/
-				session(['id' => $result[0]['id'], 'name'=>$result[0]['name'], 'email' => $request->email , 'open_project' => $result[0]['open_project'] , 'autorun' =>  $result[0]['autorun_location'] ]);
-				return redirect()->route('profile'); 
-			
+
+				$project_name = \App\TestProject::select('tp_name')->find($result[0]['open_project']);
+				
+				session(['id' => $result[0]['id'], 'name'=>$result[0]['name'], 'email' => $request->email , 'open_project' => $result[0]['open_project'] , 'autorun_location' =>  $result[0]['autorun_location'] , 'project_name' => $project_name->tp_name]);
+				return redirect()->route('profile');			
 			}
 			else
 				$error[] = "Incorrect email or password!";

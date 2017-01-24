@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use File;
 use Illuminate\Http\Request;
 use Excel;
+use Toast;
 use Input;
 
 class IntegrationHandler extends Controller{
@@ -19,21 +20,26 @@ class IntegrationHandler extends Controller{
        $fn = [];
        /*if(isset($row['functionality_name']))
        {*/
-           if(!isset($row['functionality_name']) || $row['functionality_name']  == null ||  $row['functionality_name'] == ""){
+        if(!isset($row['functionality_name']) || $row['functionality_name']  == null ||  $row['functionality_name'] == ""){
 			//If nothing to process then do nothing
 			//return $fn_id;
            }else{
-              $fn['tf_name'] = $row['functionality_name'];
-              $fn['description'] = $row['functionality_description'];
-              $fn['tp_id'] = session()->get('open_project');
-              $fn_check =  \App\TestFunctionality::where($fn)->first();
+              $fn['tf_name']      = $row['functionality_name'];
+              $fn['description']  = $row['functionality_description'];
+              $fn['created_by']   = session()->get('email');
+              $fn['tp_id']        = session()->get('open_project');
+              $fn_check           =  \App\TestFunctionality::where($fn)->first();
               if($fn_check!= null && $fn_check->exists == 1)	{
-                  $fn_id  = $fn_check->tf_id;
+                  $fn_id          = $fn_check->tf_id;
               }
               else
               {
                   $fn_id = $fn['tf_id'] = $this->genrateRandomInt();
-                  \App\TestFunctionality::create($fn);       		
+                  try{
+                    \App\TestFunctionality::create($fn);       	
+                  }catch(Exception $e){
+
+                  }	
               }
           }
       /*}
@@ -116,23 +122,15 @@ class IntegrationHandler extends Controller{
 
   public function handleExecution($row, $tc_id, $ts_id, $seq)
   {
-  $ts = [];
-  $execution_content = [];
-  /* if( isset($row['test_step'])){
-    */   
+    $ts = [];
+    $execution_content = [];   
     if(!isset($row['description'])|| $row['description']  == null ||  $row['description'] == ""){
-      //If nothing to process then do nothing
-      //return $ts_id;
+          return 0;
        }else{
-
-
-    //print_r($row); 
-
-          $ts['description']    = $row['description'];
+          $ts['description']      = $row['description'];
           $ts['expected_result']  = $row['expected_value'];
           $ts['tp_id']      = session()->get('open_project');
           $ts['tc_id']      = $tc_id;
-
 
           //$check          =  \App\TestStep::where($ts)->first();        
           //echo "its null";
@@ -144,35 +142,53 @@ class IntegrationHandler extends Controller{
 
 
           $execution_content['scroll']        = $row['scroll'];
+          $execution_content['seq_no']        = $seq;
+
           if($row['resource_id'] == null)
           $execution_content['resource_id']   = '';
           else
           $execution_content['resource_id']   = $row['resource_id'];
+
           if($row['text'] == null)
-            $execution_content['text']          = '';
+            $execution_content['text']        = '';
           else
-            $execution_content['text']          = $row['text'];
+            $execution_content['text']        = $row['text'];
 
           if($row['content_desc'] == null)
           $execution_content['content_desc']  = '';
           else 
           $execution_content['content_desc']  = $row['content_desc'];
 
+          if($row['class'] == null)
+          $execution_content['class']         = '';
+          else
           $execution_content['class']         = $row['class'];
+
+          if($row['index'] == null)
+          $execution_content['index']         = '';
+          else
           $execution_content['index']         = $row['index'];
+
+          if($row['sendkey'] == null)
+          $execution_content['sendkey']       = '';
+          else
           $execution_content['sendkey']       = $row['sendkey'];
           //echo ($row['sendkey']);
     
-          $execution_content['screenshot']    = $row['screenshot'];
-          if($row['check_point'] == null)
-            $execution_content['checkpoint']    = '';
+          if($row['screenshot'] == null)
+          $execution_content['screenshot']          = '';
           else
-            $execution_content['checkpoint']    = $row['check_point'];
+          $execution_content['screenshot']          = $row['screenshot'];
+
+          if($row['check_point'] == null)
+            $execution_content['checkpoint']        = '';
+          else
+            $execution_content['checkpoint']        = $row['check_point'];
 
           if($row['wait'] == null)
-            $execution_content['wait']          = '';
+            $execution_content['wait']              = '';
           else
-            $execution_content['wait']          = $row['wait'];
+            $execution_content['wait']              = $row['wait'];
 
           $execution_content['tc_id']         = $tc_id;
           $execution_content['tp_id']         = session()->get('open_project');
@@ -181,11 +197,8 @@ class IntegrationHandler extends Controller{
 
           \App\Execution::create($execution_content); 
       }
- /* }else{
-    $ts_id =0;
-}*/
-return $ts_id;   
 
+    return $ts_id;   
   }
 
 /**
@@ -193,7 +206,7 @@ return $ts_id;
 	 *
 	 * @return ts_id
 	 */
-public function handleTeststep  ($row, $tc_id, $ts_id)
+public function handleTeststep  ($row, $tc_id, $ts_id, $seq)
 {
    $ts = [];
   /* if( isset($row['test_step'])){
@@ -212,6 +225,8 @@ public function handleTeststep  ($row, $tc_id, $ts_id)
               $ts_id = $ts['ts_id'] = $this->genrateRandomInt();
               $ts['status']         = 'not_executed';
               $ts['created_by']     = session()->get('email');
+              $ts['seq_no']         = $seq;
+
 
               \App\TestStep::create($ts);
               $execution_content['scroll']        = 'No';
@@ -228,6 +243,7 @@ public function handleTeststep  ($row, $tc_id, $ts_id)
               $execution_content['tp_id']         = session()->get('open_project');
               $execution_content['ts_id']         = $ts_id;
               $execution_content['tl_id']         = 0;
+              $execution_content['seq_no']        = $seq;
               $execution_content['e_id']          = $this->genrateRandomInt();
               \App\Execution::create($execution_content);
           }

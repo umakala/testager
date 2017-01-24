@@ -52,9 +52,9 @@ class DownloadController extends Controller {
 			$message = $this->getMessage('messages.autorun_location_incorrect');
   			Toast::message($message, 'danger');			
 		}else{
-			session()->set('autorun_location' , $page_loc);
 			if($page_loc != $loc)
 			{
+				session()->set('autorun_location' , $page_loc);
 				$user_id = session()->get('id');
 				$user = \App\User::find($user_id)->update(['autorun_location' => $page_loc]);
 			}

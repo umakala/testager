@@ -68,25 +68,4 @@
 </div>
 </div>
 
-<!-- <script type="text/javascript">
-  function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            $('#ajaxLoader').show();
-            $('#displayImg')
-                // .on('load',imgLoaded("{{ URL::asset('assets/images/ajax-loader.gif')}}"))
-                .attr('src', e.target.result)
-                .width(300)
-                .height(200);
-            $('#iconDisplay').hide();
-            $('#iconText').hide();
-        };
-
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-</script> -->
-
 @endsection

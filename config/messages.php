@@ -21,6 +21,9 @@ return [
 	'upload_failed'				=> "Upload failed. Something went wrong. Please try again.",
 	'autorun_location_required'	=> "Autorun location is required. Please fill in correct location.",
 	'autorun_location_incorrect'=> "Autorun could not be found on specified location. Please fill in correct location.",
+	'file_required'				=> "File is required for upload. Please select file by clicking on browse button.",
+	'description_required'		=> "Description is required. Cannot load file. (Note - Check spellings for header row.)",
+
 
 
 	/* 
@@ -37,7 +40,7 @@ return [
 		Info Messages
 	*/
 	'execution_start'			=> "Autorun launched for execution. Use this file as input to Autorun and select your screenshot location.",
-	'upload_completed' 			=> "File upload complete.",
+	'upload_completed' 			=> "File upload process complete.",
 
 
 

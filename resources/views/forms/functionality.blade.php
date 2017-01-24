@@ -6,7 +6,7 @@
 
 <div class="wrapper" style="">
        <div class="panel panel-default" style=" padding-top:20px">
-         <div class="panel-title" style="text-align: center;">Functionality</div>
+         <div class="panel-title" style="text-align: center;">Add New Functionality</div>
          <hr/>
 
          <div class="panel-body">

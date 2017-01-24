@@ -6,7 +6,7 @@
 
 <div class="wrapper" style="">
       <div class="panel panel-default" style=" padding-top:10px">
-         <div class="panel-title" style="text-align: center;">Test Step</div>
+         <div class="panel-title" style="text-align: center;">Add New Teststep</div>
          <hr/>
          <div class="panel-body">
       @if(count($cases) == 0)
@@ -131,8 +131,7 @@
                    </div>
           </div>
 
-          
-          </div>
+   
 
 
           <div class="form-group">

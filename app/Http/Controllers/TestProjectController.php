@@ -87,7 +87,13 @@ class TestProjectController extends Controller {
 		$project->functionalities = count($functionalities);
 		$project->scenarios = \App\TestScenario::where('tp_id' , $id)->count();
 		$project->cases = \App\TestCase::where('tp_id' , $id)->count();
-		$project->steps = \App\TestStep::where('tp_id' , $id)->count();		
+		$project->steps = \App\TestStep::where('tp_id' , $id)->count();	
+		foreach ($functionalities as $key => $value) {
+			$value->scenarios = \App\TestScenario::where('tf_id' , $value->tf_id)->count();
+		}
+
+
+
 		return view('show.project', ['project' => $project, 'functionalities' => $functionalities]);	  	
 	}
 

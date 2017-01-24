@@ -85,7 +85,6 @@
     <div class="col-lg-9 fixed" >
         @include('layouts.header')
 
-
        <div class="dynTemplate">
           @yield('upload_modal')
 

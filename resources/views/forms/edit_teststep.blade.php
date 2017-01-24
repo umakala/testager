@@ -136,10 +136,6 @@
                    </div>
           </div>
 
-          
-          </div>
-
-
             <div class="form-group">
             @if(isset($_GET['message']))                           
             <div class="alert alert-danger">
@@ -152,7 +148,7 @@
             @endif
           </div>
         <button type="submit" id="loginButton" class="btn btn-primary" style="float:right" >Update</button>
-
+  </div>
 </div>
 </div>
 </div>

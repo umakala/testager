@@ -28,7 +28,7 @@
                 <div  class="col-lg-4 col-sm-12" style=" padding-top: 30px;">                
                     <div class="panel-title" style="padding-bottom: 20px; font-size: 14px" >  
                 <div class="row">
-                    <div  class="col-lg-6" >
+                    <div  class="col-lg-8" >
                         <ul class="list-unstyled">
                             <li>Testcase : <strong> {{$execution_results->case->tc_name}}</strong></li>
                             <li>Scenario : <strong>{{$execution_results->tsc_name}}</strong></li>

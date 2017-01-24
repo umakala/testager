@@ -5,7 +5,7 @@
 <div class="wrapper" style="">
     <div class="col-sm-12 col-lg-12">
        <div class="panel panel-default" style=" padding-top:20px">
-        <div class="panel-title" style="text-align: center;">Project</div>
+        <div class="panel-title" style="text-align: center;">Add New Project</div>
          <hr/>
          <div class="panel-body">
             <form action="{{URL::route('project.store')}}" method ="POST" class="form-horizontal" enctype='multipart/form-data' >               

@@ -48,7 +48,7 @@ class TestStepController extends Controller {
 
 	 	$tc =  $request->tc_id;
 		$validator = \Validator::make($request->all(), array(
-			//'description' => 'required',
+			'description' => 'required',
 			'tc_id' => 'not_in:none'        
 			), $messages);
 		if ($validator->fails())
@@ -146,8 +146,7 @@ class TestStepController extends Controller {
 	public function update($id, Request $request)
 	{
 		$validator = \Validator::make($request->all(), array(
-			'description' => 'required',
-			'expected_result' => 'required'    
+			'description' => 'required'			
 			));
 		if ($validator->fails())
 		{
@@ -162,7 +161,6 @@ class TestStepController extends Controller {
 				$content['description']             = $request->description;
 		        $content['expected_result']         = $request->expected_result;
 		        \App\TestStep::find($id)->update($content);
-
 
 		        $execution_content['scroll']		= $request->scroll;
 		        $execution_content['resource_id']	= $request->resource_id;

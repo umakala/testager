@@ -6,7 +6,7 @@
 
 <div class="wrapper" style="">
       <div class="panel panel-default" style=" padding:20px">
-         <div class="panel-title" style="text-align: center;">Test Case</div>
+         <div class="panel-title" style="text-align: center;">Add New Testcase</div>
          <hr/>
 
          <div class="panel-body">
@@ -76,6 +76,15 @@
                 </ul>
             </div>
             @endif
+
+            
+            <!-- Toast -->
+            <p>@include('toast::messages')
+            @if(Session::has('toasts'))
+                    {{Session::forget('toasts')}}
+            @endif
+            </p>
+
           </div>
 
 

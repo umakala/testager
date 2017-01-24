@@ -29,7 +29,7 @@
 
 			<p>
 	        	Created at - {{date($dt_format, strtotime($functionality->created_at))}} 
-	        	<!-- by {{$functionality->created_by}} -->
+	        	by {{$functionality->created_by}}
 	 		</p> 
 	 		<p>
 	        	@include('toast::messages')

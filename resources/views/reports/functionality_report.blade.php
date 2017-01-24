@@ -163,7 +163,7 @@
                  $i =1; 
                 ?>
                 @foreach($lab_results as $detail)
-                @if(isset($lab_results->lab))
+                @if(isset($detail->lab))
                 <tr>
                     <td> 
                         {{$i++}}                        

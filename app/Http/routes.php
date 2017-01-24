@@ -10,16 +10,20 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+Route::get('error', function()
+{
+	return view('errors.default');
+});
 
 
 //Route::get('/', 'NewsController@index');
+Route::get('/', 'UserController@index');
 Route::get('/', array( "as"=>"/" , 'uses' =>'UserController@index'));
 Route::get('home', array("as"=>"home" , 'uses' =>'UserController@index'));
 Route::get('user/register', array("as"=>"user.register" , 'uses' =>'UserController@create'));
 Route::post('store', array("as"=>"store" , 'uses' =>'UserController@store'));
 Route::get('user/verify_email', 'UserController@verify_email');
 Route::post('reset_password', array("as"=>"reset",'uses' =>'UserController@reset_password'));
-
 Route::post('login', array("as"=>"login" , 'uses' =>'UserController@login'));
 
 
@@ -54,4 +58,6 @@ Route::resource('defect', 'DefectController');
 Route::post('sc_lab', array("as"=>"sc_lab" , 'uses' =>'TestLabController@store'));
 Route::post('step/reorder/{tc_id}', array("as"=>"step.reorder" , 'uses' =>'TestStepController@reorder'));
 Route::get('teststep/create/{tc_id}', array("as"=>"teststep.create" , 'uses' =>'TestStepController@create'));
+Route::get('testcase/create/{tsc_id?}', array("as"=>"testcase.create" , 'uses' =>'TestcaseController@create'));
+
 });

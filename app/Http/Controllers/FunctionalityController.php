@@ -51,10 +51,12 @@ class FunctionalityController extends Controller {
 		else{
 			if( session()->has('email')){
 				//Process when validations pass
-				$content['tp_id']               	= session()->get('open_project');				
-				$content['tf_id']                 	= $this->genrateRandomInt();		
+				$content['tp_id']               	= session()->get('open_project');
+				$content['tf_id']                 	= $this->genrateRandomInt();	
 				$content['tf_name']                 = $request->name;
 				$content['description']             = $request->description;
+				$content['created_by']            	= session()->get('email');
+				
 		       	$create 							= \App\TestFunctionality::create($content);
 		        return redirect()->route('profile');
 		 	}else
@@ -79,6 +81,11 @@ class FunctionalityController extends Controller {
 
 		$scenarios = \App\TestScenario::where('tf_id' , $id)->get();
 		$functionality->scenarios = count($scenarios);
+
+		foreach ($scenarios as $sc_value) {
+			$sc_value->testcases = \App\TestCase::where('tsc_id' , $sc_value->tsc_id)->count();
+		}
+
 
 		$cases_id = \App\TestScenario::join('testcases', 
 								'testscenarios.tsc_id', '=', 'testcases.tsc_id')

@@ -9,7 +9,7 @@
          <div class="panel-title" style="text-align: center;">Update Testcase</div>
          <hr/>
 
-         <div class="panel-body">
+        <div class="panel-body">
         <div class="col-sm-12 col-lg-6">                                      
                 <div class="form-group"> 
                     <label for="title" class="control-label col-xs-4">Testcase Name</label>
@@ -18,17 +18,7 @@
                        <div class="help-line" id="name-help"></div>
                    </div>
                </div>
-                <!-- <div class="form-group"> 
-                    <label for="status" class="control-label col-xs-4">Status</label>
-                    <div class="col-xs-8">            
-                       <select class="form-control" name="status">
-                              <option value="not_executed">Not Executed</option>
-                              <option value="pass">Pass</option>
-                              <option value="fail">Fail</option>
-                          </select>
-                       <div class="help-line" id="status-help"></div>
-                   </div>
-               </div>  -->
+               
                <div class="form-group">                
                  <label for="title" class="control-label col-xs-4">Description</label>
                  <div class="col-xs-8">            
@@ -37,9 +27,8 @@
                </div>
            </div>           
            
-          </div>
-              <div class="col-sm-12 col-lg-6">
-                
+        </div>
+        <div class="col-sm-12 col-lg-6">                
                <div class="form-group">                
                  <label for="expected_result" class="control-label col-xs-4">Expected Result</label>
                  <div class="col-xs-8">            

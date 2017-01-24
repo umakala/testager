@@ -47,8 +47,6 @@ class ExecutionController extends Controller{
 	 */
 	public function show($id)
 	{	
-
-
 		$tp_id =  session()->get('open_project');
 		$call_from = "";
 		if($id == $tp_id)
@@ -72,16 +70,17 @@ class ExecutionController extends Controller{
 			$lab_conditions['executed_by'] 	= session()->get('email');
 			$lab_conditions['tc_status'] 	= 'not_executed';
 
-			$lab_item = \App\Lab::where($lab_conditions)->orderBy('created_at', 'desc')->first();		
+			$lab_item = \App\Lab::where($lab_conditions)->orderBy('created_at', 'desc')->first();	
+			$result = $this->validatePreRequirements($filename);
+
 			if($lab_item == null)
 			{
-				$message = $this->getMessage('messages.lab_not_found');
+				/*$message = $this->getMessage('messages.lab_not_found');
 				Toast::message($message, 'danger');	
 				$error = true;
-				break;
+				break;*/
 			}else{
 				$filename  = $lab_item->executed_filename;
-				$result = $this->validatePreRequirements($filename);
 				if($result != "error"){				
 					$lab_item->tc_status = 'executed';
 					$lab_item->execution_type = 'autorun';

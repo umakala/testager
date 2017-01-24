@@ -26,7 +26,7 @@ class TestcaseController extends Controller {
 	public function create()
 	{
 		//$functionalities = \App\TestFunctionality::();
-		$scenarios = \App\TestScenario::where('tp_id' , session()->get('open_project'))->get();		
+		$scenarios = \App\TestScenario::where('tp_id' , session()->get('open_project'))->get();	
 		foreach ($scenarios as $key => $value) {
 			$functionality =  \App\TestFunctionality::find($value->tf_id);
 			$value->tf_name = $functionality->tf_name;
@@ -42,8 +42,9 @@ class TestcaseController extends Controller {
 	 */
 	public function store(Request $request)
 	{
+		$message = "";
 		$messages = [
-		    'tsc_id.not_in' => 'The Scenario field is required.'
+		    'tsc_id.not_in' => 'The test scenario selection is required.'
 		];
 		$validator = \Validator::make($request->all(), array(
 			'name' => 'required',
@@ -52,8 +53,9 @@ class TestcaseController extends Controller {
 		if ($validator->fails())
 		{
 			foreach ($validator->errors()->toArray() as $key => $value) {
-				$error[]=$value[0];
+				$message .= $value[0]."\n"; 
 			} 
+			Toast::message($message, 'danger'); 
 		}
 		else{
 			if( session()->has('email')){
@@ -82,7 +84,7 @@ class TestcaseController extends Controller {
 		 		$error[] = "Session expired. Please login to continue";
 		 	}
 	 	}
-	 	return redirect()->route('testcase.create', ['message' => $error])->withInput();
+		return redirect()->route('testcase.create')->withInput();
 	}
 
 	/**

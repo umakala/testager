@@ -11,7 +11,7 @@
 
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="release" class="control-label col-xs-4">Aurotun Location</label>  
+                    <label for="release" class="control-label col-xs-4">Autorun Location</label>  
                     <div class="col-xs-6">    
                     <?php $loc = session()->get('autorun_location'); ?>
                     <input type="text" class="form-control" value="{{$loc}}" id="autorun"  name="autorun" placeholder="">
@@ -63,7 +63,7 @@
             <div class="modal-footer">
                 <button type="submit" class="btn-sm">
                     Yes <span data-dismiss="modal"></span>
-                </button>         
+                </button>    
                 <button type="button" class="btn-sm" data-dismiss="modal">No</button>
             </div>
             </form>

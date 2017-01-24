@@ -40,82 +40,111 @@ class UploadController extends Controller {
 		$file 				= $request->file('file');
 		$call_page 			= $request->get('call_page');
 		$call_page_id 		= $request->get('id');
-		
-		$ext                = $file->getClientOriginalExtension();
-		if($ext == "xls" || $ext == "xlsx"){
-			Excel::load(Input::file('file'), function ($reader) use($call_page, $call_page_id) {
-				try{
-				$i=0; $error =false; $seq = 1;
-				$fn_id = ""; $sc_id ="";  $tc_id =""; $ts_id = "";
-				$int_obj = new IntegrationHandler ();
-				foreach ($reader->toArray() as $row) {
-					switch ($call_page) {
-						case 'project':
-						if(isset($row['functionality_name']))
-							$fn_id = $int_obj->handleFunctionality($row, $fn_id);
-						/*if($fn_id == 0){
-							$error = true; break;
-						}*/
-	                			//echo " - ";
-						case 'functionality':
-						if ($call_page == "functionality") {
-							$fn_id = $call_page_id;
-						}
-						if(isset($row['sceanrio_brief']))
-							$sc_id = $int_obj->handleScenario($row, $fn_id, $sc_id);
-						/*if($sc_id == 0){
-							$error = true; break;
-						}*/
-		                		//echo " - ";
-						case 'scenario':
-						if ($call_page == "scenario") {
-							$sc_id = $call_page_id;
-						}
-						if(isset($row['test_case_name']))
-							$tc_id = $int_obj->handleTestcase($row, $sc_id, $tc_id);
-						/*if($tc_id == 0){
-							$error = true; break;
-						}*/
-			                	//echo " - ";
-						case 'testcase':
-						if ($call_page == "testcase") {
-							$tc_id = $call_page_id;
-						}
-						if(isset($row['test_step']))
-							$ts_id = $int_obj->handleTeststep($row, $tc_id, $ts_id);
-						/*if($ts_id == 0){
-							$error = true; break;
-						}*/
-						//echo " <br/> ";
-						break;
 
-						case 'teststep':
-						if ($call_page == "teststep") {
-							$tc_id = $call_page_id;
-						}
-						//if(isset($row['test_step'])
-						//echo "Handling row<br/>";
-						$ts_id = $int_obj->handleExecution($row, $tc_id, $ts_id, $seq);
-						$seq++;
-
-						default:
-						break;
-					}
-					if($error == true)
-						break;
-				}
-				$i++;
-				}catch(Exception $e){
-					$message = $this->getMessage('messages.upload_failed');
-					Toast::message($message, 'danger');
-				}
-			});
-			$message = $this->getMessage('messages.upload_completed');
-			Toast::message($message, 'success');
-		}else{
-			//echo $error = "Invalid File";
-			$message = $this->getMessage('messages.invalid_format');
+		if($file == null)
+		{
+			$message = $this->getMessage('messages.file_required');
 			Toast::message($message, 'danger');
+		}
+		else{
+			$ext                = $file->getClientOriginalExtension();
+			if($ext == "xls" || $ext == "xlsx"){
+				Excel::load(Input::file('file'), function ($reader) use($call_page, $call_page_id) {
+					try{
+					$i=0; $error =false; $seq = 1;
+					$fn_id = ""; $sc_id ="";  $tc_id =""; $ts_id = "";
+
+					//Create object of IntegrationHandler class to access methods to process conversion of xls to db format
+					$int_obj = new IntegrationHandler();
+					foreach ($reader->toArray() as $row) {
+						switch ($call_page) {
+							//When upload method is called from project page to upload functionality and lower levels
+							case 'project':
+							if(isset($row['functionality_name']))
+								$fn_id = $int_obj->handleFunctionality($row, $fn_id);
+							/*if($fn_id == 0){
+								$error = true; break;
+							}*/
+		                	
+							//When upload method is called from functionality page to upload scenario to functionality with id as call_page_id and lower levels
+							case 'functionality':
+							if ($call_page == "functionality") {
+								$fn_id = $call_page_id;
+							}
+							if(isset($row['sceanrio_brief']))
+								$sc_id = $int_obj->handleScenario($row, $fn_id, $sc_id);
+							/*if($sc_id == 0){
+								$error = true; break;
+							}*/
+
+							//When upload method is called from scenario page to upload testcases and teststeps to scenario with id as call_page_id
+
+							case 'scenario':
+							if ($call_page == "scenario") {
+								$sc_id = $call_page_id;
+							}
+							if(isset($row['test_case_name']))
+								$tc_id = $int_obj->handleTestcase($row, $sc_id, $tc_id);
+							/*if($tc_id == 0){
+								$error = true; break;
+							}*/
+
+							//When upload method is called from testcase page to upload teststeps to call_page_id testase
+							case 'testcase':
+							if ($call_page == "testcase") {
+								$tc_id = $call_page_id;
+							}
+
+							if(isset($row['test_step']))
+								$ts_id = $int_obj->handleTeststep($row, $tc_id, $ts_id, $seq);
+							/*if($ts_id == 0){
+								$error = true; break;
+							}*/
+							
+							//echo " <br/> ";
+							$seq++;
+							break;
+
+							//When upload method is called from testcase page to upload teststeps with execution format xls to call_page_id testase. New teststesp are created, each corresponding to the row of execution xls file
+							case 'teststep':
+							if ($call_page == "teststep") {
+								$tc_id = $call_page_id;
+							}
+							//if(isset($row['test_step'])
+							//echo "Handling row<br/>";
+							$ts_id = $int_obj->handleExecution($row, $tc_id, $ts_id, $seq);
+							if($ts_id == 0)
+							{
+								$message = $this->getMessage('messages.description_required');
+        						Toast::message($message, 'danger');
+        						$error =true;
+        						break;
+							}
+							$seq++;
+							default:
+							break;
+						}
+						if($error == true)
+							break;
+					}
+					$i++;
+					}catch(Exception $e){
+						$message = $this->getMessage('messages.upload_failed');
+						Toast::message($message, 'danger');
+					}
+					if($error == false)
+					{
+						$message = $this->getMessage('messages.upload_success');
+						Toast::message($message, 'success');
+					}
+				});
+				$message = $this->getMessage('messages.upload_completed');
+				Toast::message($message, 'info');
+			}else{
+				//echo $error = "Invalid File";
+				$message = $this->getMessage('messages.invalid_format');
+				Toast::message($message, 'danger');
+			}
 		}
 		return redirect()->back();
 	}

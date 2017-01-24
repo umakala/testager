@@ -15,9 +15,10 @@ class TreeviewController extends Controller {
 	public function index($id)
 	{
 		$user = \App\User::where('email',session()->get('email'))->update(['open_project' => $id]);
-		session(['open_project' => $id]);
 
 		$p_value = \App\TestProject::find($id);
+		session(['open_project' => $id, 'project_name' => $p_value->tp_name ]);
+
 	  	$tree = array();
 	  	//foreach ($projects as $key => $p_value) {
 	  		//Take each project node and find associated functionalities 
