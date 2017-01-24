@@ -38,6 +38,7 @@ return [
 	'delete_success' 			=> "Deletion request processed Successfully.",
 	'reorder_success' 			=> "Re-ordered Successfully.",
 	'clone_success' 			=> "Cloned Successfully.",
+	'update_success' 			=> "Update request processed Successfully.",
 
 
 

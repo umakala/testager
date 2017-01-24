@@ -112,7 +112,7 @@ class TestScenarioController extends Controller {
 	{
 		$scenario = \App\TestScenario::find($id);
 
-		$case_details = \App\TestCase::where('tsc_id' , $id)->orderBy('created_at', 'asc')->get();
+		$case_details = \App\TestCase::where('tsc_id' , $id)->orderBy('seq_no', 'asc')->get();
 		//$cases = \App\TestCase::where('tsc_id' , $id)->get()->toArray();
 		$scenario->cases = count($case_details);
 

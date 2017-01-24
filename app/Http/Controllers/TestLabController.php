@@ -70,32 +70,38 @@ public function create()
  */
 public function store(Request $request)
 {
-	//echo "Welcome to lab store method";
-	$lab_cases = [];
-	$tc_ids = '';
-	$tsc_id = $request->tsc_id;
-	$scenario = \App\TestScenario::find($tsc_id);
-
-	if($scenario == null)
-	{
-		$message = $this->getMessage('messages.something_went_wrong');
-		Toast::message($message, 'danger');	
-		return redirect()->back();	
+	/*if($request->reorder == 're-arrange'){
+		echo $request->reorder;
 	}
-	else{
-		foreach ($request->except('tsc_id', 'select_all') as $check_key => $check_value) {
+	else*/
+	{
+		//echo "Welcome to lab store method";
+		$lab_cases = [];
+		$tc_ids = '';
+		$tsc_id = $request->tsc_id;
+		$scenario = \App\TestScenario::find($tsc_id);
 
-			$testcase 	= explode('_', $check_key);
-			$id 		= $testcase[1];
-			$tc_ids		= $tc_ids.$id."_";
-			$case = \App\TestCase::find($id);		
-			$steps_counts =  \App\TestStep::groupBy('status')->select('status', DB::raw('count(*) as count'))->where("tc_id" , $id)->get();
+		if($scenario == null)
+		{
+			$message = $this->getMessage('messages.something_went_wrong');
+			Toast::message($message, 'danger');	
+			return redirect()->back();	
+		}
+		else{
+			foreach ($request->except('tsc_id', 'select_all') as $check_key => $check_value) {
 
-			$case->steps = $this->getCountFormat($steps_counts);
-			$lab_cases [] = $case;
-		}		
-		return view('testlab.scenario_lab', ['cases' => $lab_cases, 'scenario' => $scenario , 'tc_ids' => $tc_ids]);
-	}	
+				$testcase 	= explode('_', $check_key);
+				$id 		= $testcase[1];
+				$tc_ids		= $tc_ids.$id."_";
+				$case = \App\TestCase::find($id);		
+				$steps_counts =  \App\TestStep::groupBy('status')->select('status', DB::raw('count(*) as count'))->where("tc_id" , $id)->get();
+
+				$case->steps = $this->getCountFormat($steps_counts);
+				$lab_cases [] = $case;
+			}		
+			return view('testlab.scenario_lab', ['cases' => $lab_cases, 'scenario' => $scenario , 'tc_ids' => $tc_ids]);
+		}	
+	}
 }
 
 

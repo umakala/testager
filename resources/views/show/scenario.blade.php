@@ -151,7 +151,7 @@
          		@foreach($case_details as $detail)
          		<tr>
          			<td> 
-         				{{$i++}}        				
+         				{{$detail->seq_no}}        				
          			</td>
          			<td> 
          			<a href="{{URL::route('testcase.show', ['id' => $detail->tc_id])}}"> <span id="" class="glyphicon glyphicon-eye-open"></span>

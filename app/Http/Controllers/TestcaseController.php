@@ -155,7 +155,8 @@ class TestcaseController extends Controller {
 	public function update($id, Request $request)
 	{
 		$validator = \Validator::make($request->all(), array(
-			'name' => 'required'
+			'name' => 'required',
+			'seq_no' => 'required'
 			/*'description' => 'required',
 			'expected_result' => 'required'  */   
 			));
@@ -169,12 +170,15 @@ class TestcaseController extends Controller {
 			if( session()->has('email')){
 				//Process when validations pass
 				$content['tc_name']                 = $request->name;
-				//$content['created_by'] 			= session()->get('email');
+				$content['seq_no'] 					= $request->seq_no;
 		        $content['description']             = $request->description;
 		        $content['expected_result']         = $request->expected_result;
-				//$content['status']             		= $request->status;
+				$content['priority']             	= $request->priority;
 		        
 		        \App\TestCase::find($id)->update($content);
+		        $message = $this->getMessage('messages.update_success');
+		        Toast::message($message, 'success');
+
 			 	return redirect()->route('testcase.show', ['id' => $id]);
 		 	}else
 		 	{

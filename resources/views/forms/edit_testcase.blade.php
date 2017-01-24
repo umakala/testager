@@ -25,10 +25,26 @@
                    <textarea class="form-control"  name="description"  rows="6" >{{$case->description}}</textarea>
                    <div class="help-line" id="text-help"></div>
                </div>
-           </div>           
+              </div>
+
+               <div class="form-group"> 
+                    <label for="seq_no" class="control-label col-xs-4">Sequence No.</label>
+                    <div class="col-xs-8">            
+                       <input type="text" class="form-control" value="{{$case->seq_no}}" id="seq_no"  name="seq_no" placeholder="">
+                       <div class="help-line" id="seq_no-help"></div>
+                   </div>
+               </div>     
+               <div class="form-group"> 
+                    <label for="tc_priority" class="control-label col-xs-4">Priority</label>
+                    <div class="col-xs-8">            
+                       <input type="text" class="form-control" value="{{$case->tc_priority}}" id="tc_priority"  name="tc_priority" placeholder="">
+                       <div class="help-line" id="tc_priority-help"></div>
+                   </div>
+               </div>            
            
         </div>
-        <div class="col-sm-12 col-lg-6">                
+        <div class="col-sm-12 col-lg-6">  
+                      
                <div class="form-group">                
                  <label for="expected_result" class="control-label col-xs-4">Expected Result</label>
                  <div class="col-xs-8">            
