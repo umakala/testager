@@ -71,7 +71,7 @@
           <div class="form-group"> 
                     <label for="title" class="control-label col-xs-3">Send key</label>
                     <div class="col-xs-9">            
-                       <input type="text" class="form-control" value="{{old('sendkeys')}}" id="sendkeys"  name="sendkeys" placeholder="">
+                       <input type="text" class="form-control" value="Click" id="sendkeys"  name="sendkeys" placeholder="Click">
                        <div class="help-line" id="name-help"></div>
                    </div>
           </div>

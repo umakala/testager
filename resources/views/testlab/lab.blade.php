@@ -193,7 +193,7 @@
                     </td>
                     <td> 
                     <a href="{{URL::route('lab.show', ['id' => $detail->tc_id])}}"> <span id="" class="glyphicon glyphicon-eye-open"></span>
-                        {{$detail->tc_name}}    Lab</a>                     
+                        {{$detail->tc_name}}  </a>                     
                     </td>
                     <td class="alert alert-warning">  
                         {{$detail->status}}                         

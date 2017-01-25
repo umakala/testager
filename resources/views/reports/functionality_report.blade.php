@@ -23,7 +23,7 @@
             </p>            
         
         <div class="panel-body" >
-            <div class="panel-title" style="font-weight: bold;" >  Summary 
+            <div class="panel-title" style="font-weight: bold;" >  All Labs Summary 
 
             <div class="row">
 
@@ -43,8 +43,8 @@
                         <tr>
                             <th width="10px">#</th>
                             <th style="vertical-align: middle;">Functionality</th>
-                            <th colspan="3" style="text-align: center;">Testlabs</th>
-                            <th colspan="3" style="text-align: center;">Teststeps</th><!-- 
+                            <th colspan="4" style="text-align: center;">Testlabs</th>
+                            <th colspan="4" style="text-align: center;">Teststeps</th><!-- 
                             <th colspan="3" style="text-align: center;">Scenarios</th> -->
                         </tr>
                         <tr>
@@ -53,9 +53,13 @@
                             <th class="alert alert-info">Total</th>
                             <th class="alert alert-success">Pass</th>
                             <th class="alert alert-danger">Fail</th>
+                            <th class="alert error"  style="font-size:10px;">Not <br/>executed</th>
+
                             <th class="alert alert-info">Total</th>
                             <th class="alert alert-success">Pass</th>
                             <th class="alert alert-danger">Fail</th>
+                            <th class="alert error" style="font-size:10px;">Not <br/> executed</th>
+
                            <!-- <th class="alert alert-info">Total</th>
                             <th class="alert alert-success">Pass</th>
                             <th class="alert alert-danger">Fail</th> -->
@@ -82,8 +86,10 @@
                                                              
                             </td>
                             <td>
-                               {{ isset($fn->testcases['fail']) ? $fn->testcases['fail'] : 0 }}
-                               
+                               {{ isset($fn->testcases['fail']) ? $fn->testcases['fail'] : 0 }}                               
+                            </td>
+                            <td>
+                               {{ isset($fn->testcases['not_executed']) ? $fn->testcases['not_executed'] : 0 }}                               
                             </td>
                             <td>
                                {{ isset($fn->teststeps['total']) ? $fn->teststeps['total'] : 0 }}                                
@@ -94,6 +100,10 @@
                             </td>
                             <td>
                                {{ isset($fn->teststeps['fail']) ? $fn->teststeps['fail'] : 0 }}
+                                
+                            </td>
+                             <td>
+                               {{ isset($fn->teststeps['not_executed']) ? $fn->teststeps['not_executed'] : 0 }}
                                 
                             </td>
                         </tr>
@@ -107,7 +117,7 @@
 
 
         <div class="panel-body"  id ="top">
-             <div class="panel-title" style="font-weight: bold; padding-bottom: 10px;" >Details
+             <div class="panel-title" style="font-weight: bold; padding-bottom: 10px;" > Testcase Details
              <p  onclick="hideSummary()" style="float:right">
               <a data-toggle="collapse" data-parent="#panel" href="#summary_body" class="panel-toggle">
                 <span class="glyphicon glyphicon-filter"  id="icontoggle"></span><span style="font-style: bold; font-size: 14px; padding: 5px;" >Filters</span>

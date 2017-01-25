@@ -28,6 +28,9 @@ abstract class Controller extends BaseController {
 	public function getCountFormatLabs($scenarios_counts, $key)
 	{
 		$ary['total'] = 0;
+		$ary['fail'] = 0;
+		$ary['pass'] = 0;
+		$ary['not_executed'] = 0;
 		foreach ($scenarios_counts as  $value) {
 			switch ($value[$key]) {
 				case 'Fail':
@@ -49,6 +52,8 @@ abstract class Controller extends BaseController {
 			}
 			$ary['total'] +=  $value['count'];
 		}
+
+		$ary['not_executed'] = $ary['total']  - ($ary['pass'] + $ary['fail']);
 		return $ary;
 	}
 

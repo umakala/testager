@@ -67,7 +67,7 @@ class ChartsHandler {
 		        ->addRow(['Not Executed', $chart_details['status_not_executed']]);
 
 		Lava::PieChart('exe_result', $exe_data, [
-		    'title' => 'Execution Results : Total Executed Labs = '.$chart_details['status_executed'],
+		    'title' => 'Execution Results : Total Executed = '.$chart_details['status_executed'],
 		    'colors' => ['#43a047', '#e53935', '#fb8c00', '#1e88e5']
 		]);
 
@@ -85,7 +85,7 @@ class ChartsHandler {
 		        ->addRow(['Not Defined', $chart_details['cp_not_defined']]);
 
 		Lava::PieChart('cp_result', $cp_data, [
-		    'title' => 'Checkpoint Results : Total Executed Labs =  '.$chart_details['status_executed'],
+		    'title' => 'Checkpoint Results : Total Executed =  '.$chart_details['status_executed'],
 		    'colors' => ['#43a047', '#e53935', '#fb8c00', '#1e88e5', '#9e9e9e']
 		]);
 	}

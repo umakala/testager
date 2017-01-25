@@ -56,7 +56,7 @@
                     <th>TestScenario</th>
                     <th>Functionality</th>
                     <th>Release</th>
-                    <th>Status</th>
+                    <th>Execution File</th>
                     <th  width="200px">Execution Details</th>
                     <th>Execution Result</th>
                     <th>Checkpoint Result</th>
@@ -85,7 +85,7 @@
                         {{$detail->release_version}}                         
                     </td>
                     <td>  
-                        {{$detail->status}}                         
+                        {{$detail->executed_filename}}                         
                     </td>
                     <td> 
                         {{$detail->execution_type}} by                     

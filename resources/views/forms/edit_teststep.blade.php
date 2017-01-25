@@ -56,8 +56,11 @@
                     <label for="title" class="control-label col-xs-3">Scroll</label>
                     <div class="col-xs-9">            
                       <select class="form-control" name="scroll">
-                          <option value="no" selected>No</option>
-                          <option value="yes">Yes</option>
+                           <option value="No" selected>Scroll No</option>
+                          <option value="Yes">Scroll Yes</option>   
+                          <option value="Back" >Back Button</option>                      
+                          <option value="tap" >Tap</option>                      
+                          <option value="otp" >OTP</option>
                       </select>
                        <div class="help-line" id="name-help"></div>
                    </div>
@@ -66,8 +69,8 @@
                     <label for="title" class="control-label col-xs-3">Screenshot</label>
                     <div class="col-xs-9">            
                       <select class="form-control" name="screenshot">
-                          <option value="no" selected>No</option>
-                          <option value="yes">Yes</option>
+                          <option value="No" selected>No</option>
+                          <option value="Yes">Yes</option>
                       </select>
                        <div class="help-line" id="name-help"></div>
                    </div>
