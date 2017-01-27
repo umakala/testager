@@ -27,6 +27,18 @@
                 <span class="glyphicon glyphicon-eye-close"  id="icontoggle"></span><span style="font-style: bold; font-size: 16px; padding: 5px;" >Summary</span>
               </a>
             </p>
+    
+
+             <div style="float:right">
+              <a  title="Download Result format Sheet" href="{{URL::route('format_download', ['type' => 'all'])}}"> <i class="glyphicon glyphicon-download"  ></i> Download Result Format
+                </a>  
+
+                 <a  data-toggle="modal" data-target="#uploadResultModal" title="Upload Results"> <i class="glyphicon glyphicon-upload"  ></i> Upload Results
+                </a> 
+                </div>
+
+
+
             </div>
         
          <div id="summary_body" class="panel-collapse collapse">
@@ -153,15 +165,18 @@
         <div class="panel-body">
              <div class="panel-title" style="font-style: bold; padding-bottom: 10px;" > All Testcases 
             
-             <p style="float:right">
-                <?php $tc_ids = $project->tp_id ?>
+             <div style="float:right">
+                <?php $tc_ids = $project->tp_id ?>  
+
                 <a  data-toggle="modal" data-target="#downloadModal" title="Download Excel"> <i class="glyphicon glyphicon-cloud-download"  ></i> Download
                 </a>        
                 <a href="{{URL::route('execute.show', ['id' => $project->tp_id])}}"> <span id="" class="glyphicon glyphicon-play-circle"></span> Execute</a>
-             </p>
+             </div>
+             
         </div>
         @include('modals.download_modal')
         
+        @include('modals.upload_result_modal') 
 
         <!--  Column details of test case to show 
         id, name, status(executed or not executed), executed type (manual/automation), executed by, executed date-time, checkpoint_result, execution_result(pass_fail), defect(if any), defect_status, (checkbox to select )
@@ -170,59 +185,63 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Case Name</th>
+                    <th>Name</th>
                     <th>Status</th>
                     <th>Execution type</th>
                     <th>Executed by</th>
                     <th>Execution time</th>                 
                     <th>Execution Result</th>
                     <th>Checkpoint Result</th>
-                    <th>Defect Count</th>
-                    <th>Defect Status</th>
                    <!--  <th>Run</th> -->
                 </tr>
             </thead>
             <tbody>
                 <?php
-                 $i =1; 
+                 $i =1;  $sc_i =1;
                 ?>
-                @foreach($lab_details as $detail)
+                @foreach($lab_details as $sc)
                 <tr>
                     <td> 
-                        {{$i++}}                        
+                        {{$sc_i++}}                        
                     </td>
                     <td> 
-                    <a href="{{URL::route('lab.show', ['id' => $detail->tc_id])}}"> <span id="" class="glyphicon glyphicon-eye-open"></span>
-                        {{$detail->tc_name}}  </a>                     
+                    <a href="{{URL::route('tsc_lab', ['id' => $sc->tsc_id])}}"> <span id="" class="glyphicon glyphicon-"></span>
+                        {{$sc->tsc_name}}   
+
                     </td>
-                    <td class="alert alert-warning">  
-                        {{$detail->status}}                         
-                    </td>
-                    <td> 
-                        {{$detail->execution_type}}
-                    </td>
-                    <td> 
-                        {{$detail->executed_by}}                    
-                    </td>
-                    <td> 
-                        {{date($dt_format, strtotime($detail->created_at))}}                        
-                    </td>
-                    <td> 
-                        {{$detail->execution_result}} 
-                    </td>
-                    <td> 
-                        {{$detail->checkpoint_result}}  
-                    </td>
-                    <td> 
-                        -                   
-                    </td>
-                    <td> 
-                        -
-                    </td>
-                   <!--  <td> 
-                        <input type="checkbox" id="checkbox_{{$detail->tc_id}}">                    
-                    </td> -->
                 </tr>
+                    @foreach($sc->case as $detail)
+                    <tr>
+                        <td style="padding-left: 20px;"> 
+                            {{$i++}}                        
+                        </td>
+                        <td> 
+                        <a href="{{URL::route('lab.show', ['id' => $detail->tc_id])}}"> <span id="" class="glyphicon glyphicon-eye-open"></span>
+                            {{$detail->tc_name}}  </a>                     
+                        </td>
+                        <td class="alert alert-warning">  
+                            {{$detail->status}}                         
+                        </td>
+                        <td> 
+                            {{$detail->execution_type}}
+                        </td>
+                        <td> 
+                            {{$detail->executed_by}}                    
+                        </td>
+                        <td> 
+                            {{date($dt_format, strtotime($detail->created_at))}}                        
+                        </td>
+                        <td> 
+                            {{$detail->execution_result}} 
+                        </td>
+                        <td> 
+                            {{$detail->checkpoint_result}}  
+                        </td>
+                       <!--  <td> 
+                            <input type="checkbox" id="checkbox_{{$detail->tc_id}}">                    
+                        </td> -->
+                    </tr>
+                    @endforeach
                 @endforeach
             </tbody>
          </table>

@@ -35,7 +35,7 @@ class TreeviewController extends Controller {
 			
 			foreach ($testfunctionalities as $functionality) {
 				//Repeat same for scenarios
-				$testscenarios = \App\TestScenario::where(['tp_id' => $p_value->tp_id , 'tf_id' => $functionality->tf_id ])->get();
+				$testscenarios = \App\TestScenario::where(['tp_id' => $p_value->tp_id , 'tf_id' => $functionality->tf_id ])->orderBy('seq_no', 'asc')->get();
 				$tsc_count = count($testscenarios);
 
 				$f_node = array();
@@ -46,7 +46,7 @@ class TreeviewController extends Controller {
 
 				foreach ($testscenarios as $scenario) {
 					//Repeat same for cases	
-					$testcases = \App\TestCase::where(['tp_id' => $p_value->tp_id , 'tsc_id' => $scenario->tsc_id ])->get();
+					$testcases = \App\TestCase::where(['tp_id' => $p_value->tp_id , 'tsc_id' => $scenario->tsc_id ])->orderBy('seq_no', 'asc')->get();
 					$tc_count = count($testcases);
 
 					$s_node = array();

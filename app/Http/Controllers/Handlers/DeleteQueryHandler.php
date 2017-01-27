@@ -41,6 +41,8 @@ class DeleteQueryHandler {
         	foreach ($scs as $sc_value) {
         		$tsc_id = $sc_value['tsc_id'];
     		   	$this->deleteCaseByScenarioId($tsc_id);
+    		   	$this->deleteScLabByScenarioId($tsc_id);
+
         	}
 
         	//Delete associated teststeps       	
@@ -73,6 +75,24 @@ class DeleteQueryHandler {
         	$case = \App\TestCase::where('tsc_id' , $id)->delete();	
 
 
+		}catch(Exception $e)
+		{
+			return 0;
+		}
+		return 1;
+	}
+
+	/**
+	 * Delete Scenarion Labs query by testcase id
+	 *
+	 * @return int
+	 */
+
+	public function deleteScLabByScenarioId($id)
+	{  
+		$tp_id = session()->get('open_project');  
+		try{  
+			$deletedRows = \App\ScenarioLab::where(['tsc_id' => $id , 'tp_id' => $tp_id])->delete();
 		}catch(Exception $e)
 		{
 			return 0;

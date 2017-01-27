@@ -85,25 +85,7 @@ class DownloadController extends Controller {
 	 * @return Response
 	 */
 	public function show($id)
-	{
-		/*$dt 			= Carbon::now()->format('dmyhis');
-		$tp_id 			= session()->get('open_project');
-
-		if($id == $tp_id)
-		{
-			$cases = \App\TestCase::select('tc_id')->where('tp_id', $id)->get()->toArray();
-			foreach ($cases as $key => $value) {
-				$ids[] = $value['tc_id'];
-			}
-		}else{
-			$ids 			= explode("_",$id,-1);			
-		}
-		
-		$count 			= count($ids);
-		$filename 		= $tp_id."_".$count."_".$dt;
-		$data 			= $this->createExcelData($ids, $filename);
-		session()->save();
-		$this->processDownload($data, $filename); */		
+	{		
 		return redirect()->back();
 	}
 	
@@ -192,7 +174,6 @@ class DownloadController extends Controller {
 		  		}
 		  	}
 	  	}
-		//print_r($excel_data); exit;
 	  return $excel_data;
 	}
 

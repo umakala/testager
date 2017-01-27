@@ -109,7 +109,7 @@ class FunctionalityController extends Controller {
 
 		$clone_sc = \App\TestScenario::all();
 
-		$scenarios = \App\TestScenario::where('tf_id' , $id)->get();
+		$scenarios = \App\TestScenario::where('tf_id' , $id)->orderBy('seq_no', 'asc')->get();
 		$functionality->scenarios = count($scenarios);
 
 		foreach ($scenarios as $sc_value) {

@@ -89,9 +89,15 @@ class TestScenarioController extends Controller {
 				$content['tf_id']               	= $request->tf_id;				
 				$content['tsc_id']                 	= $this->genrateRandomInt(4);		
 				$content['tsc_name']                = $request->name;
+				$content['scenario_brief']          = "";
 				$content['description']             = $request->description;
 		        $content['expected_result']         = $request->expected_result;		
 		        $content['status'] 					= "not_executed";
+
+		       	$count 								= \App\TestScenario::where('tf_id',  $content['tf_id'])->count();
+		       	$content['seq_no'] 	        		= $count+1;
+		       	$content['actual_result'] 	  		= "not_executed";
+
 			 	$create 							= \App\TestScenario::create($content);
 		        return redirect()->route('profile');
 		 	}else
@@ -150,7 +156,7 @@ class TestScenarioController extends Controller {
 	 */
 	public function update($id, Request $request)
 	{
-				//Validations
+		//Validations
 		$validator = \Validator::make($request->all(), array(
 			'name' => 'required' ,
 			'status' => 'required'        
@@ -166,8 +172,7 @@ class TestScenarioController extends Controller {
 				//Process when validations pass
 				$content['tsc_name']                = $request->name;
 				$content['description']             = $request->description;
-		        $content['expected_result']         = $request->expected_result;				
-		        
+		        $content['expected_result']         = $request->expected_result;
 		        \App\TestScenario::find($id)->update($content);
 			 	return redirect()->route('scenario.show', ['id' => $id]);
 		 	}else

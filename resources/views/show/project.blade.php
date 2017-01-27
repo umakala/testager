@@ -54,7 +54,7 @@
 		<div class="panel-body">
 			 <div class="panel-title" style="font-style: italic; padding-bottom: 10px;" > Summary 	</div>	
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-3">
 					Total Functionalities
 				</div>
 				<div class="col-lg-6">
@@ -62,7 +62,7 @@
 				</div>				
 			</div>
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-3">
 					Total Scenarios
 				</div>
 				<div class="col-lg-6">
@@ -70,7 +70,7 @@
 				</div>				
 			</div>
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-3">
 					Total Testcases
 				</div>
 				<div class="col-lg-6">
@@ -78,13 +78,13 @@
 				</div>				
 			</div>
 			<div class="row">
-				<div class="col-lg-2">
+				<div class="col-lg-3">
 					Total Steps
 				</div>
 				<div class="col-lg-2">
         			{{$project->steps}}
 				</div>		
-				<div class="col-md-8" style="text-align: right">			
+				<div class="col-md-7" style="text-align: right">			
 
 				<a type="button" data-toggle="modal" data-target="#cloneModal" title="Copy existing Scenario"> <i class="glyphicon glyphicon-copy"></i> Clone Functionality                                          
 				</a>

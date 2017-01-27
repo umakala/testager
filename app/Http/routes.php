@@ -21,7 +21,7 @@ Route::get('/', 'UserController@index');
 Route::get('/', array( "as"=>"/" , 'uses' =>'UserController@index'));
 Route::get('home', array("as"=>"home" , 'uses' =>'UserController@index'));
 Route::get('user/register', array("as"=>"user.register" , 'uses' =>'UserController@create'));
-Route::post('store', array("as"=>"store" , 'uses' =>'UserController@store'));
+Route::post('store', array("as"=>"store" , 'uses' =>'UserContrsoller@store'));
 Route::get('user/verify_email', 'UserController@verify_email');
 Route::post('reset_password', array("as"=>"reset",'uses' =>'UserController@reset_password'));
 Route::post('login', array("as"=>"login" , 'uses' =>'UserController@login'));
@@ -39,6 +39,11 @@ Route::get('news/delete/{id}', array("as"=>"news.delete" , 'uses' =>'NewsControl
 Route::get('tree_value/{id}', array("as"=>"tree_value" , 'uses' =>'TreeviewController@index'));
 Route::resource('upload','UploadController');
 Route::resource('download','DownloadController');
+Route::get('format_download/{type}/{id?}', array("as"=>"format_download" , 'uses' =>'DownloadResultFormatController@download'));
+
+
+Route::resource('upload_result','UploadResultController');
+
 
 Route::resource('execute','ExecutionController');
 Route::resource('report','ReportController');
@@ -53,7 +58,9 @@ Route::resource('testcase', 'TestcaseController');
 Route::resource('teststep', 'TestStepController');
 
 Route::resource('lab', 'TestLabController');
+
 Route::resource('defect', 'DefectController');
+Route::get('tsc_lab/{tsc_id}', array("as"=>"tsc_lab" , 'uses' =>'TestLabController@showScenario'));
 
 Route::post('sc_lab', array("as"=>"sc_lab" , 'uses' =>'TestLabController@store'));
 Route::post('step/reorder/{tc_id}', array("as"=>"step.reorder" , 'uses' =>'TestStepController@reorder'));

@@ -33,8 +33,9 @@
 				<a href="{{URL::route('scenario.edit', ['id' => $scenario->tsc_id])}}" title="Edit Testcase"> <span id="" class="glyphicon glyphicon-edit"></span> Edit</a>
 
 				<a  data-toggle="modal" data-target="#deleteModal" title="Delete Scenario"> <i class="glyphicon glyphicon-trash"  ></i> Delete
-                </a>
-			</p>			
+                </a>               
+			</p>
+
 			<p>
 				Status : {{$scenario->status}} 
 			</p> 

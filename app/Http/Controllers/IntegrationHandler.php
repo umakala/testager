@@ -54,17 +54,20 @@ class IntegrationHandler extends Controller{
 	 *
 	 * @return sc_id
 	 */
-	public function handleScenario($row, $fn_id, $sc_id)
+	public function handleScenario($row, $fn_id, $sc_id, $seq)
 	{		
        $sc = [];
        /*if( isset($row['sceanrio_brief'] )){*/
-           if(!isset($row['sceanrio_brief']) || $row['sceanrio_brief']  == null ||  $row['sceanrio_brief'] == ""){
+           if(!isset($row['sceanrio_name']) || $row['sceanrio_name']  == null ||  $row['sceanrio_name'] == ""){
 			//If nothing to process then do nothing
 			//return $fn_id;
            }else{
-              $sc['tsc_name'] 		    = $row['sceanrio_brief'];
-              $sc['description'] 		= $row['sceanrio_description'];
-              $sc['expected_result'] 	= $row['scenario_expected_result'];
+              $sc['tsc_name']              = $row['sceanrio_name'];
+              $sc['scenario_brief'] 		   = $row['sceanrio_brief'];
+              $sc['description'] 		       = $row['sceanrio_description'];
+              $sc['expected_result'] 	     = $row['scenario_expected_result'];
+              $sc['seq_no']             = $seq;
+
               $sc['tp_id'] 			= session()->get('open_project');
               $sc['tf_id'] 			= $fn_id;
               $sc_check 				=  \App\TestScenario::where($sc)->first();
@@ -89,7 +92,7 @@ class IntegrationHandler extends Controller{
 	 *
 	 * @return tc_id
 	 */
-	public function handleTestcase($row, $sc_id, $tc_id)
+	public function handleTestcase($row, $sc_id, $tc_id, $seq)
 	{
        $tc = [];
       /* if( isset($row['test_case_name'])){
@@ -107,8 +110,9 @@ class IntegrationHandler extends Controller{
 
               $tc['tp_id'] 			        = session()->get('open_project');
               $tc['tsc_id'] 			      = $sc_id;
+              $tc['seq_no']             = $seq;
+
               $tc_check 				        =  \App\TestCase::where($tc)->first();
-        	//print_r($tc_check);
               if($tc_check!= null && $tc_check->exists == 1)	{
                   $tc_id  = $tc_check->tc_id;
               }
@@ -214,8 +218,7 @@ class IntegrationHandler extends Controller{
 public function handleTeststep  ($row, $tc_id, $ts_id, $seq)
 {
    $ts = [];
-  /* if( isset($row['test_step'])){
-    */   if(!isset($row['test_step'])|| $row['test_step']  == null ||  $row['test_step'] == ""){
+    if(!isset($row['test_step'])|| $row['test_step']  == null ||  $row['test_step'] == ""){
 			//If nothing to process then do nothing
 			//return $ts_id;
        }else{
@@ -256,23 +259,50 @@ public function handleTeststep  ($row, $tc_id, $ts_id, $seq)
               $ts_id  = $check->ts_id;
           }
       }
- /* }else{
-    $ts_id =0;
-}*/
 return $ts_id;
 }
 
-public function csvMethod($value='')
-{
-		# code...
-				//if($ext == "csv")
-  {
-			//$text =  File::get($file->getRealPath());//file_get_contents($file->getRealPath());
-			//print_r($file);
-			//print_r($text);
 
-		} //else
-			//echo "Please provide a csv file.";
-	}
+
+
+  /**
+   * Handles the scenario part of the row from Excel
+   *
+   * @return sc_id
+   */
+  public function handleResultScenario($row, $fn_id, $sc_id, $seq)
+  {   
+       $sc = [];
+       /*if( isset($row['sceanrio_brief'] )){*/
+           if(!isset($row['sceanrio_name']) || $row['sceanrio_name']  == null ||  $row['sceanrio_name'] == ""){
+      //If nothing to process then do nothing
+      //return $fn_id;
+           }else{
+              $sc['tsc_name']              = $row['sceanrio_name'];
+              $sc['scenario_brief']        = $row['sceanrio_brief'];
+              $sc['description']           = $row['sceanrio_description'];
+              $sc['expected_result']       = $row['scenario_expected_result'];
+              $sc['seq_no']             = $seq;
+
+              $sc['tp_id']      = session()->get('open_project');
+              $sc['tf_id']      = $fn_id;
+              $sc_check         =  \App\TestScenario::where($sc)->first();
+          //print_r($sc_check);
+              if($sc_check!= null && $sc_check->exists == 1)  {
+                  $sc_id  = $sc_check->tsc_id;
+              }
+              else
+              {
+                  $sc_id = $sc['tsc_id'] = $this->genrateRandomInt();
+                  \App\TestScenario::create($sc);
+              }
+          }
+     /* }else{
+        $sc_id =0;
+    }*/
+    return $sc_id;
+}
+
+
 
 }

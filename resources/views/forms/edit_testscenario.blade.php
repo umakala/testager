@@ -12,7 +12,7 @@
 
         <div class="panel-body">
 
-        <div class="form-group"> 
+        <!-- <div class="form-group"> 
               <label for="status" class="control-label col-xs-4">Status</label>
               <div class="col-xs-8">         
                     <select class="form-control" name="status">
@@ -20,10 +20,10 @@
                         <option value="open">Open</option>
                         <option value="close">Close</option>
                     </select>
-                <!--  <input type="text" class="form-control" value="{{old('status')}}" id="status"  name="status" placeholder=""> -->
+              
                  <div class="help-line" id="status-help"></div>
              </div>
-         </div> 
+         </div>  -->
       
         <div class="col-sm-12 col-lg-6">                             
                 <div class="form-group"> 

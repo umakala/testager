@@ -30,7 +30,7 @@ class TestScenario extends Model {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['tsc_id', 'tsc_name','description', 'expected_result', 'status', 'tf_id', 'tp_id', 'created_by'];
+	protected $fillable = ['tsc_id', 'tsc_name','description', 'expected_result', 'status', 'tf_id', 'tp_id', 'created_by', 'scenario_brief', 'seq_no'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.

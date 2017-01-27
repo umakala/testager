@@ -43,14 +43,20 @@ public function index()
 	//Get details about test cases
 	//$lab_details = [];
 	//$lab_details = \App\Lab::where('tp_id' , $id)->get();
-	$lab_details = \App\TestCase::where('tp_id' , $id)->orderBy('created_at', 'asc')->get();
 	
-	foreach ($lab_details as $key => $value) {
-		$lab = \App\Lab::where('tc_id' , $value->tc_id)->orderBy('created_at', 'asc')->first();
-		$value->lab = $lab;
+	$sc_details = \App\TestScenario::where('tp_id' , $id)->orderBy('seq_no', 'asc')->get();
+	
+	foreach ($sc_details as $sc_key => $sc_value) {
+	
+		$sc_value->case = \App\TestCase::where(['tp_id' => $id, 'tsc_id' => $sc_value->tsc_id])->orderBy('seq_no', 'asc')->get();
+		
+		foreach ($sc_value->case as $key => $value) {
+			$lab = \App\Lab::where('tc_id' , $value->tc_id)->orderBy('created_at', 'asc')->first();
+			$value->lab = $lab;
+		}
 	}
 
-	return view('testlab.lab', ['project' => $project, 'lab_details' => $lab_details]);	  	
+	return view('testlab.lab', ['project' => $project, 'lab_details' => $sc_details]);	  	
 }
 
 /**
@@ -79,6 +85,7 @@ public function store(Request $request)
 		$lab_cases = [];
 		$tc_ids = '';
 		$tsc_id = $request->tsc_id;
+
 		$scenario = \App\TestScenario::find($tsc_id);
 
 		if($scenario == null)
@@ -100,14 +107,22 @@ public function store(Request $request)
 				$lab_cases [] = $case;
 			}		
 			return view('testlab.scenario_lab', ['cases' => $lab_cases, 'scenario' => $scenario , 'tc_ids' => $tc_ids]);
-		}	
+		}
 	}
 }
 
 
-public function createLab($t_id)
+public function showScenario($id)
 {
 
+	$sc = \App\TestScenario::find($id);
+	$tc_ids = "";
+
+	$lab_cases = \App\TestCase::where('tsc_id' , $id)->orderBy('seq_no', 'asc')->get();
+	foreach ($lab_cases as $key => $value) {
+		$tc_ids		= $tc_ids.$value->tc_id."_";
+	}
+	return view('testlab.scenario_lab', ['cases' => $lab_cases, 'scenario' => $sc , 'tc_ids' => $tc_ids]);
 }
 
 /**
@@ -129,10 +144,6 @@ public function show($id)
 		$execution = \App\Execution::where(['ts_id' => $value->ts_id, 'tl_id' => 0])->orderBy('created_at', 'asc')->first();
 		$value->execution = $execution;
 	}
-	//print_r($lab_details[0]);
-
-	//print_r($case);
-	//print_r($lab_details[0]->execution->e_id);
 	return view('testlab.case_lab', ['case' => $case, 'lab_details' => $lab_details]);
 }
 

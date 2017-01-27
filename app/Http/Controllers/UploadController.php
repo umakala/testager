@@ -51,12 +51,19 @@ class UploadController extends Controller {
 			if($ext == "xls" || $ext == "xlsx"){
 				Excel::load(Input::file('file'), function ($reader) use($call_page, $call_page_id) {
 					try{
-					$i=0; $error =false; $seq = 1;
+					$i=0; $error =false; $seq = 1;  $tc_seq = 1; $sc_seq = 1;  
 					$fn_id = ""; $sc_id ="";  $tc_id =""; $ts_id = "";
 
 					//Create object of IntegrationHandler class to access methods to process conversion of xls to db format
 					$int_obj = new IntegrationHandler();
-					foreach ($reader->toArray() as $row) {
+					$reader_ary = $reader->toArray();
+					if(isset($reader_ary[0][0]))
+					{
+						$reader_ary = $reader_ary[0];
+					}
+
+					//print_r($reader_ary);exit;
+					foreach ($reader_ary as $row) {
 						switch ($call_page) {
 							//When upload method is called from project page to upload functionality and lower levels
 							case 'project':
@@ -71,8 +78,10 @@ class UploadController extends Controller {
 							if ($call_page == "functionality") {
 								$fn_id = $call_page_id;
 							}
-							if(isset($row['sceanrio_brief']))
-								$sc_id = $int_obj->handleScenario($row, $fn_id, $sc_id);
+							if(isset($row['sceanrio_name'])){
+								$sc_id = $int_obj->handleScenario($row, $fn_id, $sc_id, $sc_seq);
+								$sc_seq++;
+							}
 							/*if($sc_id == 0){
 								$error = true; break;
 							}*/
@@ -83,8 +92,13 @@ class UploadController extends Controller {
 							if ($call_page == "scenario") {
 								$sc_id = $call_page_id;
 							}
-							if(isset($row['test_case_name']))
-								$tc_id = $int_obj->handleTestcase($row, $sc_id, $tc_id);
+							if(isset($row['sceanrio_name'])){
+								$tc_seq = 1;
+							}
+							if(isset($row['test_case_name'])){
+								$tc_id = $int_obj->handleTestcase($row, $sc_id, $tc_id, $tc_seq);
+								$tc_seq++;
+							}
 							/*if($tc_id == 0){
 								$error = true; break;
 							}*/
@@ -94,7 +108,9 @@ class UploadController extends Controller {
 							if ($call_page == "testcase") {
 								$tc_id = $call_page_id;
 							}
-
+							if(isset($row['testcase'])){
+								$seq = 1;
+							}
 							if(isset($row['test_step']))
 								$ts_id = $int_obj->handleTeststep($row, $tc_id, $ts_id, $seq);
 							/*if($ts_id == 0){
@@ -127,6 +143,7 @@ class UploadController extends Controller {
 						if($error == true)
 							break;
 					}
+				
 					$i++;
 					}catch(Exception $e){
 						$message = $this->getMessage('messages.upload_failed');
