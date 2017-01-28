@@ -11,7 +11,6 @@
 	 		 <p>
 	        	Created at - {{date($dt_format, strtotime($scenario->created_at))}} <!-- by {{$scenario->created_by}} -->
 	 		</p>
-
 	 		
 	 		<!-- Toast -->
 			<p>
@@ -21,7 +20,13 @@
 			@endif
 			</p>
 	 		 <div class="panel-body">
-			
+			     <div style="float:right">
+              <a  title="Download Result format Sheet" href="{{URL::route('format_download', ['type' => 'scenario', 'id' => $scenario->tsc_id])}}"> <i class="glyphicon glyphicon-download"  ></i> Download Result Format
+                </a>  
+
+                 <a  data-toggle="modal" data-target="#uploadResultModal" title="Upload Results"> <i class="glyphicon glyphicon-upload"  ></i> Upload Results
+                </a> 
+                </div>
 			</div>
 	 	
 
@@ -46,6 +51,8 @@
 		 	 </p>
 	 	</div>
         @include('modals.download_modal')
+        @include('modals.upload_result_modal') 
+        
 
 	 	<!--  Column details of test case to show 
 	 	id, name, status(executed or not executed), executed type (manual/automation), executed by, executed date-time, checkpoint_result, execution_result(pass_fail), defect(if any), defect_status, (checkbox to select )

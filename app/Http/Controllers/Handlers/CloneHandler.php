@@ -73,7 +73,7 @@ class CloneHandler  extends Controller{
 
 	        //Add entry in execution table for this step
 			$exe 			= \App\Execution::where(['ts_id' => $old_ts_id, 'tl_id' => 0 ])->get()->toArray();
-			$exe[0]['e_id'] 	=  $this->genrateRandomInt(8);
+			$exe[0]['e_id'] 	= "0_".$this->genrateRandomInt(8);
 			$exe[0]['ts_id'] 	= $value['ts_id'] ;
 			$exe[0]['tp_id'] 	= session()->get('open_project');
 			$exe[0]['tc_id'] 	= $value['tc_id'] ;

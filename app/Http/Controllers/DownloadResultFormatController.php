@@ -93,18 +93,21 @@ class DownloadResultFormatController extends Controller {
 		if($type == "all")
 		{
 			$scenarios = \App\TestScenario::where('tp_id', $tp_id)->orderBy('seq_no', 'asc')->get() ;
-			foreach ($scenarios as $sc_value) {
+		}
+		if($type == "scenario"){
+			$scenarios = \App\TestScenario::where('tsc_id', $id)->get() ;
+		}
+	/*	print_r($final_format);
+		exit;*/
+		foreach ($scenarios as $sc_value) {
 				$format = $lab_obj->createScLabByScenario($sc_value);
 				foreach ($format as $key => $value) {
 					$final_format[] = $value;
 				}
 			}
-		}
-	/*	print_r($final_format);
-		exit;*/
 		$download_obj = new DownloadHandler();
 		$download_obj->processDownload($final_format, $dt);
-		//return redirect()->back();
+		return redirect()->back();
 	}	
 
 }

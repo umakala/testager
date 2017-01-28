@@ -252,7 +252,7 @@ public function handleTeststep  ($row, $tc_id, $ts_id, $seq)
               $execution_content['ts_id']         = $ts_id;
               $execution_content['tl_id']         = 0;
               $execution_content['seq_no']        = $seq;
-              $execution_content['e_id']          = $this->genrateRandomInt();
+              $execution_content['e_id']          = "0_".$this->genrateRandomInt();
               \App\Execution::create($execution_content);
           }
           else{

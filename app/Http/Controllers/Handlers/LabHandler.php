@@ -115,7 +115,7 @@ class LabHandler extends Controller{
 		if(count ($execution) != 0)
 		{
 			$exe_data 						= $execution[0];
-			$exe_data['e_id']				= $this->genrateRandomInt(8);
+			$exe_data['e_id']				= $tl_id."_".$this->genrateRandomInt(8);
 			$exe_data['tl_id']				= $tl_id;
 			$exe_data['execution_result'] 	= '';
 			$exe_data['checkpoint_result'] 	= '';
