@@ -49,6 +49,7 @@ Route::resource('execute','ExecutionController');
 Route::resource('report','ReportController');
 Route::get('report/lab/{id}', array("as"=>"report.lab" , 'uses' =>'ReportController@show_lab'));
 Route::get('report/case/{id}', array("as"=>"report.case" , 'uses' =>'ReportController@show_case'));
+Route::get('report/scenario/{id?}', array("as"=>"report.scenario" , 'uses' =>'ReportController@show_scenario'));
 
 
 Route::resource('project', 'TestProjectController');

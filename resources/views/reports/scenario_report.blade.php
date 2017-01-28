@@ -8,7 +8,7 @@
   <div class="panel panel-default" style=" padding:10px">
     <a href="#top" class="float_button"><span class="glyphicon glyphicon-upload"></span></a>
 
-        <div class="panel-title" style="font-weight:bold;" > TestLab Reports for Project {{$project->tp_name}}   {{$project->release}}
+        <div class="panel-title" style="font-weight:bold;" > Scenario Reports for Project {{$project->tp_name}}   {{$project->release}}
          </div>
              <p>
                 Created at - {{date($dt_format, strtotime($project->created_at))}} by {{$project->created_by}} 
@@ -43,7 +43,7 @@
 
 
         <div class="panel-body"  id ="top">
-             <div class="panel-title" style="font-weight: bold; padding-bottom: 10px;" > All TestCases
+             <div class="panel-title" style="font-weight: bold; padding-bottom: 10px;" >TestCase Details for Scenario
             
              <p style="float:right">
              </p>
@@ -60,7 +60,7 @@
                     <th>TestScenario</th>
                     <th>Functionality</th>
                     <th>Release</th>
-                    <th>Status</th>
+                   <!--  <th>Status</th> -->
                     <th  width="200px">Execution Details</th>
                     <th>Execution Result</th>
                     <th>Checkpoint Result</th>
@@ -77,8 +77,8 @@
                         {{$i++}}                        
                     </td>
                     <td> 
-                    <a href="{{URL::route('report.case', ['id' => $detail->lab->tl_id])}}">
-                        {{$detail->tc_name}}</a>                     
+                    <a href="{{URL::route('report.case', ['id' => $detail->tl_id])}}">
+                        {{$detail->case->tc_name}}</a>                     
                     </td>
                     <td> {{$detail->tsc_name}}</td>
                     
@@ -86,21 +86,21 @@
                     {{$detail->tf_name}}                     
                     </td>
                     <td>  
-                        {{$detail->lab->release_version}}                         
+                        {{$detail->release_version}}                         
                     </td>
-                    <td>  
+                    <!-- <td>  
                         {{$detail->status}}                         
-                    </td>
+                    </td> -->
                     <td> 
-                        {{$detail->lab->execution_type}} by                     
-                        {{$detail->lab->executed_by}} at {{date($exe_dt_format, strtotime($detail->lab->created_at))}}               
+                        {{$detail->execution_type}} by                     
+                        {{$detail->executed_by}} at {{date($exe_dt_format, strtotime($detail->created_at))}}               
                     </td>
                   
-                    <td class="alert alert-{{$detail->lab->execution_result == 'Pass'? 'success' : ($detail->lab->execution_result == '' ? 'warning' : 'danger')}}"   > 
-                        {{$detail->lab->execution_result}} 
+                    <td class="alert alert-{{$detail->execution_result == 'Pass'? 'success' : ($detail->execution_result == '' ? 'warning' : 'danger')}}"   > 
+                        {{$detail->execution_result}} 
                     </td>
-                    <td class="alert alert-{{$detail->lab->checkpoint_result == 'Pass'? 'success' : ($detail->lab->checkpoint_result == '' ? 'warning': ($detail->lab->checkpoint_result == 'none' ? 'error' : 'danger'))}}" > 
-                         {{$detail->lab->checkpoint_result == 'none' ? 'Not Defined' : $detail->lab->checkpoint_result}}
+                    <td class="alert alert-{{$detail->checkpoint_result == 'Pass'? 'success' : ($detail->checkpoint_result == '' ? 'warning': ($detail->checkpoint_result == 'none' ? 'error' : 'danger'))}}" > 
+                         {{$detail->checkpoint_result == 'none' ? 'Not Defined' : $detail->checkpoint_result}}
                     </td>
                     <td> 
                         <a href="{{URL::route('report.lab', ['id' => $detail->tc_id] )}}">  <span class="glyphicon glyphicon-calendar"></span> Lab History

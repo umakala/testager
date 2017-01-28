@@ -77,32 +77,21 @@ class ReportController extends Controller {
 			$chart_details = $charts_obj->getChartSummary($chart_value, $chart_details);
 		}
 		
-		//Get details about test cases
-		$case_details = \App\TestCase::where('tp_id' , $id)->orderBy('seq_no', 'asc')->get();	
+		$sc_details = \App\TestScenario::where('tp_id' , $id)->orderBy('seq_no', 'asc')->get();
+		foreach ($sc_details as $sc_key => $sc_value) {
+		
+			//Get details about test cases
+			$sc_value->case = \App\TestCase::where(['tp_id' => $id, 'tsc_id' => $sc_value->tsc_id])->orderBy('seq_no', 'asc')->get();
+			
+			foreach ($sc_value->case as $key => $value) {
+				$lab = \App\Lab::where('tc_id' , $value->tc_id)->orderBy('created_at', 'desc')->first();
+				$value->lab = $lab;
 
-		foreach ($case_details as $key => $value) {
-			$lab = \App\Lab::where('tc_id' , $value->tc_id)->orderBy('created_at', 'desc')->first();
-			$value->lab = $lab;
-
-			$tsc = \App\TestScenario::select('tsc_name')->where('tsc_id' , $value->tsc_id)->get();
-			$value->tsc_name = $tsc[0]->tsc_name;
-
-			/*if(isset($lab->tf_id))
-			{
-				$fn  = \App\TestFunctionality::select('tf_name')->where('tf_id' , $lab->tf_id)->get();
-				$value->tf_name = $fn[0]->tf_name;
-				$chart_value['tc_status'] 			= $value->status;
-				$chart_value['execution_result'] 	= $value->lab->execution_result;
-				$chart_value['checkpoint_result'] 	= $value->lab->checkpoint_result;
-			}else{
-				$value->tf_name = "";
-				$chart_value['tc_status'] = $value->status;
-				$chart_value['execution_result'] = 0;
-				$chart_value['checkpoint_result'] = 0;
+				$tf = \App\TestFunctionality::select('tf_name')->where('tf_id' , $sc_value->tf_id)->get();
+				$value->tf_name = $tf[0]->tf_name;				
 			}
-			$chart_details = $charts_obj->getChartSummary($chart_value, $chart_details);*/
 		}
-
+			
 		$column_details =[];
 		/* 
 			Pie Charts showing summary of results 
@@ -111,7 +100,7 @@ class ReportController extends Controller {
 		$charts_obj->createCheckpointPieChart($chart_details);
 		$charts_obj->createSummaryColumnChart($column_details);
 
-		return view('reports.functionality_report', ['project' => $project, 'lab_results' => $case_details]);	  	
+		return view('reports.functionality_report', ['project' => $project, 'lab_results' => $sc_details]);	  	
 	}
 
 	/**
@@ -119,32 +108,54 @@ class ReportController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function show_scenario()
+	public function show_scenario($sc_id=0)
 	{
 		$id = session()->get('open_project');
 		$project = \App\TestProject::find($id);
 		$project->functionalities = \App\TestFunctionality::where('tp_id' , $id)->get();
 
-		$charts_obj = new ChartsHandler();
 		
 		//Get details about test cases
-		$lab_details = \App\TestCase::where('tp_id' , $id)->orderBy('seq_no', 'asc')->get();
-		$chart_details = $charts_obj->initChartDetails();		
-	
+		if($sc_id == 0)
+			$condition = ['tp_id' => $id, ];
+		else
+			$condition = ['tp_id' => $id, 'tsc_id' => $sc_id ];
+		
+		//$lab_details = \App\TestCase::where($condition)->orderBy('seq_no', 'asc')->get();
+		$lab_details = \App\Lab::where($condition)->orderBy('seq_no', 'asc')->get();
+		
+		$charts_obj = new ChartsHandler();
+		$chart_details = $charts_obj->initChartDetails();
+
+		//$lab_details = \App\Lab::where('tp_id' , $id)->orderBy('seq_no', 'asc')->get();
+
+
 		foreach ($lab_details as $key => $value) {
-			$lab = \App\Lab::where('tc_id' , $value->tc_id)->orderBy('created_at', 'desc')->first();
-			$value->lab = $lab;
-			
+			/*$lab = \App\Lab::where('tc_id' , $value->tc_id)->orderBy('created_at', 'desc')->first();
+			$value->lab = $lab;*/
+
+			$tc = \App\TestCase::find($value->tc_id);
+			$value->case = $tc;
+
 			$tsc = \App\TestScenario::select('tsc_name')->where('tsc_id' , $value->tsc_id)->get();
 			$value->tsc_name = $tsc[0]->tsc_name;
 
-			$fn  = \App\TestFunctionality::select('tf_name')->where('tf_id' , $lab->tf_id)->get();
+			$fn  = \App\TestFunctionality::select('tf_name')->where('tf_id' , $value->tf_id)->get();
 			$value->tf_name = $fn[0]->tf_name;
 
-			$chart_value['tc_status'] = $value->status;
-			$chart_value['execution_result'] = $value->lab->execution_result;
-			$chart_value['checkpoint_result'] = $value->lab->checkpoint_result;
-
+			if(isset($value->tf_id))
+			{
+				$fn  = \App\TestFunctionality::select('tf_name')->where('tf_id' , $value->tf_id)->get();
+				$value->tf_name = $fn[0]->tf_name;
+				$chart_value['tc_status'] 			= 'executed';
+				$chart_value['execution_result'] 	= $value->execution_result;
+				$chart_value['checkpoint_result'] 	= $value->checkpoint_result;
+			}else{
+				$value->tf_name = "";
+				$chart_value['tc_status'] = $value->status;
+				$chart_value['execution_result'] = 0;
+				$chart_value['checkpoint_result'] = 0;
+			}
 			$chart_details = $charts_obj->getChartSummary($chart_value, $chart_details);
 		}
 

@@ -161,7 +161,7 @@
                     <th>TestScenario</th>
                     <th>Functionality</th>
                     <th>Release</th>
-                    <th>Status</th>
+                   <!--  <th>Status</th> -->
                     <th  width="200px">Execution Details</th>
                     <th>Execution Result</th>
                     <th>Checkpoint Result</th>
@@ -172,47 +172,56 @@
                 <?php
                  $i =1; 
                 ?>
-                @foreach($lab_results as $detail)
-                @if(isset($detail->lab))
-                <tr>
-                    <td> 
-                        {{$i++}}                        
-                    </td>
-                    <td> 
-                    <a href="{{URL::route('report.case', ['id' => $detail->lab->tl_id])}}">
-                        {{$detail->tc_name}}</a>                     
-                    </td>
-                    <td> {{$detail->tsc_name}}</td>
-                    
-                    <td> 
-                    {{$detail->tf_name}}                     
-                    </td>
-                    <td>  
-                        {{isset($detail->lab->release_version)? $detail->lab->release_version : ""}}                         
-                    </td>
-                    <td>  
-                        {{$detail->status}}                         
-                    </td>
-                    <td> 
-                        {{isset($detail->lab->execution_type)? $detail->lab->execution_type : ""}}                         
-                         by  
-                        {{isset($detail->lab->executed_by)? $detail->lab->executed_by : ""}}                         
-                        at 
-                        {{isset($detail->lab->created_at)? date($exe_dt_format, strtotime($detail->lab->created_at)) : ""}}                                    
-                    </td>
-                  
-                    <td class="alert alert-{{$detail->lab->execution_result == 'Pass'? 'success' : ($detail->lab->execution_result == '' ? 'warning' : 'danger')}}"   > 
-                        {{$detail->lab->execution_result}} 
-                    </td>
-                    <td class="alert alert-{{$detail->lab->checkpoint_result == 'Pass'? 'success' : ($detail->lab->checkpoint_result == '' ? 'warning': ($detail->lab->checkpoint_result == 'none' ? 'error' : 'danger'))}}" > 
-                         {{$detail->lab->checkpoint_result == 'none' ? 'Not Defined' : $detail->lab->checkpoint_result}}
-                    </td>
-                    <td> 
-                        <a href="{{URL::route('report.lab', ['id' => $detail->tc_id] )}}">  <span class="glyphicon glyphicon-calendar"></span> Lab History
-                        </a>           
-                    </td>
-                </tr>
-                @endif
+                @foreach($lab_results as $sc)
+
+                    @foreach($sc->case as $detail)
+
+                    @if(isset($detail->lab))
+                    <tr>
+                        <td> 
+                            {{$i++}}                        
+                        </td>
+                        <td> 
+                        <a href="{{URL::route('report.case', ['id' => $detail->lab->tl_id])}}">
+                            {{$detail->tc_name}}
+                        </a>                     
+                        </td>
+                        <td>
+                            <a href="{{URL::route('report.scenario', ['id' => $sc->tsc_id])}}">
+                            {{$sc->tsc_name}}
+                            </a>
+                        </td>                        
+                        <td> 
+                            {{$detail->tf_name}}                     
+                        </td>
+                        <td>  
+                            {{isset($detail->lab->release_version)? $detail->lab->release_version : ""}}                         
+                        </td>
+                        <!-- <td>  
+                            {{$detail->status}}                         
+                        </td> -->
+                        <td> 
+                            {{isset($detail->lab->execution_type)? $detail->lab->execution_type : ""}}                         
+                             by  
+                            {{isset($detail->lab->executed_by)? $detail->lab->executed_by : ""}}                         
+                            at 
+                            {{isset($detail->lab->created_at)? date($exe_dt_format, strtotime($detail->lab->created_at)) : ""}}                                    
+                        </td>
+                      
+                        <td class="alert alert-{{$detail->lab->execution_result == 'Pass'? 'success' : ($detail->lab->execution_result == '' ? 'warning' : 'danger')}}"   > 
+                            {{$detail->lab->execution_result}} 
+                        </td>
+                        <td class="alert alert-{{$detail->lab->checkpoint_result == 'Pass'? 'success' : ($detail->lab->checkpoint_result == '' ? 'warning': ($detail->lab->checkpoint_result == 'none' ? 'error' : 'danger'))}}" > 
+                             {{$detail->lab->checkpoint_result == 'none' ? 'Not Defined' : $detail->lab->checkpoint_result}}
+                        </td>
+                        <td> 
+                            <a href="{{URL::route('report.lab', ['id' => $detail->tc_id] )}}">  <span class="glyphicon glyphicon-calendar"></span> Lab History
+                            </a>           
+                        </td>
+                    </tr>
+                    @endif
+                    @endforeach
+
                 @endforeach
             </tbody>
          </table>
