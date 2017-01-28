@@ -55,7 +55,7 @@ class ReportController extends Controller {
 
 		foreach ($lab_details as $key => $value) {
 
-			$tc = \App\Testcase::find($value->tc_id);
+			$tc = \App\TestCase::find($value->tc_id);
 			$value->tc = $tc;
 
 			$tsc = \App\TestScenario::select('tsc_name')->where('tsc_id' , $value->tsc_id)->get();
