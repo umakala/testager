@@ -44,7 +44,7 @@ public function index()
 	//$lab_details = [];
 	//$lab_details = \App\Lab::where('tp_id' , $id)->get();
 	
-	$sc_details = \App\TestScenario::where('tp_id' , $id)->orderBy('created_at','asc')->get();
+	$sc_details = \App\TestScenario::where('tp_id' , $id)->orderBy('seq_no','asc')->get();
 	
 	foreach ($sc_details as $sc_key => $sc_value) {
 	
