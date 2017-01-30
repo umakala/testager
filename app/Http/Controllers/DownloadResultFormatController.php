@@ -97,6 +97,9 @@ class DownloadResultFormatController extends Controller {
 		if($type == "scenario"){
 			$scenarios = \App\TestScenario::where('tsc_id', $id)->get() ;
 		}
+		if($type == "functionality"){
+			$scenarios = \App\TestScenario::where('tf_id', $id)->orderBy('seq_no', 'asc')->get() ;
+		}
 	/*	print_r($final_format);
 		exit;*/
 		foreach ($scenarios as $sc_value) {

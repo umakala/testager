@@ -44,7 +44,7 @@ public function index()
 	//$lab_details = [];
 	//$lab_details = \App\Lab::where('tp_id' , $id)->get();
 	
-	$sc_details = \App\TestScenario::where('tp_id' , $id)->orderBy('seq_no', 'asc')->get();
+	$sc_details = \App\TestScenario::where('tp_id' , $id)->orderBy('created_at','asc')->get();
 	
 	foreach ($sc_details as $sc_key => $sc_value) {
 	
@@ -58,6 +58,9 @@ public function index()
 
 	return view('testlab.lab', ['project' => $project, 'lab_details' => $sc_details]);	  	
 }
+
+
+
 
 /**
  * Show the form for creating a new resource.
@@ -124,6 +127,55 @@ public function showScenario($id)
 	}
 	return view('testlab.scenario_lab', ['cases' => $lab_cases, 'scenario' => $sc , 'tc_ids' => $tc_ids]);
 }
+
+public function showFunctionality($tf_id)
+{
+
+	$id = session()->get('open_project');
+	$project = \App\TestProject::find($id);
+	$project->functionalities = \App\TestFunctionality::where('tp_id' , $id)->count();
+	
+	//Query to get TOTAL COUNT
+	/*
+	$project->scenarios = \App\TestScenario::where('tp_id' , $id)->count();
+	$project->cases = \App\TestCase::where('tp_id' , $id)->count();
+	$project->steps = \App\TestStep::where('tp_id' , $id)->count();
+	*/
+
+	//Group by query to get count according to status 
+	$scenarios_counts =  \App\TestScenario::groupBy('status')->select('status', DB::raw('count(*) as count'))->where("tp_id" , $id)->get();
+
+	$cases_counts =  \App\TestCase::groupBy('status')->select('status', DB::raw('count(*) as count'))->where("tp_id" , $id)->get();
+
+	$steps_counts =  \App\TestStep::groupBy('status')->select('status', DB::raw('count(*) as count'))->where("tp_id" , $id)->get();
+	
+	$project->scenarios = $this->getCountFormat($scenarios_counts);
+	$project->cases = $this->getCountFormat($cases_counts);
+	$project->steps = $this->getCountFormat($steps_counts);
+
+	//DEBUG
+	//return ($project);
+	//Get details about test cases
+	//$lab_details = [];
+	//$lab_details = \App\Lab::where('tp_id' , $id)->get();
+	 $fn = \App\TestFunctionality::find($tf_id);
+	$sc_details = \App\TestScenario::where('tf_id' , $tf_id)->orderBy('seq_no','asc')->get();
+	
+	foreach ($sc_details as $sc_key => $sc_value) {
+	
+		$sc_value->case = \App\TestCase::where(['tp_id' => $id, 'tsc_id' => $sc_value->tsc_id])->orderBy('seq_no', 'asc')->get();
+		
+		foreach ($sc_value->case as $key => $value) {
+			$lab = \App\Lab::where('tc_id' , $value->tc_id)->orderBy('created_at', 'asc')->first();
+			$value->lab = $lab;
+		}
+	}
+
+	return view('testlab.functionality_lab', ['functionality' => $fn, 'project' => $project, 'lab_details' => $sc_details]);	
+	/*return view('testlab.functionality_lab', ['cases' => $lab_cases, 'scenario' => $sc , 'tc_ids' => $tc_ids]);*/
+}
+
+
 
 /**
  * Display the specified resource.

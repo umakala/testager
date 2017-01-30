@@ -111,35 +111,7 @@
 					<th>Execution Result</th>
 					<th>Checkpoint Result</th>
 					<th>
-					<script type="text/javascript">
-					/*function all() {
-						// body...
-						alert('all called');
-						var select_all = ocument.getElementById("select_all"); //select all checkbox
-						var checkboxes = document.getElementsByClassName("checkbox"); //checkbox items
-
-						//select all checkboxes
-						select_all.addEventListener("change", function(e){
-						    for (i = 0; i < checkboxes.length; i++) { 
-						        checkboxes[i].checked = select_all.checked;
-						    }
-						});
-
-						for (var i = 0; i < checkboxes.length; i++) {
-						    checkboxes[i].addEventListener('change', function(e){ //".checkbox" change 
-						        //uncheck "select all", if one of the listed checkbox item is unchecked
-						        if(this.checked == false){
-						            select_all.checked = false;
-						        }
-						        //check "select all" if all checkbox items are checked
-						        if(document.querySelectorAll('.checkbox:checked').length == checkboxes.length){
-						            select_all.checked = true;
-						        }
-						    });
-						}
-					}*/
-					</script>
-					 <input type="checkbox" id="select_all" name="select_all" title="Select all" onclick="checkAll(this)" />   
+					<input type="checkbox" id="select_all" name="select_all" title="Select all" onclick="checkAll(this)" />   
 
 					<button type="submit"  title="Select cases and Go to Testlab" > <span id="" class="glyphicon glyphicon-play-circle" ></span> Lab</button>
 					</th>

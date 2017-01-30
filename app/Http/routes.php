@@ -63,6 +63,8 @@ Route::resource('lab', 'TestLabController');
 Route::resource('defect', 'DefectController');
 Route::get('tsc_lab/{tsc_id}', array("as"=>"tsc_lab" , 'uses' =>'TestLabController@showScenario'));
 
+Route::get('tf_lab/{tf_id}', array("as"=>"tf_lab" , 'uses' =>'TestLabController@showFunctionality'));
+
 Route::post('sc_lab', array("as"=>"sc_lab" , 'uses' =>'TestLabController@store'));
 Route::post('step/reorder/{tc_id}', array("as"=>"step.reorder" , 'uses' =>'TestStepController@reorder'));
 Route::get('teststep/create/{tc_id}', array("as"=>"teststep.create" , 'uses' =>'TestStepController@create'));

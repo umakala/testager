@@ -30,7 +30,7 @@
     
 
              <div style="float:right">
-              <a  title="Download Result format Sheet" href="{{URL::route('format_download', ['type' => 'all'])}}"> <i class="glyphicon glyphicon-download"  ></i> Download Result Format
+              <a  title="Download Result format Sheet" href="{{URL::route('format_download', ['type' => 'functionality' , 'id' => $functionality->tf_id ])}}"> <i class="glyphicon glyphicon-download"  ></i> Download Result Format
                 </a>  
 
                  <a  data-toggle="modal" data-target="#uploadResultModal" title="Upload Results"> <i class="glyphicon glyphicon-upload"  ></i> Upload Results
