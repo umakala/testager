@@ -46,7 +46,7 @@
                     expandIcon: 'glyphicon glyphicon-chevron-right',
                     collapseIcon: 'glyphicon glyphicon-chevron-down',
                     enableLinks: true,
-                    levels :3,
+                    levels :2,
                     showTags: true,
                     data: defaultData
                   });
