@@ -60,7 +60,7 @@ class TestStepController extends Controller {
 		else{
 			if( session()->has('email')){
 				//Process when validations pass
-				$content['ts_id']                 	= $this->genrateRandomInt();				
+				$content['ts_id']                 	= $tc."_". $this->genrateRandomInt();				
 				$content['ts_name']                 = "";
 				$content['created_by'] 				= session()->get('email');
 		        $content['description']             = $request->description;
@@ -89,7 +89,7 @@ class TestStepController extends Controller {
 		        $execution_content['tl_id']			= 0;
 
 		        $execution_content['seq_no']		= $content['seq_no'];
-		        $execution_content['e_id']			= $this->genrateRandomInt();
+		        $execution_content['e_id']			= $content['ts_id']."_".$this->genrateRandomInt();
 		        $create 							= \App\Execution::create($execution_content);
 
 		        //return redirect()->route('profile', ['message' => ""]);

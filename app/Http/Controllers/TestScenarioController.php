@@ -31,7 +31,7 @@ class TestScenarioController extends Controller {
 		}
 		else{
 			$item = \App\TestScenario::find($request->tsc_id);
-			$item->tsc_id 	= $this->genrateRandomInt();
+			$item->tsc_id 	=  $request->tf_id."_". $this->genrateRandomInt();
 			$item->tf_id 	= $request->tf_id;				
 			$item->tp_id 	= session()->get('open_project');
 			$item->status 	= 'not_executed';
@@ -87,7 +87,7 @@ class TestScenarioController extends Controller {
 				//Process when validations pass
 				$content['tp_id']               	= session()->get('open_project');
 				$content['tf_id']               	= $request->tf_id;				
-				$content['tsc_id']                 	= $this->genrateRandomInt(4);		
+				$content['tsc_id']                 	= $request->tf_id."_".$this->genrateRandomInt(4);		
 				$content['tsc_name']                = $request->name;
 				$content['scenario_brief']          = "";
 				$content['description']             = $request->description;

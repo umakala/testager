@@ -31,7 +31,7 @@ class TestcaseController extends Controller {
 		}
 		else{
 			$case = \App\TestCase::find($request->tc_id);
-			$case->tc_id 	= $this->genrateRandomInt();
+			$case->tc_id 	= $request->tsc_id."_".$this->genrateRandomInt();
 			$case->tsc_id 	= $request->tsc_id;	
 			$case->tp_id 	= session()->get('open_project');
 			$case->status 	= 'not_executed';
@@ -91,7 +91,7 @@ class TestcaseController extends Controller {
 		else{
 			if( session()->has('email')){
 				//Process when validations pass then create test case
-				$content['tc_id']                 	= $this->genrateRandomInt();				
+				$content['tc_id']                 	= $request->tsc_id."_".$this->genrateRandomInt();				
 				$content['tc_name']                 = $request->name;
 				$content['created_by'] 				= session()->get('email');
 		        $content['description']             = $request->description;

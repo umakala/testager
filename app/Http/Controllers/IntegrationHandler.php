@@ -66,6 +66,7 @@ class IntegrationHandler extends Controller{
               $sc['scenario_brief'] 		   = $row['sceanrio_brief'];
               $sc['description'] 		       = $row['sceanrio_description'];
               $sc['expected_result'] 	     = $row['scenario_expected_result'];
+
               $sc['seq_no']             = $seq;
 
               $sc['tp_id'] 			= session()->get('open_project');
@@ -77,7 +78,7 @@ class IntegrationHandler extends Controller{
               }
               else
               {
-                  $sc_id = $sc['tsc_id'] = $this->genrateRandomInt();
+                  $sc_id = $sc['tsc_id'] = $fn_id."_".$this->genrateRandomInt();
                   \App\TestScenario::create($sc);
               }
           }
@@ -118,7 +119,7 @@ class IntegrationHandler extends Controller{
               }
               else
               {
-                  $tc_id = $tc['tc_id'] = $this->genrateRandomInt();
+                  $tc_id = $tc['tc_id'] = $sc_id."_". $this->genrateRandomInt();
                   $tc['status'] = 'not_executed';        		
                   \App\TestCase::create($tc);
               }
@@ -143,7 +144,7 @@ class IntegrationHandler extends Controller{
 
           //$check          =  \App\TestStep::where($ts)->first();        
           //echo "its null";
-          $ts_id = $ts['ts_id'] = $this->genrateRandomInt();
+          $ts_id = $ts['ts_id'] = $tc_id."_".$this->genrateRandomInt();
           $ts['status']         = 'not_executed';
           $ts['created_by']     = session()->get('email');
           $ts['seq_no']         = $seq;
@@ -202,7 +203,7 @@ class IntegrationHandler extends Controller{
           $execution_content['tc_id']         = $tc_id;
           $execution_content['tp_id']         = session()->get('open_project');
           $execution_content['ts_id']         = $ts_id;
-          $execution_content['e_id']          = $this->genrateRandomInt(8);
+          $execution_content['e_id']          = $ts_id."_".$this->genrateRandomInt(8);
 
           \App\Execution::create($execution_content); 
       }
@@ -230,7 +231,7 @@ public function handleTeststep  ($row, $tc_id, $ts_id, $seq)
           if($check == null)
           {
         		//echo "its null";
-              $ts_id = $ts['ts_id'] = $this->genrateRandomInt();
+              $ts_id = $ts['ts_id'] = $tc_id."_".$this->genrateRandomInt();
               $ts['status']         = 'not_executed';
               $ts['created_by']     = session()->get('email');
               $ts['seq_no']         = $seq;
@@ -287,7 +288,7 @@ return $ts_id;
               $sc['tp_id']      = session()->get('open_project');
               $sc['tf_id']      = $fn_id;
               $sc_check         =  \App\TestScenario::where($sc)->first();
-          //print_r($sc_check);
+              //print_r($sc_check);
               if($sc_check!= null && $sc_check->exists == 1)  {
                   $sc_id  = $sc_check->tsc_id;
               }
