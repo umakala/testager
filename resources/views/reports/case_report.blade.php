@@ -40,21 +40,34 @@
                         <div class="row">                    
                             <div  class="col-lg-6" >Functionality
                             </div>
-                            <div  class="col-lg-6" ><strong> {{$execution_results->tf_name}} / </strong>
+                            <div  class="col-lg-6" ><strong> 
+                            <a href="{{URL::route('report.functionality', ['id' => $execution_results->lab->tf_id])}}">
+
+                            {{$execution_results->tf_name}} / 
+                            </a>
+                            </strong>
                             </div>
                         </div>
 
                           <div class="row">                    
                             <div  class="col-lg-6" >Scenario
                             </div>
-                            <div  class="col-lg-6" ><strong> {{$execution_results->tsc_name}} / </strong>
+                            <div  class="col-lg-6" ><strong> 
+<a href="{{URL::route('report.scenario', ['id' => $execution_results->lab->tsc_id])}}">
+ 
+{{$execution_results->tsc_name}} / </a></strong>
                             </div>
                         </div>
 
                           <div class="row">                    
                             <div  class="col-lg-6" >Testcase
                             </div>
-                            <div  class="col-lg-6" ><strong> {{$execution_results->case->tc_name}} </strong>
+                            <div  class="col-lg-6" ><strong>
+<a href="{{URL::route('report.lab', ['id' => $execution_results->lab->tc_id])}}">
+                            {{$execution_results->case->tc_name}} 
+                            </a>
+
+                            </strong>
                             </div>
                         </div>
 

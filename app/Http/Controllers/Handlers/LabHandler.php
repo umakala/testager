@@ -38,6 +38,7 @@ class LabHandler extends Controller{
     		if($case_count != 0){
 		   		$excel_data['Scenario ID']   = '';
 				$excel_data['Scenario Name'] = '';
+				$excel_data['Scenario Description'] = '';				
 				$excel_data['Scenario Result']   = '';
 		   	}
 		   	$case_count++;
@@ -52,8 +53,10 @@ class LabHandler extends Controller{
 	        			$excel_data['Scenario ID']   = '';
 						$excel_data['Scenario Name'] = '';
 						$excel_data['Scenario Result']   = '';
+						$excel_data['Scenario Description'] = '';				
 	        			$excel_data['Test Case ID'] = '';
 	    		   		$excel_data['Test Case Name'] = '';
+	    		   		$excel_data['Test Case Description'] = '';
 	    		   		$excel_data['Case Result'] = '';
 	    		   	}
 	    		   	$excel_data = $this->createExecutionByStep($ts_value, $tl_id, $excel_data);
@@ -97,6 +100,7 @@ class LabHandler extends Controller{
 		$c_lab 						=\App\Lab::create($lab);
 		$excel_data['Test Case ID'] =  $lab['tl_id'];
    		$excel_data['Test Case Name'] = $case['tc_name'];
+	    $excel_data['Test Case Description'] = $case['description'];
    		$excel_data['Case Result'] = '';
 
 		return $excel_data;

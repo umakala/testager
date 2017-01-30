@@ -76,9 +76,9 @@
                                 {{$i++}}                        
                             </td>
                             <td> 
-                                
+                                <a href="{{URL::route('report.functionality', ['id' => $fn->tf_id])}}" title="All test Labs for {{$fn->tf_name}} "> 
                                 {{$fn->tf_name}}                    
-                            
+                                </a>
                             </td>
                             <td>
                                {{ isset($fn->testcases['total']) ? $fn->testcases['total'] : 0 }}
@@ -119,17 +119,22 @@
 
 
         <div class="panel-body"  id ="top">
-             <div class="panel-title" style="font-weight: bold; padding-bottom: 10px;" > Testcase Details
+             <div class="panel-title" style="padding-bottom: 10px;" > Testcase Details 
              <p  onclick="hideSummary()" style="float:right">
               <a data-toggle="collapse" data-parent="#panel" href="#summary_body" class="panel-toggle">
                 <span class="glyphicon glyphicon-filter"  id="icontoggle"></span><span style="font-style: bold; font-size: 14px; padding: 5px;" >Filters</span>
               </a>
             </p>
+            <p  style="float:right">
+              <a href="{{URL::route('report.index')}}" >
+                <span class="glyphicon glyphicon-show"  id="icontoggle"></span><span style="font-size: 14px; padding: 5px;" >Show all Labs Report</span>
+              </a>
+            </p>
+
         </div>
         
          <div id="summary_body" class="panel-collapse collapse"  >
             <div class="panel-body" style="font-size:12px">        
-
                 <div class="row">
                     <div class="col-lg-6">
                    <!--  <form action="{{URL::route('download.store', ['id' => ''])}}" method ="POST" class="">
@@ -194,7 +199,9 @@
                             </a>
                         </td>                        
                         <td> 
-                            {{$detail->tf_name}}                     
+                            <a href="{{URL::route('report.functionality', ['id' => $sc->tf_id])}}">                            
+                            {{$detail->tf_name}}  
+                            </a>                   
                         </td>
                         <td>  
                             {{isset($detail->lab->release_version)? $detail->lab->release_version : ""}}                         

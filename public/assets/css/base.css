@@ -133,6 +133,11 @@ select + div > button:hover {
 
 a {
 	color: #555;
+	font-variant: small-caps; 
+}
+
+a:hover {
+	color: #23527c;    
 }
 
 .nav-tabs {

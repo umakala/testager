@@ -76,10 +76,16 @@
                     <a href="{{URL::route('report.case', ['id' => $detail->tl_id])}}">
                         {{$detail->case[0]->tc_name}}</a>                     
                     </td>
-                    <td> {{$detail->tsc_name}}</td>
+                    <td> 
+ <a href="{{URL::route('report.scenario', ['id' => $detail->tsc_id])}}">
+                    {{$detail->tsc_name}}
+</a>
+                    </td>
                     
                     <td> 
+ <a href="{{URL::route('report.functionality', ['id' => $detail->tf_id])}}">
                         {{$detail->tf_name}}                     
+                  </a>  
                     </td>
                     <td>  
                         {{$detail->release_version}}                         
