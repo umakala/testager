@@ -16,8 +16,8 @@ class CloneHandler  extends Controller{
 		foreach ($collection as $value) {
 	        //clone all cases for this testcase
 	        //echo "Cloning case -  ".$value['tc_name']."<br/>";
-	        $old_tsc_id 		= $value['tsc_id'] ;
-			$value['tsc_id']= $this->genrateRandomInt();
+	        $old_tsc_id 	= $value['tsc_id'] ;
+			$value['tsc_id']= $to_tf_id."_".$this->genrateRandomInt();
 			$value['tf_id']	= $to_tf_id;
 			$value['tp_id'] = session()->get('open_project');
 			$value['status']= 'not_executed';
@@ -43,7 +43,7 @@ class CloneHandler  extends Controller{
 	        //echo "Cloning case -  ".$value['tc_name']."<br/>";
 
 	        $old_tc_id 		= $value['tc_id'] ;
-			$value['tc_id'] = $this->genrateRandomInt();
+			$value['tc_id'] = $to_tsc_id."_".$this->genrateRandomInt();
 			$value['tsc_id']= $to_tsc_id;
 			$value['tp_id'] = session()->get('open_project');
 			$value['status']= 'not_executed';
@@ -64,7 +64,7 @@ class CloneHandler  extends Controller{
 		foreach ($steps as $value) {
 	        //clone all steps for this testcase
 	        $old_ts_id = $value['ts_id'] ;
-			$value['ts_id'] = $this->genrateRandomInt();
+			$value['ts_id'] = $to_tc_id."_".$this->genrateRandomInt();
 			$value['tc_id'] = $to_tc_id;
 			$value['tp_id'] = session()->get('open_project');
 			$value['status']= 'not_executed';
@@ -73,7 +73,7 @@ class CloneHandler  extends Controller{
 
 	        //Add entry in execution table for this step
 			$exe 			= \App\Execution::where(['ts_id' => $old_ts_id, 'tl_id' => 0 ])->get()->toArray();
-			$exe[0]['e_id'] 	= "0_".$this->genrateRandomInt(8);
+			$exe[0]['e_id'] 	= $value['ts_id']."_".$this->genrateRandomInt(8);
 			$exe[0]['ts_id'] 	= $value['ts_id'] ;
 			$exe[0]['tp_id'] 	= session()->get('open_project');
 			$exe[0]['tc_id'] 	= $value['tc_id'] ;
