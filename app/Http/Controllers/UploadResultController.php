@@ -69,20 +69,21 @@ class UploadResultController extends Controller {
 						if(isset($row['scenario_id'])){
 							$sc_result = $row['scenario_result'];
 							if($sc_result == "" || $sc_result == null)
-								$sc_result = "not_executed";
+								$sc_result = "";
 							$update_sc = [ 'result' => $sc_result, 
 											'execution_type' => 'manual',
 											'execution_by' => $email ];
 							\App\ScenarioLab::find($row['scenario_id'])->update($update_sc);
 						}
 						if(isset($row['test_case_id'])){
+							$exe_result = "";
 							if(isset($row['case_result']) && ($row['case_result']) != ""){
 								$tc_result = $row['case_result'];
 							}else
 							{
 								 $tc_result = $sc_result;
 							}
-							$update_case = [ 'execution_result' => 'Pass' , 
+							$update_case = [ 'execution_result' =>$tc_result, 
 											 'checkpoint_result' =>  $tc_result, 
 											 'tc_status' => 'executed',  
 											 'execution_type' => 'manual', 
@@ -98,7 +99,7 @@ class UploadResultController extends Controller {
 							{
 								$step_result = $tc_result;
 							}
-							$update_step = ['execution_result' => 'Pass' , 
+							$update_step = ['execution_result' => $step_result , 
 											 'checkpoint_result' =>  $step_result, 
 											 'execution_by' => $email, 
 											 'execution_by_name' => $email];				

@@ -108,7 +108,7 @@
         <div class="col-lg-3 col-sm-4" style="padding-right: 0px">
         <div class="hamburger">
             <ul class="hamburgerMenu">
-                <a href="{{URL::route('profile')}}">
+                <a href="{{URL::route('project.show', ['id' => session()->get('open_project')])}}">
                     <li style="background-color:#7d4627;font-size: 16px; font-weight: bold ">
                       AUTOMANAGER  <span id="" class="glyphicon glyphicon-menu-hamburger hamburgerIcons" onclick="toggleHamburger()"></span>               
                   </li>      

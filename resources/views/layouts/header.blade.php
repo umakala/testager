@@ -11,7 +11,7 @@
             <b class="caret" style="color: #000;"></b>
         </a>
     </span>
-    <a href="{{URL::route('project.show', ['id' => session()->get('open_project')])}}">      
+    <a href="{{URL::route('profile')}}">      
         <span class="highlights">
           Hi {{session()->get('name')}}
         </span>

@@ -80,31 +80,31 @@
                                 {{$fn->tf_name}}                    
                                 </a>
                             </td>
-                            <td>
+                            <td class="alert alert-info">
                                {{ isset($fn->testcases['total']) ? $fn->testcases['total'] : 0 }}
                             </td>
-                            <td>
+                            <td class="alert alert-success">
                                {{ isset($fn->testcases['pass']) ? $fn->testcases['pass'] : 0 }}
                                                              
                             </td>
-                            <td>
+                            <td class="alert alert-danger">
                                {{ isset($fn->testcases['fail']) ? $fn->testcases['fail'] : 0 }}                               
                             </td>
-                            <td>
+                            <td class="alert alert-error">
                                {{ isset($fn->testcases['not_executed']) ? $fn->testcases['not_executed'] : 0 }}                               
                             </td>
-                            <td>
+                            <td class="alert alert-info">
                                {{ isset($fn->teststeps['total']) ? $fn->teststeps['total'] : 0 }}                                
                             </td>
-                            <td>
+                            <td  class="alert alert-success">
                                {{ isset($fn->teststeps['pass']) ? $fn->teststeps['pass'] : 0 }}
                                 
                             </td>
-                            <td>
+                            <td  class="alert alert-danger">
                                {{ isset($fn->teststeps['fail']) ? $fn->teststeps['fail'] : 0 }}
                                 
                             </td>
-                             <td>
+                             <td  class="alert alert-error">
                                {{ isset($fn->teststeps['not_executed']) ? $fn->teststeps['not_executed'] : 0 }}
                                 
                             </td>
@@ -217,10 +217,10 @@
                             {{isset($detail->lab->created_at)? date($exe_dt_format, strtotime($detail->lab->created_at)) : ""}}                                    
                         </td>
                       
-                        <td class="alert alert-{{$detail->lab->execution_result == 'Pass'? 'success' : ($detail->lab->execution_result == '' ? 'warning' : 'danger')}}"   > 
+                        <td class="alert alert-{{$detail->lab->execution_result == 'Pass'? 'success' : ( ($detail->lab->execution_result == 'not_executed'  || $detail->lab->execution_result == '')  ? 'warning' : 'danger')}}"   > 
                             {{$detail->lab->execution_result}} 
                         </td>
-                        <td class="alert alert-{{$detail->lab->checkpoint_result == 'Pass'? 'success' : ($detail->lab->checkpoint_result == '' ? 'warning': ($detail->lab->checkpoint_result == 'none' ? 'error' : 'danger'))}}" > 
+                        <td class="alert alert-{{$detail->lab->checkpoint_result == 'Pass'? 'success' : ($detail->lab->checkpoint_result == '' || $detail->lab->checkpoint_result == 'not_executed' ? 'warning': ($detail->lab->checkpoint_result == 'none' ? 'error' : 'danger'))}}" > 
                              {{$detail->lab->checkpoint_result == 'none' ? 'Not Defined' : $detail->lab->checkpoint_result}}
                         </td>
                         <td> 
