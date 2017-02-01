@@ -21,23 +21,16 @@
             </p>
 
 
-             <div class="panel-body">
+        
+
+    <!--         <div class="panel-body">
             <p  onclick="hideSummary()">
               <a data-toggle="collapse" data-parent="#panel" href="#summary_body" class="panel-toggle">
                 <span class="glyphicon glyphicon-eye-close"  id="icontoggle"></span><span style="font-style: bold; font-size: 16px; padding: 5px;" >Summary</span>
               </a>
             </p>
-    
 
-             <div style="float:right">
-              <a  title="Download Result format Sheet" href="{{URL::route('format_download', ['type' => 'all'])}}"> <i class="glyphicon glyphicon-download"  ></i> Download Result Format
-                </a>  
-
-                 <a  data-toggle="modal" data-target="#uploadResultModal" title="Upload Results"> <i class="glyphicon glyphicon-upload"  ></i> Upload Results
-                </a> 
-                </div>
-
-            </div>
+          </div>
         
          <div id="summary_body" class="panel-collapse collapse">
             <div class="panel-body">        
@@ -158,18 +151,51 @@
                     </div>             
                 </div>
             </div>
+        </div> -->
+
+    <div class="panel-body" style="padding-bottom:20px;">
+
+        <div class="col-lg-6 panel-title"  >
+
+            <div class="row">
+                    <h4 style="font-style: bold;  padding: 5px;" >Manual Testing</h4>
+            </div>
+            <div class="row">
+         <div >
+         <div class="col-lg-6">
+             
+          <a  title="Download Result format Sheet" href="{{URL::route('format_download', ['type' => 'all'])}}"> <i class="glyphicon glyphicon-download"  ></i> Download Result Format
+            </a>  
+            </div>
+            <div class="col-lg-6">
+             
+             <a  data-toggle="modal" data-target="#uploadResultModal" title="Upload Results"> <i class="glyphicon glyphicon-upload"  ></i> Upload Manual Results
+            </a> 
+            </div>
+            </div>
+            </div>
         </div>
+ 
+            <div class="col-lg-6 panel-title">
+
+            <div class="row">
+                 <h4 style="font-style: bold;  padding: 5px;" >Automation Testing</h4>
+            </div>
+            <div class="row" >
+            <?php $tc_ids = $project->tp_id ?>  
+             <div class="col-lg-6">
+               <a  data-toggle="modal" data-target="#downloadModal" title="Download Excel"> <i class="glyphicon glyphicon-cloud-download"  ></i> Download Execution Script
+            </a>    
+            </div>
+             <div class="col-lg-6">
+            <a href="{{URL::route('execute.show', ['id' => $project->tp_id])}}"> <span id="" class="glyphicon glyphicon-play-circle"></span> Execute Automation</a>
+            </div>
+         </div>
+         </div>
+    </div>
 
         <div class="panel-body">
              <div class="panel-title" style="font-style: bold; padding-bottom: 10px;" > All Testcases 
-            
-             <div style="float:right">
-                <?php $tc_ids = $project->tp_id ?>  
-
-                <a  data-toggle="modal" data-target="#downloadModal" title="Download Excel"> <i class="glyphicon glyphicon-cloud-download"  ></i> Download
-                </a>        
-                <a href="{{URL::route('execute.show', ['id' => $project->tp_id])}}"> <span id="" class="glyphicon glyphicon-play-circle"></span> Execute</a>
-             </div>
              
         </div>
         @include('modals.download_modal')

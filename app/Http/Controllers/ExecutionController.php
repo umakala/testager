@@ -57,7 +57,7 @@ class ExecutionController extends Controller{
 			}
 			$call_from = "lab";
 		}else{
-			$ids 			= explode("_",$id,-1);			
+			$ids 			= explode($this->getDelimiterChar(),$id,-1);			
 		}
 		
 		$cases 			= [];

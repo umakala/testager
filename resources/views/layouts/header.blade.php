@@ -47,13 +47,8 @@
 
 
     <!-- Test lab dropdown options  -->
-    <span class="btn headerButt dropdown">
-     <!--  <ul class="dropdown-menu">
-            <li > <a href="{{url('lab')}}" style="">
-                 Lab
-            </a></li>
-        </ul>  <b class="caret" style="color: #000;"></b>-->                  
-        <a href="{{url('lab')}}" ><!--  data-toggle="dropdown" class="dropdown-toggle">   -->    
+    <span class="btn headerButt dropdown"> 
+        <a href="{{url('lab')}}" >
             Testlab 
         </a>
     </span>

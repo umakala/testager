@@ -25,6 +25,12 @@ abstract class Controller extends BaseController {
 		return \Config::get($value);
 	}
 
+	public function getDelimiterChar($value='')
+	{
+		return ".";
+	}
+
+
 	public function getCountFormatLabs($scenarios_counts, $key)
 	{
 		$ary['total'] = 0;

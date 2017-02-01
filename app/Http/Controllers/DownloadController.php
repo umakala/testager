@@ -66,7 +66,7 @@ class DownloadController extends Controller {
 					$ids[] = $value['tc_id'];
 				}
 			}else{
-				$ids 			= explode("_",$id,-1);			
+				$ids 			= explode($this->getDelimiterChar(),$id,-1);			
 			}
 			
 			$count 			= count($ids);

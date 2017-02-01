@@ -98,11 +98,12 @@ public function store(Request $request)
 			return redirect()->back();	
 		}
 		else{
-			foreach ($request->except('tsc_id', 'select_all') as $check_key => $check_value) {
-
-				$testcase 	= explode('_', $check_key);
-				$id 		= $testcase[1];
-				$tc_ids		= $tc_ids.$id."_";
+			//print_r($request->all()); exit;
+			foreach ($request->except('tsc_id', 'select_all', 'type') as $check_key => $check_value) {
+				//echo $check_key; exit;
+				//$testcase 	= explode('.', $check_key);
+				$id 		= $check_key ; //$testcase[1];
+				$tc_ids		= $tc_ids.$id.$this->getDelimiterChar();
 				$case = \App\TestCase::find($id);		
 				$steps_counts =  \App\TestStep::groupBy('status')->select('status', DB::raw('count(*) as count'))->where("tc_id" , $id)->get();
 
