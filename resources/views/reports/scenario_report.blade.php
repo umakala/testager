@@ -107,11 +107,11 @@
                         {{$detail->executed_by}} at {{date($exe_dt_format, strtotime($detail->created_at))}}               
                     </td>
                   
-                    <td class="alert alert-{{$detail->execution_result == 'Pass'? 'success' : ($detail->execution_result == '' ? 'warning' : 'danger')}}"   > 
-                        {{$detail->execution_result}} 
+                    <td class="alert alert-{{$detail->lab->execution_result == 'Pass'? 'success' : ($detail->lab->execution_result == '' || $detail->lab->execution_result == 'none' ? 'warning' : 'danger')}}"   > 
+                        {{$detail->lab->execution_result}} 
                     </td>
-                    <td class="alert alert-{{$detail->checkpoint_result == 'Pass'? 'success' : ($detail->checkpoint_result == '' ? 'warning': ($detail->checkpoint_result == 'none' ? 'error' : 'danger'))}}" > 
-                         {{$detail->checkpoint_result == 'none' ? 'Not Defined' : $detail->checkpoint_result}}
+                    <td class="alert alert-{{$detail->lab->checkpoint_result == 'Pass'? 'success' : ($detail->lab->checkpoint_result == '' ? 'warning': ($detail->lab->checkpoint_result == 'none' ? 'error' : 'danger'))}}" > 
+                         {{$detail->lab->checkpoint_result == 'none' ? 'Not Defined' : $detail->lab->checkpoint_result}}
                     </td>
                     <td> 
                         <a href="{{URL::route('report.lab', ['id' => $detail->tc_id] )}}">  <span class="glyphicon glyphicon-calendar"></span> Lab History

@@ -99,7 +99,7 @@ class UploadResultController extends Controller {
 							{
 								$step_result = $tc_result;
 							}
-							$update_step = ['execution_result' => $step_result , 
+							$update_step = ['execution_result' => $step_result, 
 											 'checkpoint_result' =>  $step_result, 
 											 'execution_by' => $email, 
 											 'execution_by_name' => $email];				
