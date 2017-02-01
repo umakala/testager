@@ -68,7 +68,7 @@ class UploadResultController extends Controller {
 						//print_r($row); exit;
 						if(isset($row['scenario_id'])){
 							$sc_result = $row['scenario_result'];
-							if($sc_result == "")
+							if($sc_result == "" || $sc_result == null)
 								$sc_result = "not_executed";
 							$update_sc = [ 'result' => $sc_result, 
 											'execution_type' => 'manual',
