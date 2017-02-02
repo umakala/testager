@@ -209,9 +209,16 @@ class TestcaseController extends Controller {
 				Toast::message($message, 'danger');
 			}  else{      	
 	        	//Delete testcase
-	        	$item->delete();
-				$message = $this->getMessage('messages.delete_success');
-				Toast::success($message);
+        		$del_res = $del_obj->deleteLabByCaseId($id);
+				if($del_res == 0)
+				{
+					$message = $this->getMessage('messages.delete_failed');
+					Toast::message($message, 'danger');
+				}  else{
+		        	$item->delete();
+					$message = $this->getMessage('messages.delete_success');
+					Toast::success($message);
+				}
 			}
         }
 		else{

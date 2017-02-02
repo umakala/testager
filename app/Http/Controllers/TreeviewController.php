@@ -41,6 +41,7 @@ class TreeviewController extends Controller {
 				$f_node = array();
 				$f_node['text'] = $functionality->tf_name;
 				$f_node['href'] = route('functionality.show' , ['id' => $functionality->tf_id] );
+				$f_node['title']  = $functionality->description;;
 				$f_node['tags']  = [$tsc_count];
 				$f_node['backColor']  = '#c9d8c5';
 
@@ -52,6 +53,7 @@ class TreeviewController extends Controller {
 					$s_node = array();
 					$s_node['text'] = $scenario->tsc_name;
 					$s_node['href'] = route('scenario.show' , ['id' => $scenario->tsc_id] );
+					$s_node['help']  = $scenario->description;
 					$s_node['tags']  = [$tc_count];
 					$s_node['backColor']  = '#e9ece5';
 			
@@ -60,6 +62,8 @@ class TreeviewController extends Controller {
 						$ts_count = count($teststeps);
 						$c_node = array();
 						$c_node['text'] = $case->tc_name;	
+						$c_node['tooltip']  = $case->description;
+
 						$c_node['href'] = route('testcase.show' , ['id' => $case->tc_id] );
 						$c_node['tags']  = [$ts_count];
 

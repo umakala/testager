@@ -18,10 +18,8 @@
                <tr>
                   <th style="max-width:10px">#</th>
                   <th style="min-width:150px">Case Name</th>
+                  <th style="max-width:150px">Description</th>
                   <th style="max-width:100px">Status</th>
-               <th style="max-width:100px">Execution type</th>
-               <th>Execution Result</th>
-               <th>Checkpoint Result</th>
                <th>
                <input type="checkbox" id="select_all" name="select_all" title="Select all" onclick="checkAll(this)" />   
 
@@ -42,17 +40,11 @@
                   <a href="{{URL::route('testcase.show', ['id' => $detail->tc_id])}}"> <span id="" class="glyphicon glyphicon-eye-open"></span>
                      {{$detail->tc_name}}</a>               
                   </td>
-                  <td class="alert alert-warning">  
-                     {{$detail->status}}                    
+                  <td>  
+                     {{$detail->description}}                    
                   </td>
-                  <td> 
-                     {{$detail->execution_type}}
-                  </td>
-                  <td> 
-                     {{$detail->execution_result}} 
-                  </td>
-                  <td> 
-                     {{$detail->checkpoint_result}}  
+                  <td  class="alert alert-warning"> 
+                     {{$detail->status}}
                   </td>
                   
                   <td> 

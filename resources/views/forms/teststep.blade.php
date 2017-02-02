@@ -93,18 +93,26 @@
           
           </div>
 
-           <div class="col-sm-12 col-lg-6">  
+           <div class="col-sm-12 col-lg-6">
+
+           <div class="form-group"> 
+                    <label for="title" class="control-label col-xs-3">Index</label>
+                    <div class="col-xs-9">            
+                       <input type="text" class="form-control" value="{{old('index')}}" id="index"  name="index" placeholder="">
+                       <div class="help-line" id="name-help"></div>
+                   </div>
+          </div>
+          <div class="form-group"> 
+                    <label for="title" class="control-label col-xs-3">Text</label>
+                    <div class="col-xs-9">            
+                       <input type="text" class="form-control" value="{{old('text')}}" id="text"  name="text" placeholder="">
+                       <div class="help-line" id="name-help"></div>
+                   </div>
+          </div>                       
           <div class="form-group"> 
                     <label for="title" class="control-label col-xs-3">Resource-ID</label>
                     <div class="col-xs-9">            
                        <input type="text" class="form-control" value="{{old('resource_id')}}" id="resource_id"  name="resource_id" placeholder="">
-                       <div class="help-line" id="name-help"></div>
-                   </div>
-          </div>
-            <div class="form-group"> 
-                    <label for="title" class="control-label col-xs-3">Content-desc</label>
-                    <div class="col-xs-9">            
-                       <input type="text" class="form-control" value="{{old('content_desc')}}" id="content_desc"  name="content_desc" placeholder="">
                        <div class="help-line" id="name-help"></div>
                    </div>
           </div>
@@ -115,21 +123,15 @@
                        <div class="help-line" id="name-help"></div>
                    </div>
           </div>
-           
           <div class="form-group"> 
-                    <label for="title" class="control-label col-xs-3">Text</label>
+                    <label for="title" class="control-label col-xs-3">Content-desc</label>
                     <div class="col-xs-9">            
-                       <input type="text" class="form-control" value="{{old('text')}}" id="text"  name="text" placeholder="">
+                       <input type="text" class="form-control" value="{{old('content_desc')}}" id="content_desc"  name="content_desc" placeholder="">
                        <div class="help-line" id="name-help"></div>
                    </div>
-          </div>
-           <div class="form-group"> 
-                    <label for="title" class="control-label col-xs-3">Index</label>
-                    <div class="col-xs-9">            
-                       <input type="text" class="form-control" value="{{old('index')}}" id="index"  name="index" placeholder="">
-                       <div class="help-line" id="name-help"></div>
-                   </div>
-          </div>
+          </div>           
+
+
 
    
 

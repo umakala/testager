@@ -93,7 +93,7 @@ class UploadResultController extends Controller {
 						}
 
 						if(isset($row['test_step_id'])){
-							if(isset($row['step_result']) && ($row['step_result']) != ""){
+							if(isset($row['step_result']) && ($row['step_result'] != "" || $row['step_result'] != null )){
 								$step_result = $row['step_result'];
 							}else
 							{

@@ -49,6 +49,14 @@
 			<p>
 				Status : {{$case->status}} <!-- by {{$case->created_by}} -->
 			</p> 
+
+
+	 	<ol class="breadcrumb">
+	 	<li><a href="{{URL::route('scenario.show' , ['id' => $case->tsc_id] )}}">Scenario {{$case->tsc_name}}</a></li>
+          <li><a href="{{URL::route('testcase.show' , ['id' => $case->tc_id] )}}">{{$case->tc_name}}</a></li>
+        </ol>
+
+
 		</div>
 
 		<div class="panel-body">
@@ -124,7 +132,7 @@
             @foreach($case->steps as $step)
                 <tr>
                     <td class="col-sm-1">
-                     <input type="number" name="{{$step->ts_id}}" id="{{'input'.$step->seq_no}}" value="{{$step->seq_no}}"  onkeypress='return event.charCode >= 48 && event.charCode <= 57' style="width: 40px; border:none;"   min="1"  max="{{count($case->steps)}}" onchange="validate_order(this.value)">
+                     <input type="number" name="{{$step->ts_id}}" id="{{'input'.$step->seq_no}}" value="{{$step->seq_no}}"  onkeypress='return event.charCode >= 48 && event.charCode <= 57' style="width: 40px; border:none;"   min="1"  onchange="validate_order(this.value)">
                     </td>
                     <td class="col-sm-3" >
                      <a style="margin-right: 10px" href="{{URL::route('teststep.show' , ['id' => $step->ts_id])}}">{{$step->description}} </a>

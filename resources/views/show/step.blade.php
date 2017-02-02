@@ -12,7 +12,6 @@
 
 	        	<a data-toggle="modal" data-target="#deleteModal" title="Delete Testcase"> <i class="glyphicon glyphicon-trash"  ></i>
         		</a>
-
 	 		</p>
 			 
 			 <p>
@@ -28,6 +27,13 @@
  			<p>
 	        	Status : {{$step->status}} 
 	 		</p>
+
+
+	 	<ol class="breadcrumb">
+          <li><a href="{{URL::route('testcase.show' , ['id' => $step->tc_id] )}}">Case {{$step->tc_name}}</a></li>
+          <li class="active">  <a href="{{URL::route('teststep.show' , ['id' => $step->ts_id] )}}">Teststep</a></li>
+        </ol>
+
 
         <div class="panel-body">		
         <div class="panel-title" style="font-style: italic; padding-bottom: 10px;" > Expected Result 	</div>

@@ -45,8 +45,9 @@ class DeleteQueryHandler {
 
         	}
 
-        	//Delete associated teststeps       	
-        	$scs = \App\TestScenario::where('tf_id' , $id)->delete();		
+        	//Delete associated teststeps        	     	
+        	$scs = \App\TestScenario::where('tf_id' , $id)->delete();
+
 		}catch(Exception $e)
 		{
 			return 0;
@@ -71,7 +72,7 @@ class DeleteQueryHandler {
     		   	$this->deleteLabByCaseId($tc_id);
         	}
 
-        	//Delete associated teststeps       	
+        	//Delete associated testcases      	
         	$case = \App\TestCase::where('tsc_id' , $id)->delete();	
 
 

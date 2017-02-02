@@ -25,8 +25,6 @@
           <li class="active">  <a href="{{URL::route('teststep.show' , ['id' => $step->ts_id] )}}">Teststep</a></li>
         </ol>
 
-
-
          <div class="panel-body">      
         <div class="col-sm-12 col-lg-6">                                      
                <div class="form-group">                
@@ -101,29 +99,16 @@
           
           </div>
 
-           <div class="col-sm-12 col-lg-6">  
+          <div class="col-sm-12 col-lg-6">  
+          
           <div class="form-group"> 
-                    <label for="title" class="control-label col-xs-3">Resource-ID</label>
+                    <label for="title" class="control-label col-xs-3">Index</label>
                     <div class="col-xs-9">            
-                       <input type="text" class="form-control" value="{{$execution->resource_id}}" id="resource_id"  name="resource_id" placeholder="">
+                       <input type="text" class="form-control" value="{{$execution->index}}" id="index"  name="index" placeholder="">
                        <div class="help-line" id="name-help"></div>
                    </div>
           </div>
-            <div class="form-group"> 
-                    <label for="title" class="control-label col-xs-3">Content-desc</label>
-                    <div class="col-xs-9">            
-                       <input type="text" class="form-control" value="{{$execution->content_desc}}" id="content_desc"  name="content_desc" placeholder="">
-                       <div class="help-line" id="name-help"></div>
-                   </div>
-          </div>
-           <div class="form-group"> 
-                    <label for="title" class="control-label col-xs-3">Class</label>
-                    <div class="col-xs-9">            
-                       <input type="text" class="form-control" value="{{$execution->class}}" id="class"  name="class" placeholder="">
-                       <div class="help-line" id="name-help"></div>
-                   </div>
-          </div>
-           
+
           <div class="form-group"> 
                     <label for="title" class="control-label col-xs-3">Text</label>
                     <div class="col-xs-9">            
@@ -131,13 +116,34 @@
                        <div class="help-line" id="name-help"></div>
                    </div>
           </div>
-           <div class="form-group"> 
-                    <label for="title" class="control-label col-xs-3">Index</label>
+
+
+          <div class="form-group"> 
+                    <label for="title" class="control-label col-xs-3">Resource-ID</label>
                     <div class="col-xs-9">            
-                       <input type="text" class="form-control" value="{{$execution->index}}" id="index"  name="index" placeholder="">
+                       <input type="text" class="form-control" value="{{$execution->resource_id}}" id="resource_id"  name="resource_id" placeholder="">
                        <div class="help-line" id="name-help"></div>
                    </div>
           </div>
+
+           <div class="form-group"> 
+                    <label for="title" class="control-label col-xs-3">Class</label>
+                    <div class="col-xs-9">            
+                       <input type="text" class="form-control" value="{{$execution->class}}" id="class"  name="class" placeholder="">
+                       <div class="help-line" id="name-help"></div>
+                   </div>
+          </div>
+
+          <div class="form-group"> 
+                    <label for="title" class="control-label col-xs-3">Content-desc</label>
+                    <div class="col-xs-9">            
+                       <input type="text" class="form-control" value="{{$execution->content_desc}}" id="content_desc"  name="content_desc" placeholder="">
+                       <div class="help-line" id="name-help"></div>
+                   </div>
+          </div>
+           
+          
+           
 
             <div class="form-group">
             @if(isset($_GET['message']))                           
