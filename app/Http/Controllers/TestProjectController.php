@@ -81,6 +81,8 @@ class TestProjectController extends Controller {
 		if($id == "{project}" || !isset($id))
 			$id = session()->get('open_project');
 
+
+
 		$project = \App\TestProject::find($id);
 		$functionalities = \App\TestFunctionality::where('tp_id' , $id)->get();
 
@@ -93,8 +95,10 @@ class TestProjectController extends Controller {
 		}
 
 		$fn = \App\TestFunctionality::all();
-		
-		return view('show.project', ['project' => $project, 'functionalities' => $functionalities, 'clone_fn' => $fn]);	  	
+		$all_projects = \App\TestProject::all();
+		$view = ['project' => $project, 'functionalities' => $functionalities, 'clone_fn' => $fn, 'all_projects' => $all_projects ];
+
+		return view('show.project', $view );	  	
 	}
 
 	/**
