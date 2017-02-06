@@ -172,10 +172,12 @@ class TestStepController extends Controller {
 		        $execution_content['screenshot']	= $request->screenshot;
 		        $execution_content['checkpoint']	= $request->checkpoint;
 		        $execution_content['wait']			= $request->wait;		        
+				$tc_id								= $request->tc_id;
 
-		        $result = \App\Execution::where('ts_id', $id)->update($execution_content);
+		        $result = \App\Execution::where(['ts_id' => $id, 'tl_id' => 0])->update($execution_content);
+				return redirect()->route('testcase.show', ['id' => $tc_id]);
 
-			 	return redirect()->route('teststep.show', ['id' => $id]);
+			 	//return redirect()->route('teststep.show', ['id' => $id]);
 		 	}else
 		 	{
 		 		$error[] = "Session expired. Please login to continue";
@@ -225,14 +227,14 @@ class TestStepController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function reorder( Request $request)
+	public function reorder(Request $request)
 	{
 		$order_values = $request->all();
 		//print_r($order_values);
 		if(count($order_values) === count(array_unique($order_values)))
 		{
 			foreach ($request->all() as $key => $value) {
-				echo " key = $key and value = $value";
+				//echo " key = $key and value = $value";
 				\App\TestStep::find($key)->update(['seq_no'=> $value]);
 				\App\Execution::where('ts_id', $key)->update(['seq_no' => $value]);
 			}

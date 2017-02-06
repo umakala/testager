@@ -3,8 +3,10 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Handlers\ChartsHandler;
+use App\Http\Controllers\Handlers\ResultUpdateQueryHandler;
 use Lava;
 use DB;
+use Toast;
 
 use Illuminate\Http\Request;
 
@@ -41,44 +43,12 @@ class ReportController extends Controller {
 			$fn->teststeps = $this->getCountFormatLabs($steps_counts, 'execution_result');
 		}
 
-		//Initiate chart objects
-		$charts_obj = new ChartsHandler();
-		$chart_details = $charts_obj->initChartDetails();
-
-		if($tf_id == 0)
-			$lab_details = \App\Lab::where('tp_id' , $id)->orderBy('seq_no', 'asc')->get();
-		else
-			$lab_details = \App\Lab::where('tf_id' , $tf_id)->orderBy('seq_no', 'asc')->get();
-
-
-		foreach ($lab_details as $key => $value) {
-
-			$tc = \App\TestCase::find($value->tc_id);
-			$value->tc = $tc;
-
-			$tsc = \App\TestScenario::select('tsc_name')->where('tsc_id' , $value->tsc_id)->get();
-			$value->tsc_name = $tsc[0]->tsc_name;
-
-			if(isset($value->tf_id))
-			{
-				$fn  = \App\TestFunctionality::select('tf_name')->where('tf_id' , $value->tf_id)->get();
-				$value->tf_name = $fn[0]->tf_name;
-				$chart_value['tc_status'] 			= 'executed';
-				$chart_value['execution_result'] 	= $value->execution_result;
-				$chart_value['checkpoint_result'] 	= $value->checkpoint_result;
-			}else{
-				$value->tf_name = "";
-				$chart_value['tc_status'] = $value->status;
-				$chart_value['execution_result'] = 0;
-				$chart_value['checkpoint_result'] = 0;
-			}
-			$chart_details = $charts_obj->getChartSummary($chart_value, $chart_details);
-		}
-		
-		if($tf_id == 0)
+		if($tf_id <= 0){
 			$sc_details = \App\TestScenario::where('tp_id' , $id)->orderBy('seq_no', 'asc')->get();
-		else
+		}
+		else{
 			$sc_details = \App\TestScenario::where('tf_id' , $tf_id)->orderBy('seq_no', 'asc')->get();
+		}
 
 
 		foreach ($sc_details as $sc_key => $sc_value) {
@@ -94,14 +64,54 @@ class ReportController extends Controller {
 				$value->tf_name = $tf[0]->tf_name;				
 			}
 		}
+
+		/*if(!session()->has('manual_execution'))
+		{*/
+
+			//Initiate chart objects
+			$charts_obj = new ChartsHandler();
+			$chart_details = $charts_obj->initChartDetails();
+
+			if($tf_id == 0)
+				$lab_details = \App\Lab::where('tp_id' , $id)->orderBy('seq_no', 'asc')->get();
+			else
+				$lab_details = \App\Lab::where('tf_id' , $tf_id)->orderBy('seq_no', 'asc')->get();
+
+
+			foreach ($lab_details as $key => $value) {
+
+				$tc = \App\TestCase::find($value->tc_id);
+				$value->tc = $tc;
+
+				$tsc = \App\TestScenario::select('tsc_name')->where('tsc_id' , $value->tsc_id)->get();
+				$value->tsc_name = $tsc[0]->tsc_name;
+
+				if(isset($value->tf_id))
+				{
+					$fn  = \App\TestFunctionality::select('tf_name')->where('tf_id' , $value->tf_id)->get();
+					$value->tf_name = $fn[0]->tf_name;
+					$chart_value['tc_status'] 			= 'executed';
+					$chart_value['execution_result'] 	= $value->execution_result;
+					$chart_value['checkpoint_result'] 	= $value->checkpoint_result;
+				}else{
+					$value->tf_name = "";
+					$chart_value['tc_status'] = $value->status;
+					$chart_value['execution_result'] = 0;
+					$chart_value['checkpoint_result'] = 0;
+				}
+				$chart_details = $charts_obj->getChartSummary($chart_value, $chart_details);
+			}
 			
-		$column_details =[];
-		/* 
-			Pie Charts showing summary of results 
-		*/
-		$charts_obj->createExecutionPieChart($chart_details);
-		$charts_obj->createCheckpointPieChart($chart_details);
-		$charts_obj->createSummaryColumnChart($column_details);
+
+				
+			$column_details =[];
+			/* 
+				Pie Charts showing summary of results 
+			*/
+			$charts_obj->createExecutionPieChart($chart_details);
+			$charts_obj->createCheckpointPieChart($chart_details);
+			$charts_obj->createSummaryColumnChart($column_details);
+		/*}*/
 
 		return view('reports.report', ['project' => $project, 'lab_results' => $sc_details]);	  	
 	}
@@ -133,12 +143,16 @@ class ReportController extends Controller {
 
 			$lab = \App\Lab::where('tc_id' , $c_value->tc_id)->orderBy('created_at', 'desc')->first();
 			$c_value->lab = $lab;
+			if($lab == null)
+			{
+				unset($case[$key]);
+			}else{
+				$tsc = \App\TestScenario::select('tsc_name')->where('tsc_id' , $c_value->tsc_id)->get();
+				$c_value->tsc_name = $tsc[0]->tsc_name;
 
-			$tsc = \App\TestScenario::select('tsc_name')->where('tsc_id' , $c_value->tsc_id)->get();
-			$c_value->tsc_name = $tsc[0]->tsc_name;
-
-			$tf = \App\TestFunctionality::select('tf_name')->where('tf_id' , $lab->tf_id)->get();
-			$c_value->tf_name = $tf[0]->tf_name;
+				$tf = \App\TestFunctionality::select('tf_name')->where('tf_id' , $lab->tf_id)->get();
+				$c_value->tf_name = $tf[0]->tf_name;
+			}
 		}
 
 
@@ -306,7 +320,10 @@ class ReportController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		$lab = \App\Lab::find($id);
+		$lab->tc_name = \App\TestCase::select('tc_name')->where('tc_id', $lab->tc_id)->get()[0]['tc_name'];
+
+		return view('forms.edit_result', ['lab' => $lab ]);
 	}
 
 	/**
@@ -315,9 +332,50 @@ class ReportController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($id,  Request $request)
 	{
-		//
+		$set['executed_by'] = session()->get('email');
+		$set['execution_type'] = 'manual';
+
+		if($request->type== 'testlab')
+		{
+			$set['execution_result'] = $request->execution_result;
+			$set['checkpoint_result'] = $request->checkpoint_result;
+			$update_obj    = new ResultUpdateQueryHandler();
+			$update_result = $update_obj->updateExecutionByLabId($id, $set);
+			if($update_result == 1)
+			{
+				$lab = \App\Lab::find($id)->update($set);
+				$message = $this->getMessage('messages.update_success');
+				Toast::message($message, 'success');	
+			}else{
+				$message = $this->getMessage('messages.update_failed');
+				Toast::message($message, 'danger');
+			}
+		}elseif($request->type== 'scenariolab'){
+
+			$set['execution_result'] = $request->result;
+			$set['checkpoint_result'] = $request->result;		
+			
+
+			$sc_set['executed_by'] = session()->get('email');
+			$sc_set['execution_type'] = 'manual';
+			$sc_set['result'] = $request->result;
+
+
+			$update_obj    = new ResultUpdateQueryHandler();
+			$update_result = $update_obj->updateLabsByScenarioLabId($id, $set);
+			if($update_result == 1)
+			{
+				$sc_lab = \App\ScenarioLab::find($id)->update($sc_set);
+				$message = $this->getMessage('messages.update_success');
+				Toast::message($message, 'success');	
+			}else{
+				$message = $this->getMessage('messages.update_failed');
+				Toast::message($message, 'danger');
+			}
+		}
+		return redirect()->back();
 	}
 
 	/**

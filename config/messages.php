@@ -27,6 +27,7 @@ return [
 	'tsc_required'				=> "Testscenario is required. Please select a scenario from dropdown.",
 	'tf_required'				=> "Functionality is required. Please select a functionality from dropdown.",
 
+	'update_failed' 			=> "Update request could not be processed Successfully.",
 
 
 

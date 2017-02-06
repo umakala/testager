@@ -107,11 +107,23 @@ class DownloadController extends Controller {
   			$i = 0;
   			foreach ($ids as $id) {
   				$i++;
+
   				$case 						= \App\TestCase::find($id);
   				$sc 						= \App\TestScenario::find($case->tsc_id);
+  				/*$sc_lab['scl_id'] 				= $this->genrateRandomInt();  		 
+  				$sc_lab['tp_id'] 				= $tp_id;	
+  				$sc_lab['tf_id'] 				= $sc->tf_id;
+  				$sc_lab['tsc_id']				= $case->tsc_id;	 
+  				$sc_lab['execution_type'] 		= '';
+  				$sc_lab['executed_by'] 			= session()->get('email');  			
+  				$sc_lab['result'] 				= '';*/
+
+				$sc_lab['scl_id'] = "";
+
 	  			//Create a test lab for each test case execution
-  				$lab['tl_id'] 				= $this->genrateRandomInt();  		 
-  				$lab['tp_id'] 				= $tp_id;	  		
+  				$lab['tl_id'] 				= $sc_lab['scl_id']."_".$this->genrateRandomInt();  		 
+  				$lab['tp_id'] 				= $tp_id;	  
+  				$lab['scl_id'] 				= $sc_lab['scl_id'];	
   				$lab['tc_id'] 				= $id;
   				$lab['tf_id'] 				= $sc->tf_id;
   				$lab['tsc_id']				= $case->tsc_id;	  		
@@ -132,6 +144,7 @@ class DownloadController extends Controller {
 	  			$lab['network_type']		= $request->network_type;
 	  			$lab['device_name']			= $request->device_name;
 
+
 		  		$steps 						= \App\TestStep::where(['tc_id'=>$id])->orderBy('seq_no', 'asc')->get()->toArray();
 		  		if(count($steps) > 0)
 		  			$c_lab 					=\App\Lab::create($lab);
@@ -146,31 +159,31 @@ class DownloadController extends Controller {
 		  			$execution 				=  \App\Execution::where(['tc_id' => $id, 'ts_id' => $ts_id])->get()->toArray();
 
 		  			if(count ($execution) != 0)
-{
-		  			$exe_data 				= $execution[0];
-		  			$exe_data['e_id']		= $this->genrateRandomInt(8);
-		  			$exe_data['tl_id']		= $lab['tl_id'];
-		  			$exe_data['execution_result'] = '';
-		  			$exe_data['checkpoint_result'] = '';
-		  			unset($exe_data['created_at']);
-		  			unset($exe_data['updated_at']);
-		  			$created_exe 			= \App\Execution::create($exe_data);
+					{
+			  			$exe_data 				= $execution[0];
+			  			$exe_data['e_id']		= $lab['tl_id']."_".$this->genrateRandomInt(8);
+			  			$exe_data['tl_id']		= $lab['tl_id'];
+			  			$exe_data['execution_result'] = '';
+			  			$exe_data['checkpoint_result'] = '';
+			  			unset($exe_data['created_at']);
+			  			unset($exe_data['updated_at']);
+			  			$created_exe 			= \App\Execution::create($exe_data);
 
-		  			$data['Scroll'] 		= $exe_data['scroll'];
-		  			$data['resource-id'] 	= $exe_data['resource_id'];
-		  			$data['text'] 			= $exe_data['text'];
-		  			$data['Content-desc'] 	= $exe_data['content_desc'];
-		  			$data['class'] 			= $exe_data['class'];
-		  			$data['index'] 			= $exe_data['index'];
-		  			$data['Sendkey'] 		= $exe_data['sendkey'];	
-		  			$data['screenshot'] 	= $exe_data['screenshot'];	
-		  			$data['Check point'] 	= $exe_data['checkpoint'];
-		  			$data['Wait'] 			= $exe_data['wait'];
-		  			$data['Expected Value'] = $s_value['expected_result'];
-		  			$data['e_id'] 			= $exe_data['e_id'];
-		  			$data['tl_id'] 			= $lab['tl_id'];
-		  			$excel_data[] 			= $data;
-		  		} 	
+			  			$data['Scroll'] 		= $exe_data['scroll'];
+			  			$data['resource-id'] 	= $exe_data['resource_id'];
+			  			$data['text'] 			= $exe_data['text'];
+			  			$data['Content-desc'] 	= $exe_data['content_desc'];
+			  			$data['class'] 			= $exe_data['class'];
+			  			$data['index'] 			= $exe_data['index'];
+			  			$data['Sendkey'] 		= $exe_data['sendkey'];	
+			  			$data['screenshot'] 	= $exe_data['screenshot'];	
+			  			$data['Check point'] 	= $exe_data['checkpoint'];
+			  			$data['Wait'] 			= $exe_data['wait'];
+			  			$data['Expected Value'] = $s_value['expected_result'];
+			  			$data['e_id'] 			= $exe_data['e_id'];
+			  			$data['tl_id'] 			= $lab['tl_id'];
+			  			$excel_data[] 			= $data;
+		  			} 	
 		  		}
 		  	}
 	  	}

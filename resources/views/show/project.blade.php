@@ -91,11 +91,11 @@
 				</div>			
 			</div>
         </div>
-
+	@include('lists.functionalities')
         <?php $clone_type = 'functionality'?>  
     	@include('modals.clone_modal')
 
-   		@include('lists.functionalities')
+   	
        
     </div> 
 </div>

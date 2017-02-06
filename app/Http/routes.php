@@ -47,10 +47,17 @@ Route::resource('upload_result','UploadResultController');
 
 Route::resource('execute','ExecutionController');
 Route::resource('report','ReportController');
+Route::resource('sc_report','ScenarioReportController');
+
+Route::get('report/sc_lab/{id}', array("as"=>"report.sc_lab" , 'uses' =>'ScenarioReportController@show_lab'));
+Route::get('sc_report/functionality/{id?}', array("as"=>"sc_report.functionality" , 'uses' =>'ScenarioReportController@index'));
+
+
 Route::get('report/lab/{id}', array("as"=>"report.lab" , 'uses' =>'ReportController@show_lab'));
 Route::get('report/case/{id}', array("as"=>"report.case" , 'uses' =>'ReportController@show_case'));
 Route::get('report/scenario/{id?}', array("as"=>"report.scenario" , 'uses' =>'ReportController@show_scenario'));
 Route::get('report/functionality/{id?}', array("as"=>"report.functionality" , 'uses' =>'ReportController@index'));
+
 
 
 Route::resource('project', 'TestProjectController');
@@ -67,7 +74,10 @@ Route::get('tsc_lab/{tsc_id}', array("as"=>"tsc_lab" , 'uses' =>'TestLabControll
 Route::get('tf_lab/{tf_id}', array("as"=>"tf_lab" , 'uses' =>'TestLabController@showFunctionality'));
 
 Route::post('sc_lab', array("as"=>"sc_lab" , 'uses' =>'TestLabController@store'));
+Route::get('manual', array("as"=>"lab.manual" , 'uses' =>'TestLabController@setManualLabSession'));
+
 Route::post('step/reorder/{tc_id}', array("as"=>"step.reorder" , 'uses' =>'TestStepController@reorder'));
+
 Route::get('teststep/create/{tc_id}', array("as"=>"teststep.create" , 'uses' =>'TestStepController@create'));
 Route::get('testcase/create/{tsc_id?}', array("as"=>"testcase.create" , 'uses' =>'TestcaseController@create'));
 

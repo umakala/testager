@@ -18,10 +18,7 @@
             @if(Session::has('toasts'))
                     {{Session::forget('toasts')}}
             @endif
-            </p>
-
-
-        
+            </p>     
 
     <!--         <div class="panel-body">
             <p  onclick="hideSummary()">
@@ -155,28 +152,34 @@
 
     <div class="panel-body" style="padding-bottom:20px;">
 
-        <div class="col-lg-6 panel-title"  >
+        <div class="col-lg-7 panel-title"  >
 
             <div class="row">
                     <h4 style="font-style: bold;  padding: 5px;" >Manual Testing</h4>
             </div>
             <div class="row">
          <div >
-         <div class="col-lg-6">
+         <div class="col-lg-4">
              
           <a  title="Download Result format Sheet" href="{{URL::route('format_download', ['type' => 'all'])}}"> <i class="glyphicon glyphicon-download"  ></i> Download Result Format
             </a>  
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-4">
              
              <a  data-toggle="modal" data-target="#uploadResultModal" title="Upload Results"> <i class="glyphicon glyphicon-upload"  ></i> Upload Manual Results
+            </a> 
+            </div>
+            <div class="col-lg-4">
+            <!-- 
+            Give type here instead and save it in session. Remove it from session as soon as report is clicked.  -->
+             <a href="{{URL::route('lab.manual')}}"> <i class="glyphicon glyphicon-play"  ></i> Execute Manual
             </a> 
             </div>
             </div>
             </div>
         </div>
  
-            <div class="col-lg-6 panel-title">
+            <div class="col-lg-5 panel-title">
 
             <div class="row">
                  <h4 style="font-style: bold;  padding: 5px;" >Automation Testing</h4>

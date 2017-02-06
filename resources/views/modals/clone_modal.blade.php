@@ -47,6 +47,7 @@
                       @endforeach 
                     </select>
                   </div>
+                </div->
                 </div>
                 <div class="form-group">
                     <label for="tc_id" class="control-label col-xs-2">{{$clone_type}}</label>

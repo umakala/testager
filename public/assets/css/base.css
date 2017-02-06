@@ -94,9 +94,16 @@ td {
 }
 
 button {
-    background-color: #1e1e1e;
+	background-color: #9fa8a3;
+    border-color: #9fa8a3;
+    color: #fff;
+    border-radius: 10px;
+    border-style: double;
+    font-variant: small-caps;
+    /*background-color: #1e1e1e;
     border-color: #1e1e1e;
     color: #fff;
+    border-radius: 10px;*/
 }
 button:hover {
     background-color: #404040;

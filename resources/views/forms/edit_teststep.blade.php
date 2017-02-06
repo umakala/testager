@@ -10,6 +10,8 @@
 @section('content')
 <form action="{{URL::route('teststep.update', ['id' => $step->ts_id])}}" method ="POST" class="form-horizontal" enctype='multipart/form-data' >   
 <input type="hidden" name="_method" value="PUT">
+<input type="hidden" name="tc_id" value="{{$step->tc_id}}">
+
 <div class="wrapper" style="">
       <div class="panel panel-default" style=" padding:20px">
          <div class="panel-title" style="text-align: center;">Update Teststep</div>

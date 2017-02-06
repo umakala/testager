@@ -60,6 +60,18 @@ public function index()
 }
 
 
+/**
+ * Show the form for creating a new resource.
+ *
+ * @return Response
+ */
+public function setManualLabSession()
+{
+	//session(['manual_execution' => true]);
+	return redirect()->route('report.index');
+}
+
+
 
 
 /**

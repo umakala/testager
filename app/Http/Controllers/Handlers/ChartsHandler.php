@@ -14,6 +14,7 @@ class ChartsHandler {
 	{
 		$chart_details['ex_pass'] = $chart_details['ex_fail'] = $chart_details['ex_not_avail']   = 0;
 		$chart_details['cp_pass'] = $chart_details['cp_fail'] = $chart_details['cp_not_avail'] = $chart_details['cp_not_defined'] = 0;
+		$chart_details['pass'] = $chart_details['fail'] = $chart_details['not_avail'] = $chart_details['not_defined'] = 0;
 		$chart_details['status_executed'] = $chart_details['status_not_executed'] = 0;
 		return $chart_details;
 	}
@@ -21,38 +22,56 @@ class ChartsHandler {
 
 	public function getChartSummary($value, $chart_details)
 	{
-		if(strtolower($value['tc_status']) == "executed")
+
+		if(isset($value['result']))
 		{
-			$chart_details['status_executed']++;
-			switch (strtolower($value['execution_result'])) {
+			switch (strtolower($value['result'])) {
 				case 'pass':
-					$chart_details['ex_pass']++;
+					$chart_details['pass']++;
 					break;
 				case 'fail':
-					$chart_details['ex_fail']++;
-					break;
-				case '':				
-					$chart_details['ex_not_avail']++;
-					break;
-			}
-			switch (strtolower($value['checkpoint_result'])) {
-				case 'pass':
-					$chart_details['cp_pass']++;
-					break;
-				case 'fail':
-					$chart_details['cp_fail']++;
+					$chart_details['fail']++;
 					break;
 				case 'none':
-					$chart_details['cp_not_defined']++;
+					$chart_details['not_defined']++;
 					break;
 				case '':
-					$chart_details['cp_not_avail']++;
+					$chart_details['not_avail']++;
 					break;
 			}
-		}
-		else
-			$chart_details['status_not_executed']++;
-
+		}else{
+			if(strtolower($value['tc_status']) == "executed")
+			{
+				$chart_details['status_executed']++;
+				switch (strtolower($value['execution_result'])) {
+					case 'pass':
+						$chart_details['ex_pass']++;
+						break;
+					case 'fail':
+						$chart_details['ex_fail']++;
+						break;
+					case '':				
+						$chart_details['ex_not_avail']++;
+						break;
+				}
+				switch (strtolower($value['checkpoint_result'])) {
+					case 'pass':
+						$chart_details['cp_pass']++;
+						break;
+					case 'fail':
+						$chart_details['cp_fail']++;
+						break;
+					case 'none':
+						$chart_details['cp_not_defined']++;
+						break;
+					case '':
+						$chart_details['cp_not_avail']++;
+						break;
+				}
+			}
+			else
+				$chart_details['status_not_executed']++;
+		}	
 		return $chart_details;
 	}
 
@@ -85,6 +104,22 @@ class ChartsHandler {
 		        ->addRow(['Not Defined', $chart_details['cp_not_defined']]);
 
 		Lava::PieChart('cp_result', $cp_data, [
+		    'title' => 'Checkpoint Results : Total Executed =  '.$chart_details['status_executed'],
+		    'colors' => ['#43a047', '#e53935', '#fb8c00', '#1e88e5', '#9e9e9e']
+		]);
+	}
+
+	public function createScenarioLabPieChart($chart_details)
+	{
+		$cp_data = Lava::DataTable();
+		$cp_data->addStringColumn('Summary')
+		        ->addNumberColumn('Percent')
+		        ->addRow(['Pass', $chart_details['pass']])
+		        ->addRow(['Fail', $chart_details['fail']])
+		        ->addRow(['Not Available', $chart_details['not_avail']])
+		        ->addRow(['Not Defined', $chart_details['not_defined']]);
+
+		Lava::PieChart('result', $cp_data, [
 		    'title' => 'Checkpoint Results : Total Executed =  '.$chart_details['status_executed'],
 		    'colors' => ['#43a047', '#e53935', '#fb8c00', '#1e88e5', '#9e9e9e']
 		]);

@@ -1,0 +1,242 @@
+<?php namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Handlers\ChartsHandler;
+use App\Http\Controllers\Handlers\ResultUpdateQueryHandler;
+use Lava;
+use DB;
+use Toast;
+
+class ScenarioReportController extends Controller {
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index($tf_id=0)
+	{
+		$id = session()->get('open_project');
+		$project = \App\TestProject::find($id);
+		$project->functionalities = \App\TestFunctionality::where('tp_id' , $id)->get();
+
+		foreach ($project->functionalities as $fn) {
+
+			$cases_counts 	=  \App\Lab::groupBy('execution_result')
+									->select('execution_result', DB::raw('count(*) as count'))
+									->where("tf_id" , $fn->tf_id)
+									->get();
+
+			$steps_counts  	= \App\Execution::join('labs', 
+								'labs.tc_id', '=', 'executions.tc_id')
+								->select('executions.execution_result', DB::raw('count(*) as count'))
+								->where('labs.tf_id', $fn->tf_id)
+								->where('executions.tl_id' , '<>' , '0')
+								->groupBy('executions.execution_result')
+								->get()->toArray();
+
+			//$fn->scenarios 		= $this->getCountFormat($scenarios_counts);
+			$fn->testcases = $this->getCountFormatLabs($cases_counts,'execution_result' );
+			$fn->teststeps = $this->getCountFormatLabs($steps_counts, 'execution_result');
+		}
+
+		if($tf_id <= 0){
+			$sc_details = \App\TestScenario::where('tp_id' , $id)->orderBy('seq_no', 'asc')->get();
+		}
+		else{
+			$sc_details = \App\TestScenario::where('tf_id' , $tf_id)->orderBy('seq_no', 'asc')->get();
+		}
+
+
+		foreach ($sc_details as $sc_key => $sc_value) {
+		
+			//Get details about Scenario Lab
+			$sc_value->lab = \App\ScenarioLab::where(['tp_id' => $id, 'tsc_id' => $sc_value->tsc_id])->orderBy('created_at', 'desc')->first();	
+
+			if($sc_value->lab == null)
+			{
+				unset($sc_details[$sc_key]);
+			}else{
+			//Get details about test cases
+			$sc_value->case = \App\TestCase::where(['tp_id' => $id, 'tsc_id' => $sc_value->tsc_id])->orderBy('seq_no', 'asc')->get();
+			
+			foreach ($sc_value->case as $key => $value) {
+				$lab = \App\Lab::where('tc_id' , $value->tc_id)->orderBy('created_at', 'desc')->first();
+				$value->lab = $lab;
+
+				$tf = \App\TestFunctionality::select('tf_name')->where('tf_id' , $sc_value->tf_id)->get();
+				$value->tf_name = $tf[0]->tf_name;	
+				}			
+			}
+		}
+
+		/*if(!session()->has('manual_execution'))
+		{*/
+
+			//Initiate chart objects
+			$charts_obj = new ChartsHandler();
+			$chart_details = $charts_obj->initChartDetails();
+
+			if($tf_id == 0)
+				$lab_details = \App\Lab::where('tp_id' , $id)->orderBy('seq_no', 'asc')->get();
+			else
+				$lab_details = \App\Lab::where('tf_id' , $tf_id)->orderBy('seq_no', 'asc')->get();
+
+
+			foreach ($lab_details as $key => $value) {
+
+				$tc = \App\TestCase::find($value->tc_id);
+				$value->tc = $tc;
+
+				$tsc = \App\TestScenario::select('tsc_name')->where('tsc_id' , $value->tsc_id)->get();
+				$value->tsc_name = $tsc[0]->tsc_name;
+
+				if(isset($value->tf_id))
+				{
+					$fn  = \App\TestFunctionality::select('tf_name')->where('tf_id' , $value->tf_id)->get();
+					$value->tf_name = $fn[0]->tf_name;
+					$chart_value['tc_status'] 			= 'executed';
+					$chart_value['execution_result'] 	= $value->execution_result;
+					$chart_value['checkpoint_result'] 	= $value->checkpoint_result;
+				}else{
+					$value->tf_name = "";
+					$chart_value['tc_status'] = $value->status;
+					$chart_value['execution_result'] = 0;
+					$chart_value['checkpoint_result'] = 0;
+				}
+				$chart_details = $charts_obj->getChartSummary($chart_value, $chart_details);
+			}
+			
+
+				
+			$column_details =[];
+			/* 
+				Pie Charts showing summary of results 
+			*/
+			$charts_obj->createExecutionPieChart($chart_details);
+			$charts_obj->createCheckpointPieChart($chart_details);
+			$charts_obj->createSummaryColumnChart($column_details);
+		/*}*/
+
+		return view('reports.sc_report', ['project' => $project, 'lab_results' => $sc_details]);	  	
+	
+	}
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
+	{
+		//
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store()
+	{
+		//
+	}
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		//
+	}
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show_lab($id)
+	{
+
+		$charts_obj = new ChartsHandler();
+
+
+		$p_id = session()->get('open_project');
+		$project = \App\TestProject::find($p_id);
+		//$project->functionalities = \App\TestFunctionality::where('tp_id' , $id)->count();
+		$lab_details = [];
+		$chart_details = $charts_obj->initChartDetails();
+
+	
+		//Get details about testlabs
+		$lab_details = \App\ScenarioLab::where('tsc_id' , $id)->orderBy('created_at', 'desc')->get();
+		foreach ($lab_details as $key => $value) {
+			
+			$scenario = \App\TestScenario::where('tsc_id' , $id)->get();
+			$value->scenario = $scenario;
+		
+			$tsc = \App\TestScenario::select('tsc_name')->where('tsc_id' , $value->tsc_id)->get();
+			$value->tsc_name = $tsc[0]->tsc_name;
+			
+			$fn  = \App\TestFunctionality::select('tf_name')->where('tf_id' , $value->tf_id)->get();
+			$value->tf_name = $fn[0]->tf_name;
+
+			$chart_value['tc_status'] = $value->tc_status;
+			$chart_value['result'] = $value->result;
+			//$chart_value['checkpoint_result'] = $value->checkpoint_result;
+
+
+			$chart_details = $charts_obj->getChartSummary($chart_value, $chart_details
+				);
+		}			
+		/* 
+			Pie Charts showing summary of results 
+		*/
+
+		$charts_obj->createScenarioLabPieChart($chart_details);
+		//$charts_obj->createCheckpointPieChart($chart_details);
+
+		return view('reports.sc_lab_report', ['project' => $project, 'lab_results' => $lab_details]);	  	
+	
+	}
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		//
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update($id)
+	{
+		//
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		//
+	}
+
+}
