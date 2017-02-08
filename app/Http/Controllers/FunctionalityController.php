@@ -31,7 +31,7 @@ class FunctionalityController extends Controller {
 		}
 		else{
 			$item = \App\TestFunctionality::find($request->tf_id);
-			$item->tf_id 	= $this->genrateRandomInt();
+			$new_fn_id 		= $item->tf_id 	= $this->genrateRandomInt();
 			$item->tp_id 	= session()->get('open_project');
 			$item->status 	= 'not_executed';
 			$item->created_by 	= session()->get('email');
@@ -44,6 +44,7 @@ class FunctionalityController extends Controller {
 			}
 			$message = $this->getMessage('messages.clone_success');
 			Toast::message($message, 'success');
+			return redirect()->route('functionality.show', ['id' => $new_fn_id]);
 		}
 		return back();
 	}

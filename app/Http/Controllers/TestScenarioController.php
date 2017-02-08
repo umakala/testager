@@ -31,7 +31,7 @@ class TestScenarioController extends Controller {
 		}
 		else{
 			$item = \App\TestScenario::find($request->tsc_id);
-			$item->tsc_id 	=  $request->tf_id."_". $this->genrateRandomInt();
+			$new_tsc_id		= $item->tsc_id =$request->tf_id."_". $this->genrateRandomInt();
 			$item->tf_id 	= $request->tf_id;				
 			$item->tp_id 	= session()->get('open_project');
 			$item->status 	= 'not_executed';
@@ -43,6 +43,7 @@ class TestScenarioController extends Controller {
 			}
 			$message = $this->getMessage('messages.clone_success');
 			Toast::message($message, 'success');
+			return redirect()->route('scenario.show', ['id' => $new_tsc_id]);
 		}
 		return back();
 	}

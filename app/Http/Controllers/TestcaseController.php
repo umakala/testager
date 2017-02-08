@@ -31,7 +31,7 @@ class TestcaseController extends Controller {
 		}
 		else{
 			$case = \App\TestCase::find($request->tc_id);
-			$case->tc_id 	= $request->tsc_id."_".$this->genrateRandomInt();
+			$new_tc_id 		= $case->tc_id = $request->tsc_id."_".$this->genrateRandomInt();
 			$case->tsc_id 	= $request->tsc_id;	
 			$case->tp_id 	= session()->get('open_project');
 			$case->status 	= 'not_executed';
@@ -41,7 +41,8 @@ class TestcaseController extends Controller {
 				$clone_obj->cloneAllSteps($request->tc_id ,$case->tc_id);
 			}
 			$message = $this->getMessage('messages.clone_success');
-			Toast::message($message, 'success');
+			Toast::message($message, 'success');			
+			return redirect()->route('testcase.show', ['id' => $new_tc_id]);
 		}
 		return back();
 	}

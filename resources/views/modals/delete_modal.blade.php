@@ -4,10 +4,10 @@
             <div class="modal-content" style="text-align: left">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Deletion Confirmation </h4>
+                <h4 class="modal-title"><span style="text-transform: uppercase;"><strong>{{$delete_type}}</strong></span> Deletion Confirmation </h4>
             </div> 
             <div class="modal-body">
-                <h5>Are you sure you want to delete this {{$delete_type}}?</h5>
+                <h5>Are you sure you want to delete this <span style="text-transform: uppercase;">{{$delete_type}}</span>?</h5>
             </div>
             <div class="modal-footer">
             <form action="{{URL::route($delete_type.'.destroy', ['id' => $id])}}" method ="POST" class="form-horizontal">
