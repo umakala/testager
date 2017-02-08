@@ -1,4 +1,25 @@
+
+
 <!-- Upload Modal Start-->
+<script type="text/javascript">
+  $( function() {
+   // $('#testcase_id').multiselect();
+    var options = {
+          columns: 2,
+          search: true,
+          selectAll: false,
+          showCheckbox: false,
+    };
+
+    $('select').multiselect(options);
+    /*$('#tf_id').multiselect(options);
+    $('#project').multiselect(options);
+    $('#tf_id').multiselect(options);
+*/
+  });
+</script>
+
+
 <div id="cloneModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content" style="text-align: left">
@@ -6,26 +27,36 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Clone {{$clone_type}} </h4>
       </div> 
+
+
       <form action="{{URL::route($clone_type.'.clone')}}" method ="POST" class="form-horizontal" enctype='multipart/form-data' >
         <div class="modal-body" style="padding-bottom: 10px">
           <div class="form-group"> 
-            
-              @if($clone_type == 'testcase')
-              <label for="tc_id" class="control-label col-xs-2">{{$clone_type}}</label>
+    
+            <!-- Testcase Clone Details -->
+             @if($clone_type == 'testcase')
+            <label for="tc_id" class="control-label col-xs-2">{{$clone_type}}</label>
+
             <div class="col-xs-10"> 
-              <select class="form-control" name="tc_id"  style=" "> 
-                <option value="none">Select {{$clone_type}}</option>
+             <select class="form-control" name="tc_id"  id="testcase_id" >
+              <option value="none">Select {{$clone_type}}</option>
                 @foreach ($clone_case as $case)    
-                <option value="{{$case->tc_id}}" title="{{$case->description}}" style= 'max-width: 100px;overflow: hidden;'> {{$case->tc_name}} -
-                  {{substr($case->description, 0, 50).".."}}  </option>
+                <option value="{{$case->tc_id}}" title="{{$case->description}}" style= 'max-width: 100px;overflow: hidden;'>{{$case->tc_name}} -
+                  {{substr($case->description, 0, 50).".."}} | {{$case->tc_id}} </option>
                   @endforeach 
                 </select>   
                 <input type="hidden" name="tsc_id" value="{{$id}}">
 
+            <!-- Testcase ENDS -->
+
+
+
+
+            <!-- Scenario Clone Details -->
 
                 @elseif($clone_type == 'scenario')
                 <label for="tc_id" class="control-label col-xs-2">{{$clone_type}}</label>
-            <div class="col-xs-10"> 
+                <div class="col-xs-10"> 
                 <select class="form-control" name="tsc_id"  style=" "> 
                   <option value="none">Select {{$clone_type}}</option>
                   @foreach ($clone_sc as $sc)    
@@ -35,9 +66,16 @@
                   </select>   
                   <input type="hidden" name="tf_id" value="{{$id}}">
 
+            <!-- Scenario ENDS -->
+
+
+
+              <!-- Functionality Clone Details -->
+
                   @elseif($clone_type == 'functionality')
-                  <label for="tc_id" class="control-label col-xs-2">project</label>
-            <div class="col-xs-10"> 
+
+                <label for="tc_id" class="control-label col-xs-2">project</label>
+                  <div class="col-xs-10"> 
                   <select class="form-control" name="project" id="project" style=" " onchange="updateSelectChildren(this, '.tf' )"> 
                     <option value="none">All</option>
                     @foreach ($all_projects as $p)                            
@@ -47,11 +85,11 @@
                       @endforeach 
                     </select>
                   </div>
-                </div->
+                  
                 </div>
                 <div class="form-group">
                     <label for="tc_id" class="control-label col-xs-2">{{$clone_type}}</label>
-            <div class="col-xs-10"> 
+                    <div class="col-xs-10"> 
 
                     <select class="form-control" name="tf_id" id="tf_id" style=" "> 
                       <option value="none">Select {{$clone_type}}</option>
@@ -64,13 +102,17 @@
 
                     @foreach ($clone_fn as $fn) 
                     <input type="hidden" id="{{$fn->tf_id}}" value="{{$fn->tp_id}}"> 
-                    @endforeach 
+                    @endforeach
 
                     @endif
-
                     <div class="help-line" id="tsc-help"></div>
                   </div>
                 </div>
+
+
+
+            <!-- Checkbox for Cloning Children -->
+
                 @if($clone_type == 'functionality')
                 <div class="form-group">
                   <div class="col-xs-12" style="text-align: center"> 
@@ -91,12 +133,18 @@
                   </div>
                 </div>
                 @endif
+
+            <!-- Checkbox for Cloning Children ENDS -->
+
               </div>
               <div class="modal-footer">
                <button type="submit" class="btn-sm">Clone</button>
                <button type="button" class="btn-sm" data-dismiss="modal">Cancel</button>
              </div>
            </form>
+
+
+
          </div>
        </div>
      </div>

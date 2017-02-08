@@ -158,8 +158,8 @@ class TestScenarioController extends Controller {
 	{
 		//Validations
 		$validator = \Validator::make($request->all(), array(
-			'name' => 'required' ,
-			'status' => 'required'        
+			'name' => 'required' 
+			//'status' => 'required'        
 			));
 		if ($validator->fails())
 		{
