@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 
-class ScenarioLabController extends Controller {
+class LabListController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
@@ -16,6 +16,8 @@ class ScenarioLabController extends Controller {
 	public function index($tf_id=0)
 	{
 		$id = session()->get('open_project');
+
+
 		$project = \App\TestProject::find($id);
 		$project->functionalities = \App\TestFunctionality::where('tp_id' , $id)->get();
 
@@ -47,14 +49,8 @@ class ScenarioLabController extends Controller {
 		}
 
 
-		foreach ($sc_details as $sc_key => $sc_value) {		
-			//Get details about Scenario Lab
-			$sc_value->lab = \App\ScenarioLab::where(['tp_id' => $id, 'tsc_id' => $sc_value->tsc_id])->orderBy('created_at', 'desc')->first();	
-
-			if($sc_value->lab == null)
-			{
-				unset($sc_details[$sc_key]);
-			}else{
+		foreach ($sc_details as $sc_key => $sc_value) {
+		
 			//Get details about test cases
 			$sc_value->case = \App\TestCase::where(['tp_id' => $id, 'tsc_id' => $sc_value->tsc_id])->orderBy('seq_no', 'asc')->get();
 			
@@ -63,13 +59,15 @@ class ScenarioLabController extends Controller {
 				$value->lab = $lab;
 
 				$tf = \App\TestFunctionality::select('tf_name')->where('tf_id' , $sc_value->tf_id)->get();
-				$value->tf_name = $tf[0]->tf_name;	
-				}			
+				$value->tf_name = $tf[0]->tf_name;				
 			}
 		}
 
 		/*if(!session()->has('manual_execution'))
 		{*/
+
+			//Initiate chart objects
+			
 
 			if($tf_id == 0)
 				$lab_details = \App\Lab::where('tp_id' , $id)->orderBy('seq_no', 'asc')->get();
@@ -84,10 +82,18 @@ class ScenarioLabController extends Controller {
 
 				$tsc = \App\TestScenario::select('tsc_name')->where('tsc_id' , $value->tsc_id)->get();
 				$value->tsc_name = $tsc[0]->tsc_name;
-			}
-			
 
-		return view('testlab.sc_lab_list', ['project' => $project, 'lab_results' => $sc_details]);
+				if(isset($value->tf_id))
+				{
+					$fn  = \App\TestFunctionality::select('tf_name')->where('tf_id' , $value->tf_id)->get();
+					$value->tf_name = $fn[0]->tf_name;
+					
+				}else{
+					$value->tf_name = "";
+					
+				}
+			}
+		return view('testlab.lab_list', ['project' => $project, 'lab_results' => $sc_details]);
 	}
 
 	/**

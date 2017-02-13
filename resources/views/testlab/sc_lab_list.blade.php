@@ -8,8 +8,12 @@
   <div class="panel panel-default" style=" padding:10px">
     <a href="#top" class="float_button"><span class="glyphicon glyphicon-upload"></span></a>
 
-        <div class="panel-title" style="font-weight:bold;" > Functionality wise  Testlabs
+        <div class="panel-title" style="font-weight:bold;" > Functionality wise Scenario level report for {{$project->tp_name}} 
          </div>
+             <p>
+                Created at - {{date($dt_format, strtotime($project->created_at))}} by {{$project->created_by}} 
+            </p>
+
             <!-- Toast -->
             <p>
             @include('toast::messages')
@@ -17,16 +21,17 @@
                     {{Session::forget('toasts')}}
             @endif
             </p>            
-
+        
 
         <div class="panel-body"  id ="top">
-             <div class="panel-title" style="padding-bottom: 10px;" > Testcase Details 
+             <div class="panel-title" style="padding-bottom: 10px;" > 
+             Scenario Lab Details 
              <p  onclick="hideSummary()" style="float:right">
               <a data-toggle="collapse" data-parent="#panel" href="#summary_body" class="panel-toggle">
                 <span class="glyphicon glyphicon-filter"  id="icontoggle"></span><span style="font-style: bold; font-size: 14px; padding: 5px;" >Filters</span>
               </a>
             </p>
-           <p  style="float:right">
+             <p  style="float:right">
               <a href="{{URL::route('sc_lab_list.functionality')}}" style="font-size: 14px; padding: 5px;">Scenario Labs
               </a><a href="{{URL::route('lab_list.functionality')}}" >
                 <span class="glyphicon glyphicon-show"  id="icontoggle"></span><span style="font-size: 14px; padding: 5px;" >TestCase Labs</span>
@@ -60,20 +65,18 @@
 
         
         <!--  Column details of test case to show 
-        id, name, status(executed or not executed), executed type (manual/automation), executed by, executed date-time, checkpoint_result, execution_result(pass_fail), defect(if any), defect_status, (checkbox to select )
+        id, name, status(executed or not executed), executed type (manual/automation), executed by, executed date-time, result, execution_result(pass_fail), defect(if any), defect_status, (checkbox to select )
         -->
          <table class="table table-striped" cellspacing="0" width="auto">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th max-width="200px">Testcase</th>
                     <th >TestScenario</th>
                     <th >Functionality</th>
                     <th>Release</th>
                    <!--  <th>Status</th> -->
                     <th  width="200px">Execution Details</th>
-                    <th>Execution Result</th>
-                    <th>Checkpoint Result</th>
+                    <th>Result</th>
                     <th colspan="2">Actions</th>
 
                 </tr>
@@ -82,33 +85,24 @@
                 <?php
                  $i =1; 
                 ?>
-                @foreach($lab_results as $sc)
-
-                    @foreach($sc->case as $detail)
-
-                    @if(isset($detail->lab))
+                @foreach($lab_results as $detail)
                     <tr>
                         <td> 
                             {{$i++}}                        
                         </td>
-                        <td max-width="100px"> 
-                        <a href="{{URL::route('report.case', ['id' => $detail->lab->tl_id])}}">
-                            {{$detail->tc_name}}
-                        </a> 
+                        
+                        <td style="max-width: 200px; overflow-wrap: normal;">
+                            <a href="{{URL::route('report.scenario', ['id' => $detail->tsc_id])}}" title="{{$detail->description}}">
+                            <strong>{{$detail->tsc_name}} </strong> 
+                            <span>
+                            {{" - ".substr($detail->description, 0, 100).".."}}
+                            </span>
 
-                        <p>
-                            {{$detail->description}}
-
-                        </p>                                
-                        </td>
-                        <td>
-                            <a href="{{URL::route('report.scenario', ['id' => $sc->tsc_id])}}">
-                            {{$sc->tsc_name}}
                             </a>
                         </td>                        
                         <td> 
-                            <a href="{{URL::route('report.functionality', ['id' => $sc->tf_id])}}">                            
-                            {{$detail->tf_name}}  
+                            <a href="{{URL::route('report.functionality', ['id' => $detail->tf_id])}}">                            
+                            {{$detail->tf_id}}  
                             </a>                   
                         </td>
                         <td>  
@@ -124,34 +118,22 @@
                             at 
                             {{isset($detail->lab->created_at)? date($exe_dt_format, strtotime($detail->lab->created_at)) : ""}}                                    
                         </td>
-                       <form action="{{URL::route('report.update', ['id' => $detail->lab->tl_id])}}" method ="POST" class="form-horizontal" enctype='multipart/form-data' > 
+                       <form action="{{URL::route('report.update', ['id' => $detail->lab->scl_id])}}" method ="POST" class="form-horizontal" enctype='multipart/form-data' > 
                       <input type="hidden" name="_method" value="PUT"> 
-                      <input type="hidden" name="type" value="testlab">              
-
-                    <td class="alert alert-{{$detail->lab->execution_result == 'Pass'? 'success' : ( ($detail->lab->execution_result == 'not_executed'  || $detail->lab->execution_result == '')  ? 'warning' : 'danger')}}"   > 
-                          <select name="execution_result" class="alert" style="height:auto">
+                      <input type="hidden" name="type" value="scenariolab">              
+                        <td class="alert alert-{{$detail->lab->result == 'Pass'? 'success' : ($detail->lab->result == '' || $detail->lab->result == 'not_executed' ? 'warning': ($detail->lab->result == 'none' ? 'error' : 'danger'))}}" > 
+                    <select class="alert" name="result">
                       <option value="Pass"  class="alert alert-success"
-                          {{ $detail->lab->execution_result == "Pass" ? 'selected' : ''}}>Pass</option>
+                          {{ $detail->lab->result == "Pass" ? 'selected' : ''}}>Pass</option>
                       <option value="Fail" class="alert alert-danger"
-                          {{ $detail->lab->execution_result == "Fail" ?  'selected' : '' }}>Fail</option>
+                          {{ $detail->lab->result == "Fail" ?  'selected' : '' }}>Fail</option>
                       <option value="" class="alert alert-warning"
-                          {{ $detail->lab->execution_result == "" || $detail->lab->execution_result == "none"  ?  'selected' : '' }}>Not Available</option>
-                    </select>
-                          <!--   {{$detail->lab->execution_result}}  -->
-                        </td>
-                        <td class="alert alert-{{$detail->lab->checkpoint_result == 'Pass'? 'success' : ($detail->lab->checkpoint_result == '' || $detail->lab->checkpoint_result == 'not_executed' ? 'warning': ($detail->lab->checkpoint_result == 'none' ? 'error' : 'danger'))}}" > 
-                    <select class="alert" name="checkpoint_result">
-                      <option value="Pass"  class="alert alert-success"
-                          {{ $detail->lab->checkpoint_result == "Pass" ? 'selected' : ''}}>Pass</option>
-                      <option value="Fail" class="alert alert-danger"
-                          {{ $detail->lab->checkpoint_result == "Fail" ?  'selected' : '' }}>Fail</option>
-                      <option value="" class="alert alert-warning"
-                          {{ $detail->lab->checkpoint_result == ""  ?  'selected' : '' }}>Not Available</option>
+                          {{ $detail->lab->result == ""  ?  'selected' : '' }}>Not Available</option>
                       <option value="none" class="alert alert-error"
-                          {{ $detail->lab->checkpoint_result == "none"  ?  'selected' : '' }}>Not Defined</option>
+                          {{ $detail->lab->result == "none"  ?  'selected' : '' }}>Not Defined</option>
                           </select>   
 
-                            <!--  {{$detail->lab->checkpoint_result == 'none' ? 'Not Defined' : $detail->lab->checkpoint_result}} -->
+                            <!--  {{$detail->lab->result == 'none' ? 'Not Defined' : $detail->lab->result}} -->
                         </td>
                         <td>
                                 <button type="submit" title="Select scenarios and Go to Testlab" name="">Update Result</button>
@@ -161,13 +143,10 @@
                         </td>
                         </form>
                         <td>
-                            <a href="{{URL::route('report.lab', ['id' => $detail->tc_id] )}}">  <span class="glyphicon glyphicon-calendar"></span> Lab History
+                            <a href="{{URL::route('report.sc_lab', ['id' => $detail->tsc_id] )}}">  <span class="glyphicon glyphicon-calendar"></span> Scenario Lab History
                             </a>       
                         </td>
                     </tr>
-                    @endif
-                    @endforeach
-
                 @endforeach
             </tbody>
          </table>

@@ -50,6 +50,7 @@ Route::resource('execute','ExecutionController');
 Route::resource('report','ReportController');
 Route::resource('sc_report','ScenarioReportController');
 
+
 Route::get('report/sc_lab/{id}', array("as"=>"report.sc_lab" , 'uses' =>'ScenarioReportController@show_lab'));
 Route::get('sc_report/functionality/{id?}', array("as"=>"sc_report.functionality" , 'uses' =>'ScenarioReportController@index'));
 
@@ -69,7 +70,8 @@ Route::resource('teststep', 'TestStepController');
 
 Route::resource('lab', 'TestLabController');
 Route::post('lab/create', array("as"=>"lab.create" , 'uses' =>'TestLabController@create'));
-
+Route::get('lab_list/functionality/{id?}', array("as"=>"lab_list.functionality" , 'uses' =>'LabListController@index'));
+Route::get('sc_lab_list/functionality/{id?}', array("as"=>"sc_lab_list.functionality" , 'uses' =>'ScenarioLabController@index'));
 
 Route::resource('defect', 'DefectController');
 //Route::get('tsc_lab/{tsc_id}', array("as"=>"tsc_lab" , 'uses' =>'TestLabController@showScenario'));

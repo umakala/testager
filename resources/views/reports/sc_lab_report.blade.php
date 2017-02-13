@@ -52,6 +52,7 @@
                     <th>Release</th>
                     <th  width="200px">Execution Details</th>
                     <th>Result</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -82,10 +83,31 @@
                         {{$detail->execution_type}} by                     
                         {{$detail->executed_by}} at {{date($exe_dt_format, strtotime($detail->created_at))}}               
                     </td>
-                  
-                    <td class="alert alert-{{$detail->result == 'Pass'? 'success' : ($detail->result == '' ? 'warning' : ($detail->result == 'none' ? 'error' : 'danger'))}}" > 
-                        {{$detail->result == 'none' ? 'Not Defined' : $detail->result}}  
-                    </td>
+                 <form action="{{URL::route('report.update', ['id' => $detail->scl_id])}}" method ="POST" class="form-horizontal"> 
+                      <input type="hidden" name="_method" value="PUT"> 
+                      <input type="hidden" name="type" value="scenariolab">             
+
+                        <td class="alert alert-{{$detail->result == 'Pass'? 'success' : ($detail->result == '' || $detail->result == 'not_executed' ? 'warning': ($detail->result == 'none' ? 'error' : 'warning'))}}" > 
+                    <select class="alert" name="result">
+                      <option value="Pass"  class="alert alert-success"
+                          {{ $detail->result == "Pass" ? 'selected' : ''}}>Pass</option>
+                      <option value="Fail" class="alert alert-danger"
+                          {{ $detail->result == "Fail" ?  'selected' : '' }}>Fail</option>
+                      <option value="" class="alert alert-warning"
+                          {{ $detail->result == ""  ?  'selected' : '' }}>Not Available</option>
+                      <option value="none" class="alert alert-error"
+                          {{ $detail->result == "none"  ?  'selected' : '' }}>Not Defined</option>
+                          </select>   
+
+                            <!--  {{$detail->result == 'none' ? 'Not Defined' : $detail->result}} -->
+                        </td>
+                        <td>
+                                <button type="submit" title="Select scenarios and Go to Testlab" name="">Update Result</button>
+<!-- 
+                        <a href="{{URL::route('report.edit', ['id' => $detail->tl_id] )}}">  <span class="glyphicon glyphicon-edit"></span> Edit Result
+                            </a>  -->
+                        </td>
+                        </form>
                 </tr>
                 @endforeach
             </tbody>

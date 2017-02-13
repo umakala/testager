@@ -47,11 +47,11 @@
 
 
     <!-- Test lab dropdown options  -->
-   <!--  <span class="btn headerButt dropdown"> 
-        <a href="{{url('lab')}}" >
+    <span class="btn headerButt dropdown"> 
+        <a href="{{url('sc_lab_list/functionality')}}" >
             Testlab 
         </a>
-    </span> -->
+    </span>
 
     <!-- <span class=" btn headerButt dropdown">  
       <ul class="dropdown-menu">
