@@ -94,10 +94,10 @@ td {
 }
 
 button {
-	background-color: #9fa8a3;
-    border-color: #9fa8a3;
-    color: #fff;
-    border-radius: 10px;
+	background-color: #dddfd4;
+    border-color: #dddfd4;
+    color: #000;
+    border-radius: 5px;
     border-style: double;
     font-variant: small-caps;
     /*background-color: #1e1e1e;

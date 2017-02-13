@@ -186,7 +186,7 @@
                         <td> 
                         <a href="{{URL::route('report.case', ['id' => $detail->lab->tl_id])}}">
                             {{$detail->tc_name}}
-                        </a>                     
+                        </a>         
                         </td>
                         <td>
                             <a href="{{URL::route('report.scenario', ['id' => $sc->tsc_id])}}">

@@ -39,6 +39,15 @@ class ExecutionController extends Controller{
 		//
 	}
 
+
+	public function executeSetup($id)
+	{	
+		$filename = "";
+		$loc = $this->validatePreRequirements($filename);
+		$this->execute($filename, $loc);
+		return back();
+	}
+
 	/**
 	 * Display the specified resource.
 	 *
@@ -47,6 +56,8 @@ class ExecutionController extends Controller{
 	 */
 	public function show($id)
 	{	
+
+
 		$tp_id =  session()->get('open_project');
 		$call_from = "";
 		if($id == $tp_id)
@@ -121,7 +132,7 @@ class ExecutionController extends Controller{
 		return back();
 	}
 
-	public function validatePreRequirements($filename)
+	public function validatePreRequirements($filename="")
 	{
 		/*$cmd = 'echo %home%';
 		$home = shell_exec($cmd);
@@ -171,8 +182,8 @@ class ExecutionController extends Controller{
 
 		if(File::exists($exe_location)){	
 			$message = $this->getMessage('messages.execution_start');
-			$message = $message." - ".$filename;
-			Toast::message($message, '');
+			//$message = $message." - ".$filename;
+			Toast::message($message, 'info');
 			$answer = shell_exec($exe_location);
 			//var_dump($answer);
 			//echo $argument;			

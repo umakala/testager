@@ -31,6 +31,34 @@ class DownloadController extends Controller {
 		//
 	}
 
+
+
+	public function download($type, $id='')
+	{
+		$dt 			= Carbon::now()->format('dmyhis');
+		$tp_id 			= session()->get('open_project');
+
+		/*if($id == $tp_id)
+		{
+			$cases = \App\TestCase::select('tc_id')->where('tp_id', $id)->get()->toArray();
+			foreach ($cases as $key => $value) {
+				$ids[] = $value['tc_id'];
+			}
+		}else{
+			$ids 			= explode($this->getDelimiterChar(),$id,-1);			
+		}*/
+		
+		$count			= \App\Lab::where('scl_id', $id)->count();
+		$filename 		= $tp_id."_".$count."_".$dt;
+		$data 			= $this->createExcelData($id, $filename);
+		session()->save();
+		$this->processDownload($data, $filename);
+		return redirect()->back();
+	}
+
+
+
+
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -90,7 +118,7 @@ class DownloadController extends Controller {
 	}
 	
 
-  	public function createExcelData($ids, $filename, $request)
+  	public function createExcelData($id, $filename)
   	{
   		$tp_id 							=  session()->get('open_project');
   		$project 						= \App\TestProject::find($tp_id);
@@ -105,23 +133,16 @@ class DownloadController extends Controller {
   			$excel_data ['error'] = $this->getMessage('messages.activity_error');
   		}else{
   			$i = 0;
-  			foreach ($ids as $id) {
+			$case_labs			= \App\Lab::where('scl_id', $id)->get()->toArray();
+
+  			foreach ($case_labs as $lab) {
   				$i++;
-
-  				$case 						= \App\TestCase::find($id);
+  				$case 						= \App\TestCase::find($lab['tc_id']);
   				$sc 						= \App\TestScenario::find($case->tsc_id);
-  				/*$sc_lab['scl_id'] 				= $this->genrateRandomInt();  		 
-  				$sc_lab['tp_id'] 				= $tp_id;	
-  				$sc_lab['tf_id'] 				= $sc->tf_id;
-  				$sc_lab['tsc_id']				= $case->tsc_id;	 
-  				$sc_lab['execution_type'] 		= '';
-  				$sc_lab['executed_by'] 			= session()->get('email');  			
-  				$sc_lab['result'] 				= '';*/
+  				
 
-				$sc_lab['scl_id'] = "";
-
-	  			//Create a test lab for each test case execution
-  				$lab['tl_id'] 				= $sc_lab['scl_id']."_".$this->genrateRandomInt();  		 
+	  			/*//Create a test lab for each test case execution
+  				$lab['tl_id'] 				= $sc_lab['scl_id']."_".$this->genrateRandomInt();
   				$lab['tp_id'] 				= $tp_id;	  
   				$lab['scl_id'] 				= $sc_lab['scl_id'];	
   				$lab['tc_id'] 				= $id;
@@ -142,32 +163,32 @@ class DownloadController extends Controller {
 	  				$lab['release_version']	= $request->release;
 	  			$lab['os_version']			= $request->os_version;
 	  			$lab['network_type']		= $request->network_type;
-	  			$lab['device_name']			= $request->device_name;
+	  			$lab['device_name']			= $request->device_name;*/
 
 
-		  		$steps 						= \App\TestStep::where(['tc_id'=>$id])->orderBy('seq_no', 'asc')->get()->toArray();
-		  		if(count($steps) > 0)
-		  			$c_lab 					=\App\Lab::create($lab);
-		  		foreach ($steps as $s_value) {
+  				$executions 				= \App\Execution::where('tl_id', $lab['tl_id'])->orderBy('seq_no', 'asc')->get()->toArray();;
+		  		//$steps 						= \App\TestStep::where(['tc_id'=>$id])->orderBy('seq_no', 'asc')->get()->toArray();
+
+		  		foreach ($executions as $exe_data) {
 					//print_r($s_value);
 		  			$data['Project Name'] 	= $project->tp_name;
 		  			$data['Package Name'] 	= $project->package_name;
 		  			$data['Activity Name']	= $project->activity_name;
 		  			$data['Description']  	= "";
 		  			$data['Test Case'] 		= $i;
-		  			$ts_id 					=  $s_value['ts_id'];
-		  			$execution 				=  \App\Execution::where(['tc_id' => $id, 'ts_id' => $ts_id])->get()->toArray();
+		  			$ts_id 					= $exe_data['ts_id'];
+		  			$step 					= \App\TestStep::find($ts_id)->toArray();
 
-		  			if(count ($execution) != 0)
-					{
-			  			$exe_data 				= $execution[0];
+		  			/*if(count ($execution) != 0)
+					{*/
+			  			/*$exe_data 				= $execution[0];
 			  			$exe_data['e_id']		= $lab['tl_id']."_".$this->genrateRandomInt(8);
 			  			$exe_data['tl_id']		= $lab['tl_id'];
 			  			$exe_data['execution_result'] = '';
 			  			$exe_data['checkpoint_result'] = '';
 			  			unset($exe_data['created_at']);
 			  			unset($exe_data['updated_at']);
-			  			$created_exe 			= \App\Execution::create($exe_data);
+			  			$created_exe 			= \App\Execution::create($exe_data);*/
 
 			  			$data['Scroll'] 		= $exe_data['scroll'];
 			  			$data['resource-id'] 	= $exe_data['resource_id'];
@@ -179,11 +200,12 @@ class DownloadController extends Controller {
 			  			$data['screenshot'] 	= $exe_data['screenshot'];	
 			  			$data['Check point'] 	= $exe_data['checkpoint'];
 			  			$data['Wait'] 			= $exe_data['wait'];
-			  			$data['Expected Value'] = $s_value['expected_result'];
+			  			$data['Expected Value'] = $step['expected_result'];
 			  			$data['e_id'] 			= $exe_data['e_id'];
-			  			$data['tl_id'] 			= $lab['tl_id'];
+			  			$data['tl_id'] 			= $exe_data['tl_id'];
+			  			$data['scl_id']			= $id;
 			  			$excel_data[] 			= $data;
-		  			} 	
+		  			/*}*/ 	
 		  		}
 		  	}
 	  	}

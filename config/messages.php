@@ -28,7 +28,8 @@ return [
 	'tf_required'				=> "Functionality is required. Please select a functionality from dropdown.",
 
 	'update_failed' 			=> "Update request could not be processed Successfully.",
-
+	'failed' 					=> "Request could not be processed Successfully.",
+	
 
 
 	/* 
@@ -40,13 +41,14 @@ return [
 	'reorder_success' 			=> "Re-ordered Successfully.",
 	'clone_success' 			=> "Cloned Successfully.",
 	'update_success' 			=> "Update request processed Successfully.",
+	'success' 					=> "Request processed Successfully.",
 
 
 
 	/*
 		Info Messages
 	*/
-	'execution_start'			=> "Autorun launched for execution. Use this file as input to Autorun and select your screenshot location.",
+	'execution_start'			=> "Autorun launched for execution. Use downloaded file as input to Autorun and select your screenshot location.",
 	'upload_completed' 			=> "File upload process complete.",
 
 

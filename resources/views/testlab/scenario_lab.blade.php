@@ -37,7 +37,12 @@
 				</div>
       	@else
 
-        <div class="panel-body" style="padding-bottom:20px;">
+        @include('modals.download_form')
+
+
+        <!-- Download and Upload options commented below as not required on this page -->
+
+        <!-- <div class="panel-body" style="padding-bottom:20px;">
 
         <div class="col-lg-6 panel-title"  >
 
@@ -75,22 +80,22 @@
             </div>
          </div>
          </div>
-    </div>
+    </div> -->
 
 
-        <!-- <div class="panel-body">
+        <div class="panel-body">
 	         <div class="panel-title" style="font-style: bold; padding-bottom: 10px;" > Testcases Details 
-	         <p style="float:right">
+	         <!-- <p style="float:right">
 
                 <a  data-toggle="modal" data-target="#downloadModal" title="Download Excel"> <i class="glyphicon glyphicon-cloud-download"  ></i> Download
                 </a>
 
 		        	<a href="{{URL::route('execute.show', ['id' => $tc_ids])}}"> <span id="" class="glyphicon glyphicon-play-circle"></span> Execute</a>
-		 	 </p>
-	 	</div> -->
-        @include('modals.download_modal')
+		 	 </p> -->
+	 	</div>
+        <!-- @include('modals.download_modal')
         @include('modals.upload_result_modal') 
-        
+         -->
 
 	 	<!--  Column details of test case to show 
 	 	id, name, status(executed or not executed), executed type (manual/automation), executed by, executed date-time, checkpoint_result, execution_result(pass_fail), defect(if any), defect_status, (checkbox to select )
@@ -100,14 +105,8 @@
          		<tr>
          			<th>#</th>
          			<th>Case Name</th>
-         			<th>Status</th>
-					<th>Execution type</th>
-					<th>Executed by</th>
+         			<th>Description</th>
 					<th>Created at</th>					
-					<th>Execution Result</th>
-					<th>Checkpoint Result</th>
-					<th>Defect Count</th>
-					<th>Defect Status</th>
          		</tr>
          	</thead>
          	<tbody>
@@ -129,29 +128,11 @@
          			<a href="{{URL::route('lab.show', ['id' => $detail->tc_id])}}"> <span id="" class="glyphicon glyphicon-eye-open"></span>
          				{{$detail->tc_name}}  Lab</a>     				
          			</td>
-         			<td class="alert alert-warning">  
-         				{{$detail->status}}          				
+         			<td>  
+         				{{$detail->description}}          				
          			</td>
          			<td> 
-         				{{$detail->execution_type}}
-         			</td>
-         			<td> 
-         				{{$detail->executed_by}}       				
-         			</td>
-         			<td> 
-         				{{date($dt_format, strtotime($detail->created_at))}}        				
-         			</td>
-         			<td> 
-         				{{$detail->execution_result}} 
-         			</td>
-         			<td> 
-         				{{$detail->checkpoint_result}}  
-         			</td>
-         			<td> 
-         				-      				
-         			</td>
-         			<td> 
-         				-
+         				{{date($dt_format, strtotime($detail->created_at))}}  	
          			</td>
          		</tr>
          		@endforeach

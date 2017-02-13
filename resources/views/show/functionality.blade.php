@@ -69,8 +69,8 @@
         			{{$functionality->steps}}
 				</div>
 				<div class="col-md-8" style="text-align: right">
-
-				<a href="{{URL::route('tf_lab', ['id' => $functionality->tf_id])}}" title="Go to TestLab for this functionality" > <span id="" class="glyphicon glyphicon-play-circle" ></span> Lab</a>
+				<!-- Lab for this fucntionality - to be implemented -->
+				<!-- <a href="{{URL::route('tf_lab', ['id' => $functionality->tf_id])}}" title="Go to TestLab for this functionality" > <span id="" class="glyphicon glyphicon-play-circle" ></span> Lab</a> -->
 
 
 				<a type="button" data-toggle="modal" data-target="#cloneModal" title="Copy existing Scenario"> <i class="glyphicon glyphicon-copy"></i> Clone Scenario                                          

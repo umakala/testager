@@ -2,9 +2,10 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use DB;
+use App\Http\Controllers\Handlers\LabHandler;
 use Illuminate\Http\Request;
 use Toast;
+use DB;
 
 
 class TestLabController extends Controller {
@@ -79,9 +80,35 @@ public function setManualLabSession()
  *
  * @return Response
  */
-public function create()
+public function create(Request $request)
 {
-	//
+	$lab_cases = [];
+	$tc_ids = '';
+	$tsc_id = $request->tsc_id;
+
+	$scenario = \App\TestScenario::find($tsc_id);
+
+	if($scenario == null)
+	{
+		$message = $this->getMessage('messages.something_went_wrong');
+		Toast::message($message, 'danger');	
+		return redirect()->back();	
+	}
+	else{
+		//print_r($request->all()); exit;
+		foreach ($request->except('tsc_id', 'select_all', 'type') as $check_key => $check_value) {
+			//echo $check_key; exit;
+			//$testcase 	= explode('.', $check_key);
+			$id 		= $check_key ; //$testcase[1];
+			$tc_ids		= $tc_ids.$id.$this->getDelimiterChar();
+			$case = \App\TestCase::find($id);		
+			$steps_counts =  \App\TestStep::groupBy('status')->select('status', DB::raw('count(*) as count'))->where("tc_id" , $id)->get();
+
+			$case->steps = $this->getCountFormat($steps_counts);
+			$lab_cases [] = $case;
+		}		
+		return view('testlab.scenario_lab', ['cases' => $lab_cases, 'scenario' => $scenario , 'tc_ids' => $tc_ids]);
+	}
 }
 
 /**
@@ -91,54 +118,84 @@ public function create()
  */
 public function store(Request $request)
 {
-	/*if($request->reorder == 're-arrange'){
-		echo $request->reorder;
-	}
-	else*/
-	{
-		//echo "Welcome to lab store method";
-		$lab_cases = [];
-		$tc_ids = '';
-		$tsc_id = $request->tsc_id;
+	$tsc_id 		= $request->tsc_id;
+	$id 			= $request->tc_ids;
+	$ids 			= explode($this->getDelimiterChar(),$id,-1);
+	$scl_id 		= 0;
+	
+	$scenarios 							= \App\TestScenario::where('tsc_id', $tsc_id)->get();	
+	$cases 								= \App\TestCase::find($ids); 
+	$excel_data['release_version'] 		= $request->release;
+	$excel_data['os_version']			= $request->os_version;
+	$excel_data['network_type']			= $request->network_type;
+	$excel_data['device_name']			= $request->device_name;
 
-		$scenario = \App\TestScenario::find($tsc_id);
+	$lab_obj = new LabHandler();
 
-		if($scenario == null)
-		{
-			$message = $this->getMessage('messages.something_went_wrong');
-			Toast::message($message, 'danger');	
-			return redirect()->back();	
+	foreach ($scenarios as $sc) {
+		$scl_id = $lab_obj->createScLabByScenarioDetails($sc);
+
+		//foreach ($ids as $id) {
+		/*	$cases = \App\TestCase::where('tsc_id' , $id )->orderBy('seq_no', 'asc')->get()->toArray();
+		*/
+		foreach ($cases as $c_value) {
+			//echo $c_value['tc_name'];
+			$tc_id = $c_value['tc_id'];
+			
+		   	$excel_data = $lab_obj->createLabByCase($c_value, $sc->tf_id, $scl_id, $excel_data);
+		   	$tl_id = $excel_data['Test Case ID'];
+		   	
+		   	$steps 						= \App\TestStep::where(['tc_id'=> $tc_id])->orderBy('seq_no', 'asc')->get();
+
+			$step_count = 0;
+			foreach ($steps as $ts_value) {
+	        		
+	    		   	$excel_data = $lab_obj->createExecutionByStep($ts_value, $tl_id, $excel_data);
+	    		    $final_data[] = $excel_data; 
+	    		   	$step_count++;
+	        }
 		}
-		else{
-			//print_r($request->all()); exit;
-			foreach ($request->except('tsc_id', 'select_all', 'type') as $check_key => $check_value) {
-				//echo $check_key; exit;
-				//$testcase 	= explode('.', $check_key);
-				$id 		= $check_key ; //$testcase[1];
-				$tc_ids		= $tc_ids.$id.$this->getDelimiterChar();
-				$case = \App\TestCase::find($id);		
-				$steps_counts =  \App\TestStep::groupBy('status')->select('status', DB::raw('count(*) as count'))->where("tc_id" , $id)->get();
-
-				$case->steps = $this->getCountFormat($steps_counts);
-				$lab_cases [] = $case;
-			}		
-			return view('testlab.scenario_lab', ['cases' => $lab_cases, 'scenario' => $scenario , 'tc_ids' => $tc_ids]);
-		}
+		//}
 	}
+
+	$message = $this->getMessage('messages.success');
+	Toast::message($message, 'success');	
+	return redirect()->route('tsc_lab', ['scl_id' => $scl_id]);	
 }
 
 
-public function showScenario($id)
+public function showScenarioLab($id)
 {
-
-	$sc = \App\TestScenario::find($id);
+	$scl = \App\ScenarioLab::find($id);
+	$sc = \App\TestScenario::find($scl->tsc_id);
 	$tc_ids = "";
+	$sc->lab = $scl;
 
-	$lab_cases = \App\TestCase::where('tsc_id' , $id)->orderBy('seq_no', 'asc')->get();
+	$lab_cases = \App\Lab::where('scl_id' , $id)->orderBy('seq_no', 'asc')->get();
+
+
 	foreach ($lab_cases as $key => $value) {
+		$value->case = \App\TestCase::find($value->tc_id);
 		$tc_ids		= $tc_ids.$value->tc_id."_";
 	}
-	return view('testlab.scenario_lab', ['cases' => $lab_cases, 'scenario' => $sc , 'tc_ids' => $tc_ids]);
+	return view('testlab.scenario_lab_details', ['labs' => $lab_cases, 'scenario' => $sc , 'tc_ids' => $tc_ids]);
+}
+
+public function showScenario($id)
+{
+	$scl = \App\ScenarioLab::find($id);
+	$sc = \App\TestScenario::find($scl->tsc_id);
+	$tc_ids = "";
+	$sc->lab = $scl;
+
+	$lab_cases = \App\Lab::where('scl_id' , $id)->orderBy('seq_no', 'asc')->get();
+
+
+	foreach ($lab_cases as $key => $value) {
+		$value->case = \App\TestCase::find($value->tc_id);
+		$tc_ids		= $tc_ids.$value->tc_id."_";
+	}
+	return view('testlab.scenario_lab_details', ['labs' => $lab_cases, 'scenario' => $sc , 'tc_ids' => $tc_ids]);
 }
 
 public function showFunctionality($tf_id)

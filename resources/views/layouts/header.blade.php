@@ -47,11 +47,11 @@
 
 
     <!-- Test lab dropdown options  -->
-    <span class="btn headerButt dropdown"> 
+   <!--  <span class="btn headerButt dropdown"> 
         <a href="{{url('lab')}}" >
             Testlab 
         </a>
-    </span>
+    </span> -->
 
     <!-- <span class=" btn headerButt dropdown">  
       <ul class="dropdown-menu">

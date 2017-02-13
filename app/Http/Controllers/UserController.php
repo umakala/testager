@@ -3,7 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use  App\Http\Controllers\Handlers\EmailHandler;
+use Toast;
 
 class UserController extends Controller {
 
@@ -106,7 +106,8 @@ class UserController extends Controller {
 	{
 		$validator = \Validator::make($request->all(), array(
 			'name' => 'required',
-			'email' => 'required|Email|unique:users'           
+			'email' => 'required',
+			'password' => 'required'
 			));
 		if ($validator->fails())
 		{
@@ -117,32 +118,24 @@ class UserController extends Controller {
 		else{
 
 			try{
-			$content['email'] 					= $request->email;
-			$content['name']                   	= $request->name;
-			$content['verification']		    = hash('sha256', $this->genrateRandomInt());
-        	
-        	// Send verification mail
-			$full_link = url('user/verify_email?email=' . $content["email"] . '&verification_code=' . $content['verification']);
-
-       		// $link      = $this->getShortURL($full_link);
-			$message = "Hi " .  $content['name'] . ", <br/><br/>Almost there! <br/>Please click on the link below  or copy/paste the link into your browser to verify your email and complete signup.<br/><br/>" . $full_link . "<br/><br/>Warmly<br/>Team Newstand";
-			$subject    = '[Newstand] Welcome On-board!';
-
-			$email_obj = new EmailHandler();
-
-			if($email_obj ->sendEmail($content['email'], $message, $subject) == 0)
-			{
-				$error= "Could not connect internet. Kindly check your connection.";
-			}else{
+				$content['email'] 					= $request->email;
+				$content['name']                   	= $request->name;
+				$content['password']               	= $request->password;
+				$content['open_project']            = session()->get('open_project');
+				$content['autorun_location']        = session()->get("autorun_location");
 				$create_user = \App\User::create($content);
-				return redirect()->route('home', ['info' => "Please check your email to complete signup process."] );
+				
+				$message = $this->getMessage('messages.success');
+				Toast::message($message, 'success');	
+				return redirect()->back();
 			}
-		}
 			catch(Exception $e){
-				 $error= "Could not connect internet. Kindly check your connection.";
+				$message = $this->getMessage('messages.something_went_wrong');
+				Toast::message($message, 'danger');	
+				return redirect()->back();
 			}
-		}		
-		return redirect()->route('user.register', ['message' => $error])->withInput();
+		}		 
+		return redirect()->route('profile', [ 'message' => $error ])->withInput();
 	}
 
 	/**

@@ -26,16 +26,6 @@
             <div class="panel-title" style="font-weight: bold;" >  All Labs Summary 
 
             <div class="row">
-               <div  class="col-lg-3 col-sm-12" >               
-                    <div id="execution_result_chart"></div>
-                    @piechart('exe_result', 'execution_result_chart')
-                </div>
-
-               <div  class="col-lg-3 col-sm-12" >               
-                    <div id="checkpoint_result_chart"></div>
-                    @piechart('cp_result', 'checkpoint_result_chart')
-                </div> 
-
                 <div  class="col-lg-6 col-sm-12" >   
                 <table class="table table-striped" style="border: none; font-size: 12px; " cellspacing="0" width="auto">
                     <thead>
@@ -52,12 +42,12 @@
                             <th class="alert alert-info">Total</th>
                             <th class="alert alert-success">Pass</th>
                             <th class="alert alert-danger">Fail</th>
-                            <th class="alert warning"  style="font-size:10px;">Not <br/>executed</th>
+                            <th class="alert error"  style="font-size:10px;">Not <br/>executed</th>
 
                             <th class="alert alert-info">Total</th>
                             <th class="alert alert-success">Pass</th>
                             <th class="alert alert-danger">Fail</th>
-                            <th class="alert warning" style="font-size:10px;">Not <br/> executed</th>
+                            <th class="alert error" style="font-size:10px;">Not <br/> executed</th>
 
                            <!-- <th class="alert alert-info">Total</th>
                             <th class="alert alert-success">Pass</th>
@@ -66,7 +56,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
+                       <?php
                          $i =1;
                          $sum_total = 0; $sum_pass =0; $sum_fail=0; $sum_not_executed=0;
                          $sum_step_total = 0; $sum_step_pass =0; $sum_step_fail=0; $sum_step_not_executed=0;
@@ -280,7 +270,7 @@
                     </select>
                           <!--   {{$detail->lab->execution_result}}  -->
                         </td>
-                        <td class="alert alert-{{$detail->lab->checkpoint_result == 'Pass'? 'success' : ($detail->lab->checkpoint_result == '' || $detail->lab->checkpoint_result == 'not_executed' ? 'warning': ($detail->lab->checkpoint_result == 'none' ? 'warning' : 'danger'))}}" > 
+                        <td class="alert alert-{{$detail->lab->checkpoint_result == 'Pass'? 'success' : ($detail->lab->checkpoint_result == '' || $detail->lab->checkpoint_result == 'not_executed' ? 'warning': ($detail->lab->checkpoint_result == 'none' ? 'error' : 'danger'))}}" > 
                     <select class="alert" name="checkpoint_result">
                       <option value="Pass"  class="alert alert-success"
                           {{ $detail->lab->checkpoint_result == "Pass" ? 'selected' : ''}}>Pass</option>
@@ -288,7 +278,7 @@
                           {{ $detail->lab->checkpoint_result == "Fail" ?  'selected' : '' }}>Fail</option>
                       <option value="" class="alert alert-warning"
                           {{ $detail->lab->checkpoint_result == ""  ?  'selected' : '' }}>Not Available</option>
-                      <option value="none" class="alert alert-warning"
+                      <option value="none" class="alert alert-error"
                           {{ $detail->lab->checkpoint_result == "none"  ?  'selected' : '' }}>Not Defined</option>
                           </select>   
 

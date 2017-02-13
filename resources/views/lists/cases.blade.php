@@ -5,7 +5,7 @@
       <!--  Column details of test case to show 
       id, name, status(executed or not executed), executed type (manual/automation), executed by, executed date-time, checkpoint_result, execution_result(pass_fail), defect(if any), defect_status, (checkbox to select )
       -->
-      <form action="{{URL::route('lab.store')}}" method="POST">
+      <form action="{{URL::route('lab.create')}}" method="POST">
          <div class="panel-title" style="font-weight: bold; float: right; " > 
       
          </div>

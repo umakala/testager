@@ -21,7 +21,7 @@ Route::get('/', 'UserController@index');
 Route::get('/', array( "as"=>"/" , 'uses' =>'UserController@index'));
 Route::get('home', array("as"=>"home" , 'uses' =>'UserController@index'));
 Route::get('user/register', array("as"=>"user.register" , 'uses' =>'UserController@create'));
-Route::post('store', array("as"=>"store" , 'uses' =>'UserContrsoller@store'));
+Route::post('user/store', array("as"=>"user.store" , 'uses' =>'UserController@store'));
 Route::get('user/verify_email', 'UserController@verify_email');
 Route::post('reset_password', array("as"=>"reset",'uses' =>'UserController@reset_password'));
 Route::post('login', array("as"=>"login" , 'uses' =>'UserController@login'));
@@ -40,10 +40,11 @@ Route::get('tree_value/{id}', array("as"=>"tree_value" , 'uses' =>'TreeviewContr
 Route::resource('upload','UploadController');
 Route::resource('download','DownloadController');
 Route::get('format_download/{type}/{id?}', array("as"=>"format_download" , 'uses' =>'DownloadResultFormatController@download'));
-
+Route::get('script_download/{type}/{id?}', array("as"=>"script_download" , 'uses' =>'DownloadController@download'));
 
 Route::resource('upload_result','UploadResultController');
 
+Route::get('execute/process/{id?}', array("as"=>"execute.process" , 'uses' =>'ExecutionController@executeSetup'));
 
 Route::resource('execute','ExecutionController');
 Route::resource('report','ReportController');
@@ -67,9 +68,14 @@ Route::resource('testcase', 'TestcaseController');
 Route::resource('teststep', 'TestStepController');
 
 Route::resource('lab', 'TestLabController');
+Route::post('lab/create', array("as"=>"lab.create" , 'uses' =>'TestLabController@create'));
+
 
 Route::resource('defect', 'DefectController');
-Route::get('tsc_lab/{tsc_id}', array("as"=>"tsc_lab" , 'uses' =>'TestLabController@showScenario'));
+//Route::get('tsc_lab/{tsc_id}', array("as"=>"tsc_lab" , 'uses' =>'TestLabController@showScenario'));
+
+Route::get('tsc_lab/{scl_id}', array("as"=>"tsc_lab" , 'uses' =>'TestLabController@showScenarioLab'));
+
 
 Route::get('tf_lab/{tf_id}', array("as"=>"tf_lab" , 'uses' =>'TestLabController@showFunctionality'));
 
