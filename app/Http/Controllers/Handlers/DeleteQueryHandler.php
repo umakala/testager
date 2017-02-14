@@ -162,4 +162,41 @@ class DeleteQueryHandler {
 		return 1;
 	}
 
+	/**
+	 * Delete Labs query by testcase id
+	 *
+	 * @return int
+	 */
+
+	public function deleteLabByScLabId($id)
+	{    
+		try{  
+			$case_labs = \App\Lab::where('scl_id' , $id)->get()->toArray();        	
+        	foreach ($case_labs as $c_value) {
+        		$this->deleteExecutionByTestLabId($c_value['tl_id']);
+        	}
+			$deletedRows = \App\Lab::where(['scl_id' => $id])->delete();
+		}catch(Exception $e)
+		{
+			return 0;
+		}
+		return 1;
+	}
+	/**
+	 * Delete Execution steps query by tl_id
+	 *
+	 * @return int
+	 */
+
+	public function deleteExecutionByTestLabId($id)
+	{  
+		try{  
+			$e_deletedRows = \App\Execution::where(['tl_id' => $id])->delete();
+		}catch(Exception $e)
+		{
+			return 0;
+		}
+		return 1;
+	}
+
 }

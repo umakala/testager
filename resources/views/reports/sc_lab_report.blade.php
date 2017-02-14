@@ -52,7 +52,7 @@
                     <th>Release</th>
                     <th  width="200px">Execution Details</th>
                     <th>Result</th>
-                    <th>Action</th>
+                    <th colspan="2">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -103,9 +103,13 @@
                         </td>
                         <td>
                                 <button type="submit" title="Select scenarios and Go to Testlab" name="">Update Result</button>
-<!-- 
+                        <!-- 
                         <a href="{{URL::route('report.edit', ['id' => $detail->tl_id] )}}">  <span class="glyphicon glyphicon-edit"></span> Edit Result
                             </a>  -->
+                            </td>
+                            <td>
+                            <a href="{{URL::route('sc_lab.show', ['id' => $detail->scl_id] )}}">  <span class="glyphicon glyphicon-eye-open"></span> Show Scenario Lab Details
+                            </a> 
                         </td>
                         </form>
                 </tr>

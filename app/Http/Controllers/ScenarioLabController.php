@@ -2,9 +2,11 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Handlers\DeleteQueryHandler;
 
 use Illuminate\Http\Request;
 use DB;
+use Toast;
 
 class ScenarioLabController extends Controller {
 
@@ -118,7 +120,27 @@ class ScenarioLabController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+		$tp_id = session()->get('open_project');
+		$project = \App\TestProject::find($tp_id);
+
+		$lab = \App\ScenarioLab::find($id);
+		$sc_details = \App\TestScenario::find($lab->tsc_id);
+		$sc_details->lab = $lab;
+		
+
+		$lab_details = \App\Lab::where('scl_id' , $id)->orderBy('seq_no', 'asc')->get();
+		foreach ($lab_details as $key => $value) {
+
+			$tc = \App\TestCase::find($value->tc_id);
+			$value->case = $tc;
+/*
+			$tsc = \App\TestScenario::select('tsc_name')->where('tsc_id' , $value->tsc_id)->get();
+			$value->tsc_name = $tsc[0]->tsc_name;*/
+		}
+
+		//$sc_details->case_labs = $lab_details;
+
+		return view('testlab.show_sc_lab', ['labs' => $lab_details, 'scenario' => $sc_details]);
 	}
 
 	/**
@@ -151,7 +173,27 @@ class ScenarioLabController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+		$tp_id = session()->get('open_project');
+		$item = \App\ScenarioLab::find($id);
+		if($item){
+	        //Delete testlabs and execution steps
+        	$del_obj = new DeleteQueryHandler();
+        	$del_res = $del_obj->deleteLabByScLabId($id);
+			if($del_res == 0)
+			{
+				$message = $this->getMessage('messages.delete_failed');
+				Toast::message($message, 'danger');
+			}  else{      	
+	        		$item->delete();
+					$message = $this->getMessage('messages.delete_success');
+					Toast::success($message);
+			}
+        }
+		else{
+			$message = $this->getMessage('messages.delete_failed');
+			Toast::message($message, 'danger');
+		}
+		return redirect()->route('sc_lab.index');
 	}
 
 }

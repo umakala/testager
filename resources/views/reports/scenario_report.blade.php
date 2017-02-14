@@ -64,7 +64,7 @@
                     <th  width="200px">Execution Details</th>
                     <th>Execution Result</th>
                     <th>Checkpoint Result</th>
-                    <th>Actions</th>
+                    <th colspan="3">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -156,8 +156,12 @@
                     </td> -->
                     <td> 
                         <a href="{{URL::route('report.lab', ['id' => $detail->tc_id] )}}">  <span class="glyphicon glyphicon-calendar"></span> Lab History
-                        </a>           
+                        </a>            
                     </td>
+                    <td>
+                            <a href="{{URL::route('sc_lab.show', ['id' => $detail->lab->scl_id] )}}">  <span class="glyphicon glyphicon-eye-open"></span> Lab Details
+                            </a> 
+                        </td>
                 </tr>
                 @endforeach
             </tbody>

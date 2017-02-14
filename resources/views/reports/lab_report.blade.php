@@ -97,13 +97,42 @@
                         {{$detail->execution_type}} by                     
                         {{$detail->executed_by}} at {{date($exe_dt_format, strtotime($detail->created_at))}}               
                     </td>
-                  
-                    <td class="alert alert-{{$detail->execution_result == 'Pass'? 'success' : ($detail->execution_result == '' ? 'warning' : 'danger')}}"   > 
-                        {{$detail->execution_result}} 
-                    </td>
-                    <td class="alert alert-{{$detail->checkpoint_result == 'Pass'? 'success' : ($detail->checkpoint_result == '' ? 'warning' : ($detail->checkpoint_result == 'none' ? 'error' : 'danger'))}}" > 
-                        {{$detail->checkpoint_result == 'none' ? 'Not Defined' : $detail->checkpoint_result}}  
-                    </td>
+                    <form action="{{URL::route('report.update', ['id' => $detail->tl_id])}}" method ="POST" class="form-horizontal" enctype='multipart/form-data' > 
+                      <input type="hidden" name="_method" value="PUT"> 
+                      <input type="hidden" name="type" value="testlab">              
+
+                    <td class="alert alert-{{$detail->execution_result == 'Pass'? 'success' : ( ($detail->execution_result == 'not_executed'  || $detail->execution_result == '')  ? 'warning' : 'danger')}}"   > 
+                          <select name="execution_result" class="alert" style="height:auto">
+                      <option value="Pass"  class="alert alert-success"
+                          {{ $detail->execution_result == "Pass" ? 'selected' : ''}}>Pass</option>
+                      <option value="Fail" class="alert alert-danger"
+                          {{ $detail->execution_result == "Fail" ?  'selected' : '' }}>Fail</option>
+                      <option value="" class="alert alert-warning"
+                          {{ $detail->execution_result == "" || $detail->execution_result == "none"  ?  'selected' : '' }}>Not Available</option>
+                    </select>
+                          <!--   {{$detail->execution_result}}  -->
+                        </td>
+                        <td class="alert alert-{{$detail->checkpoint_result == 'Pass'? 'success' : ($detail->checkpoint_result == '' || $detail->checkpoint_result == 'not_executed' ? 'warning': ($detail->checkpoint_result == 'none' ? 'warning' : 'danger'))}}" > 
+                    <select class="alert" name="checkpoint_result">
+                      <option value="Pass"  class="alert alert-success"
+                          {{ $detail->checkpoint_result == "Pass" ? 'selected' : ''}}>Pass</option>
+                      <option value="Fail" class="alert alert-danger"
+                          {{ $detail->checkpoint_result == "Fail" ?  'selected' : '' }}>Fail</option>
+                      <option value="" class="alert alert-warning"
+                          {{ $detail->checkpoint_result == ""  ?  'selected' : '' }}>Not Available</option>
+                      <option value="none" class="alert alert-warning"
+                          {{ $detail->checkpoint_result == "none"  ?  'selected' : '' }}>Not Defined</option>
+                          </select>   
+
+                            <!--  {{$detail->checkpoint_result == 'none' ? 'Not Defined' : $detail->checkpoint_result}} -->
+                        </td>
+                        <td>
+                                <button type="submit" title="Select scenarios and Go to Testlab" name="">Update Result</button>
+<!-- 
+                        <a href="{{URL::route('report.edit', ['id' => $detail->tl_id] )}}">  <span class="glyphicon glyphicon-edit"></span> Edit Result
+                            </a>  -->
+                        </td>
+                        </form>
                    <!--  <td> 
                         <input type="checkbox" id="checkbox_{{$detail->tc_id}}">                    
                     </td> -->

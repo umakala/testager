@@ -143,8 +143,15 @@
                         </td>
                         </form>
                         <td>
-                            <a href="{{URL::route('report.sc_lab', ['id' => $detail->tsc_id] )}}">  <span class="glyphicon glyphicon-calendar"></span> Scenario Lab History
+                        <div style="margin-bottom: 15px;">
+                            <a href="{{URL::route('sc_lab.show', ['id' => $detail->lab->scl_id] )}}">  <span class="glyphicon glyphicon-eye-open"></span> Scenario Lab Details
                             </a>       
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                          
+                            <a href="{{URL::route('report.sc_lab', ['id' => $detail->tsc_id] )}}">  <span class="glyphicon glyphicon-calendar"></span> Scenario Lab History
+                            </a>  
+                            </div>     
                         </td>
                     </tr>
                 @endforeach

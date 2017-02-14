@@ -107,7 +107,7 @@ public function create(Request $request)
 			$case->steps = $this->getCountFormat($steps_counts);
 			$lab_cases [] = $case;
 		}		
-		return view('testlab.scenario_lab', ['cases' => $lab_cases, 'scenario' => $scenario , 'tc_ids' => $tc_ids]);
+		return view('testlab.create_sc_lab', ['cases' => $lab_cases, 'scenario' => $scenario , 'tc_ids' => $tc_ids]);
 	}
 }
 

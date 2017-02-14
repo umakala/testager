@@ -203,8 +203,8 @@ class TestScenarioController extends Controller {
 				$message = $this->getMessage('messages.delete_failed');
 				Toast::message($message, 'danger');
 			}  else{      	
-	        	//Delete testcase
-	        	$del_res = $del_obj->deleteScLabByScenarioId($id);
+	        	//Delete testlabs and execution steps
+	        	$del_res = $del_obj->deleteLabByScLabId($id);
 				if($del_res == 0)
 				{
 					$message = $this->getMessage('messages.delete_failed');

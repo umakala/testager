@@ -69,6 +69,8 @@ Route::resource('testcase', 'TestcaseController');
 Route::resource('teststep', 'TestStepController');
 
 Route::resource('lab', 'TestLabController');
+Route::resource('sc_lab', 'ScenarioLabController');
+
 Route::post('lab/create', array("as"=>"lab.create" , 'uses' =>'TestLabController@create'));
 Route::get('lab_list/functionality/{id?}', array("as"=>"lab_list.functionality" , 'uses' =>'LabListController@index'));
 Route::get('sc_lab_list/functionality/{id?}', array("as"=>"sc_lab_list.functionality" , 'uses' =>'ScenarioLabController@index'));
