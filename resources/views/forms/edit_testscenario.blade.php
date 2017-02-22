@@ -52,6 +52,14 @@
                    <div class="help-line" id="text-help"></div>
                </div>         
               </div>
+              <div class="form-group">  
+               <label for="all_checkbox" class="control-label col-xs-4"></label>
+                             
+                <div class="col-xs-8">  
+                <input type="checkbox" id="all_checkbox" name="all_checkbox" title="Select all" /> Update all <i>Scenarios</i> for this project  
+                </div>    
+                     
+              </div>
               <div class="form-group">
                 @if(isset($_GET['message']))                           
                 <div class="alert alert-danger">

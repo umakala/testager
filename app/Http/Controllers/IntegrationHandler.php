@@ -260,8 +260,8 @@ public function handleTeststep  ($row, $tc_id, $ts_id, $seq)
               $ts_id  = $check->ts_id;
           }
       }
-return $ts_id;
-}
+  return $ts_id;
+  }
 
 
 
@@ -302,5 +302,40 @@ return $ts_id;
         $sc_id =0;
     }*/
     return $sc_id;
+  }
+
+
+
+  /**
+   * Handles the functionality part of the db to convert to excel Format
+   *
+   * @return fn_id
+   */
+  public function handleFunctionalityDbtoXlS($id, $excel)
+  {   
+    $tf           = \App\TestFunctionality::where('tp_id' , $id)->get();
+    //$excel_data   = 
+    foreach ($tf as $tf_value) {
+
+      $excel_data['Functionality Name'] = $tf_value->tf_name;
+      $excel_data['Functionality Description'] = $tf_value->description;
+
+      $scs   = \App\TestScenario::where('tf_id', $tf_value->tf_id);
+      foreach ($scs as $sc) {
+       
+      $excel_data['Scenario Name'] = $sc->tsc_name;
+      $excel_data['Scenario Brief'] = $sc->sceanrio_brief;
+      $excel_data['Scenario Description'] = $sc->description;
+      $excel_data['Scenario Expected Result']   = $sc->scenario_expected_result;
+
+      }          
+    }
+
+    return $fn_id;
 }
+
+
+
+
+
 }

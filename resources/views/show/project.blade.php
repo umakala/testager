@@ -23,6 +23,8 @@
 	        	<a href="{{URL::route('project.edit', ['id' => $project->tp_id])}}"> <span id="" class="glyphicon glyphicon-edit" title="Edit Project" ></span></a>
 	        	<a type="button" data-toggle="modal" data-target="#uploadModal"> <i class="glyphicon glyphicon-upload"  title="Upload Functionalities"></i>                                           
                 </a>
+                <a type="button" href="{{URL::route('project.download', ['id' => $project->tp_id])}}"> <i class="glyphicon glyphicon-download"  title="Download Functionalities"></i>                                           
+                </a>
                 <a type="button" data-toggle="modal" data-target="#deleteModal"> <i class="glyphicon glyphicon-trash"  title="Delete Project"></i>
                 </a>
 	 		</p>

@@ -174,9 +174,16 @@ class TestcaseController extends Controller {
 				$content['seq_no'] 					= $request->seq_no;
 		        $content['description']             = $request->description;
 		        $content['expected_result']         = $request->expected_result;
-				$content['priority']             	= $request->priority;
-		        
-		        \App\TestCase::find($id)->update($content);
+				$content['tc_priority']            	= $request->priority;
+		        $case_update 						= \App\TestCase::find($id);
+		        $old_description 					= $case_update->description;
+		        $case_update->update($content);
+
+ 				if($request->all_checkbox == "on"){
+		        	$tp_id = session()->get('open_project');
+		        	\App\TestCase::where(['description' => $old_description, 'tp_id' => $tp_id])->update($content);
+		        }
+
 		        $message = $this->getMessage('messages.update_success');
 		        Toast::message($message, 'success');
 

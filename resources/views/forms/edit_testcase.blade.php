@@ -52,6 +52,14 @@
                    <div class="help-line" id="text-help"></div>
                </div>         
               </div>
+              <div class="form-group">  
+               <label for="all_checkbox" class="control-label col-xs-4"></label>
+                             
+                <div class="col-xs-8">  
+                <input type="checkbox" id="all_checkbox" name="all_checkbox" title="Select all" /> Update all <i> Cases </i> for this project  
+                </div>    
+                     
+              </div>
             <div class="form-group">
             @if(isset($_GET['message']))                           
             <div class="alert alert-danger">
@@ -70,25 +78,5 @@
 </div>
 
  </form>
-<!-- <script type="text/javascript">
-  function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            $('#ajaxLoader').show();
-            $('#displayImg')
-                // .on('load',imgLoaded("{{ URL::asset('assets/images/ajax-loader.gif')}}"))
-                .attr('src', e.target.result)
-                .width(300)
-                .height(200);
-            $('#iconDisplay').hide();
-            $('#iconText').hide();
-        };
-
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-</script> -->
 
 @endsection

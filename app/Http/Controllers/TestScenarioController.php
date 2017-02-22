@@ -174,7 +174,15 @@ class TestScenarioController extends Controller {
 				$content['tsc_name']                = $request->name;
 				$content['description']             = $request->description;
 		        $content['expected_result']         = $request->expected_result;
-		        \App\TestScenario::find($id)->update($content);
+		        $scenario_update 					= \App\TestScenario::find($id);
+		        $old_description 					= $scenario_update->description;
+
+		        $scenario_update->update($content);
+
+		        if($request->all_checkbox == "on"){
+		        	$tp_id = session()->get('open_project');
+		        	\App\TestScenario::where(['description' => $old_description, 'tp_id' => $tp_id])->update($content);
+		        }
 			 	return redirect()->route('scenario.show', ['id' => $id]);
 		 	}else
 		 	{
