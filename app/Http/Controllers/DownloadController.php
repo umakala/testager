@@ -133,7 +133,7 @@ class DownloadController extends Controller {
   			$excel_data ['error'] = $this->getMessage('messages.activity_error');
   		}else{
   			$i = 0;
-			$case_labs			= \App\Lab::where('scl_id', $id)->get()->toArray();
+			$case_labs			= \App\Lab::where('scl_id', $id)->orderBy('seq_no', 'asc')->get()->toArray();
 
   			foreach ($case_labs as $lab) {
   				$i++;
@@ -174,10 +174,10 @@ class DownloadController extends Controller {
 		  			$data['Project Name'] 	= $project->tp_name;
 		  			$data['Package Name'] 	= $project->package_name;
 		  			$data['Activity Name']	= $project->activity_name;
-		  			$data['Description']  	= "";
 		  			$data['Test Case'] 		= $i;
 		  			$ts_id 					= $exe_data['ts_id'];
 		  			$step 					= \App\TestStep::find($ts_id)->toArray();
+		  			$data['Description']  	= $step['description'];
 
 		  			/*if(count ($execution) != 0)
 					{*/
