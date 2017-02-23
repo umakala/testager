@@ -199,4 +199,28 @@ class DeleteQueryHandler {
 		return 1;
 	}
 
+	public function getCondition($item, $level )
+	{
+		$condition['expected_result'] = $item->expected_result;
+		switch ($level) {
+			case 'case':
+			 	$condition['tc_id'] = $item->tc_id;
+				break;
+
+			case 'scenario':
+				$case =\App\TestCase::find($item->tc_id);
+				$condition['tsc_id'] = $case->tsc_id;
+				break;
+
+			case 'functionality':
+				$case =\App\TestCase::find($item->tc_id);
+				$condition['tf_id'] = $case->tf_id;
+				break;
+
+			case 'project':
+				$condition['tp_id'] = $item->tp_id;
+				break;
+		}
+		return $condition;
+	}
 }

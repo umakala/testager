@@ -192,22 +192,36 @@ class TestStepController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy($id, Request $request)
 	{
 		//echo "Deleting this Step";
+		$level = ($request->delete_level);
 		$tp_id = session()->get('open_project');
 		$item = \App\TestStep::find($id);
-
+		//$expected_result = $item->expected_result;
+		
         if($item){
         	$tc_id = $item->tc_id;
         	$del_obj = new DeleteQueryHandler();
+        	$condition = $del_obj->getCondition($item, $level);
+        	$all_steps = \App\TestStep::where($condition)->get();
+        	print_r($all_steps[1]); exit;
+        	foreach ($all_steps as $step_value) {
+        		if($step_value->ts_id != $id)
+        		{
+        			$del_res = $del_obj->deleteExecutionByStepId($step_value->ts_id);
+        			$step_value->delete();
+        		}else
+        			echo "is equal";
+        	}
+
         	$del_res = $del_obj->deleteExecutionByStepId($id);
 			if($del_res == 0)
 			{
 				$message = $this->getMessage('messages.delete_failed');
 				Toast::message($message, 'danger');
 			}  else{      	
-	        	//Delete testcase
+	        	//Delete teststep
 	        	$item->delete();
 				$message = $this->getMessage('messages.delete_success');
 				Toast::success($message);
