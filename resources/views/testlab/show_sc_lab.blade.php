@@ -96,7 +96,11 @@
                       <input type="hidden" name="_method" value="PUT"> 
                       <input type="hidden" name="type" value="scenariolab">             
 
-                        <div class="alert alert-{{$scenario->lab->result == 'Pass'? 'success' : ($scenario->lab->result == '' || $scenario->lab->result == 'not_executed' ? 'warning': ($scenario->lab->result == 'none' ? 'error' : 'warning'))}}" style="padding:10px; "> 
+                        <div class="alert 
+                        alert-{{$scenario->lab->result == 'Pass'? 'success' : 
+                                ($scenario->lab->result == 'Fail'? 'danger' : 
+                                ($scenario->lab->result == '' || $scenario->lab->result == 'not_executed' ? 'warning': 
+                                ($scenario->lab->result == 'none' ? 'error' : 'warning')))}}" style="padding:10px; "> 
                     <select class="alert" name="result" style="padding:5px; margin-bottom: 0px">
                       <option value="Pass"  class="alert alert-success"
                           {{ $scenario->lab->result == "Pass" ? 'selected' : ''}}>Pass</option>
@@ -109,7 +113,9 @@
                           </select>  
                           </div>
 
-                 <button type="submit" title="Select scenarios and Go to Testlab" name="">Update Result</button>
+                           @if($scenario->lab->result == '')
+                 <button type="submit" title="Update result for this lab" name="">Update Result</button>
+                 @endif
 
                  </form>
                 </div>

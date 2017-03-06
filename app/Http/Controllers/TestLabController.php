@@ -145,7 +145,7 @@ public function store(Request $request)
 		   	$excel_data = $lab_obj->createLabByCase($c_value, $sc->tf_id, $scl_id, $excel_data);
 		   	$tl_id = $excel_data['Test Case ID'];
 		   	
-		   	$steps 						= \App\TestStep::where(['tc_id'=> $tc_id])->orderBy('seq_no', 'asc')->get();
+		   	$steps 						= \App\TestStep::where(['tc_id'=> $tc_id, 'soft_delete' => false])->orderBy('seq_no', 'asc')->get();
 
 			$step_count = 0;
 			foreach ($steps as $ts_value) {

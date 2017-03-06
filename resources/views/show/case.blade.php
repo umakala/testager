@@ -85,12 +85,12 @@
 				<div class="col-lg-4" style="text-align: right">					
 				<a href="{{url('teststep/create',['tc_id' => $case->tc_id])}}" title="Add New Teststep"><span id="" class="glyphicon glyphicon-plus"></span> Add Step </a>
 				
-				<a type="button" data-toggle="modal" data-target="#uploadModal" title="Upload Teststeps"> <i class="glyphicon glyphicon-upload"></i>Upload                                        
-				</a>
+				<!-- <a type="button" data-toggle="modal" data-target="#uploadModal" title="Upload Teststeps"> <i class="glyphicon glyphicon-upload"></i>Upload                                        
+				</a> -->
 
-				<a href="{{URL::route('lab.show', ['id' => $case->tc_id])}}" title="Go to Testlab" > <span id="" class="glyphicon glyphicon-play-circle" ></span> Lab</a>
+				<!-- <a href="{{URL::route('lab.show', ['id' => $case->tc_id])}}" title="Go to Testlab" > <span id="" class="glyphicon glyphicon-play-circle" ></span> Lab</a>
 				
-
+ -->
 	
 				</div>	
 					<div  style="text-align: right; padding-top: 50px;">					
@@ -122,8 +122,7 @@
                     	<a data-toggle="tooltip"  title="Click on values to change order" class="glyphicon glyphicon-ok" style="font-size: 10px" ></a><button class="link_button" type="submit"  title="Click to save reorder changes" >Reorder</button>
                     	</th>
                     <th style="max-width: 30%">Description</th>
-                    <th style="max-width: 25%">Expected Result</th>
-                    <th style="max-width: 5%">Status</th>                    
+                    <th style="max-width: 25%">Expected Result</th>                    
                     <th style="max-width: 20%"> Actions <!-- Execution Format --></th>
                 </tr>
             </thead>
@@ -139,9 +138,6 @@
                     </td>
                     <td class="col-sm-3">               
                     {{$step->expected_result}}
-                    </td>
-                    <td class="col-sm-2"> 
-                    {{$step->status}}
                     </td>
                     <td class="col-sm-1" >
                      <a class="glyphicon glyphicon-eye-open" style="margin-right: 10px" href="{{URL::route('teststep.show' , ['id' => $step->ts_id])}}"></a>

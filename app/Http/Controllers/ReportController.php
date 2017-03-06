@@ -219,8 +219,6 @@ class ReportController extends Controller {
 	{
 
 		$charts_obj = new ChartsHandler();
-
-
 		$p_id = session()->get('open_project');
 		$project = \App\TestProject::find($p_id);
 		//$project->functionalities = \App\TestFunctionality::where('tp_id' , $id)->count();

@@ -119,6 +119,25 @@ class DeleteQueryHandler {
 		return 1;
 	}
 
+	/**
+	 * Soft Delete Steps query by testcase id
+	 *
+	 * @return int
+	 */
+	public function softDeleteStepsByCaseId($id)
+	{    
+		try{  
+			//Update show as false
+        	//$steps = \App\TestStep::where('tc_id' , $id)->get()->toArray();        	
+        	$steps = \App\TestStep::where('tc_id' , $id)->update(['soft_delete'=> true]);	
+		}catch(Exception $e)
+		{
+			return 0;
+		}
+		return 1;
+	}
+
+
 
 	/**
 	 * Delete Steps query by testcase id
@@ -203,6 +222,10 @@ class DeleteQueryHandler {
 	{
 		$condition['expected_result'] = $item->expected_result;
 		switch ($level) {
+			case 'step':
+			 	$condition['ts_id'] = $item->ts_id;
+				break;
+
 			case 'case':
 			 	$condition['tc_id'] = $item->tc_id;
 				break;

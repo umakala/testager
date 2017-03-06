@@ -98,11 +98,12 @@
                       <option value="none" class="alert alert-error"
                           {{ $detail->result == "none"  ?  'selected' : '' }}>Not Defined</option>
                           </select>   
-
                             <!--  {{$detail->result == 'none' ? 'Not Defined' : $detail->result}} -->
                         </td>
                         <td>
-                                <button type="submit" title="Select scenarios and Go to Testlab" name="">Update Result</button>
+                        @if($detail->result == '')
+                                <button type="submit" title="Update Result" name="">Update Result</button>
+                        @endif
                         <!-- 
                         <a href="{{URL::route('report.edit', ['id' => $detail->tl_id] )}}">  <span class="glyphicon glyphicon-edit"></span> Edit Result
                             </a>  -->

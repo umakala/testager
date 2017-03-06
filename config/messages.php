@@ -22,7 +22,7 @@ return [
 	'autorun_location_required'	=> "Autorun location is required. Please fill in correct location.",
 	'autorun_location_incorrect'=> "Autorun could not be found on specified location. Please fill in correct location.",
 	'file_required'				=> "File is required for upload. Please select file by clicking on browse button.",
-	'description_required'		=> "Description is required. Cannot load file. (Note - Check spellings for header row.)",
+	'incorrect_format'			=> "Cannot load file due to incorrect format.(Note - Check spellings and cases for header row.)",
 	'tc_required'				=> "Testcase is required. Please select a testcase from dropdown.",
 	'tsc_required'				=> "Testscenario is required. Please select a scenario from dropdown.",
 	'tf_required'				=> "Functionality is required. Please select a functionality from dropdown.",

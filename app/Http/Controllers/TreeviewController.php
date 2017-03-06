@@ -58,7 +58,7 @@ class TreeviewController extends Controller {
 					$s_node['backColor']  = '#e9ece5';
 			
 					foreach ($testcases as $case) {
-						$teststeps = \App\TestStep::where(['tp_id' => $p_value->tp_id , 'tc_id' => $case->tc_id ])->get();
+						$teststeps = \App\TestStep::where(['tp_id' => $p_value->tp_id , 'tc_id' => $case->tc_id , 'soft_delete' => false])->get();
 						$ts_count = count($teststeps);
 						$c_node = array();
 						$c_node['text'] = $case->tc_name;	

@@ -28,12 +28,11 @@
             <div class="row">
                 <div  class="col-lg-6" >
                     <div id="execution_result_chart"></div>
-                    @piechart('exe_result', 'execution_result_chart')
+                   <!--  -->
                 </div>
 
                 <div  class="col-lg-6" >
                     <div id="checkpoint_result_chart"></div>
-                    @piechart('cp_result', 'checkpoint_result_chart')
                 </div>                             
             </div>
         </div>
@@ -127,15 +126,15 @@
                             <!--  {{$detail->checkpoint_result == 'none' ? 'Not Defined' : $detail->checkpoint_result}} -->
                         </td>
                         <td>
+                        @if($detail->checkpoint_result == '')
                                 <button type="submit" title="Select scenarios and Go to Testlab" name="">Update Result</button>
+                        @endif
 <!-- 
                         <a href="{{URL::route('report.edit', ['id' => $detail->tl_id] )}}">  <span class="glyphicon glyphicon-edit"></span> Edit Result
                             </a>  -->
                         </td>
                         </form>
-                   <!--  <td> 
-                        <input type="checkbox" id="checkbox_{{$detail->tc_id}}">                    
-                    </td> -->
+                   
                 </tr>
                 @endforeach
             </tbody>

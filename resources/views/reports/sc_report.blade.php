@@ -229,7 +229,10 @@
                             <!--  {{$detail->lab->result == 'none' ? 'Not Defined' : $detail->lab->result}} -->
                         </td>
                         <td>
+
+                        @if($detail->lab->result == '')
                                 <button type="submit" title="Select scenarios and Go to Testlab" name="">Update Result</button>
+                        @endif
 <!-- 
                         <a href="{{URL::route('report.edit', ['id' => $detail->lab->tl_id] )}}">  <span class="glyphicon glyphicon-edit"></span> Edit Result
                             </a>  -->

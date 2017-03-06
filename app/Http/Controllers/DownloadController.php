@@ -166,7 +166,7 @@ class DownloadController extends Controller {
 	  			$lab['device_name']			= $request->device_name;*/
 
 
-  				$executions 				= \App\Execution::where('tl_id', $lab['tl_id'])->orderBy('seq_no', 'asc')->get()->toArray();;
+  				$executions 				= \App\Execution::where('tl_id', $lab['tl_id'])->orderBy('seq_no', 'asc')->get()->toArray();
 		  		//$steps 						= \App\TestStep::where(['tc_id'=>$id])->orderBy('seq_no', 'asc')->get()->toArray();
 
 		  		foreach ($executions as $exe_data) {
@@ -174,11 +174,11 @@ class DownloadController extends Controller {
 		  			$data['Project Name'] 	= $project->tp_name;
 		  			$data['Package Name'] 	= $project->package_name;
 		  			$data['Activity Name']	= $project->activity_name;
-		  			$data['Test Case'] 		= $i;
 		  			$ts_id 					= $exe_data['ts_id'];
 		  			$step 					= \App\TestStep::find($ts_id)->toArray();
 		  			$data['Description']  	= $step['description'];
-
+					$data['Test Case'] 		= $i;
+		  			
 		  			/*if(count ($execution) != 0)
 					{*/
 			  			/*$exe_data 				= $execution[0];

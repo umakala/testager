@@ -19,9 +19,9 @@
                         <select class="form-control" name="delete_level">
                           <option value="step" >This TestStep</option>
                           <option value="case" >This Testcase</option>
-                          <option value="scenario">This Scenario</option>
+                         <!--  <option value="scenario">This Scenario</option>
                           <option value="functionality">This Functionality</option>
-                          <option value="project">This Project</option>                                
+                        -->   <option value="project">This Project</option>                                
                       </select>                 
                        <div class="help-line" id="network-help"></div>
                    </div>

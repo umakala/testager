@@ -36,6 +36,9 @@ Route::get('profile', array("as"=>"profile" , 'uses' =>'UserController@profile')
 Route::resource('news', 'NewsController');
 Route::get('news/delete/{id}', array("as"=>"news.delete" , 'uses' =>'NewsController@destroy'));
 
+
+Route::resource('user','UserController');
+
 Route::get('tree_value/{id}', array("as"=>"tree_value" , 'uses' =>'TreeviewController@index'));
 Route::resource('upload','UploadController');
 Route::resource('download','DownloadController');

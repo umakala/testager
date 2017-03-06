@@ -2,6 +2,7 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Handlers\DeleteQueryHandler;
 use File;
 use Illuminate\Http\Request;
 use Excel;
@@ -53,21 +54,30 @@ class UploadController extends Controller {
 					try{
 					$i=0; $error =false; $seq = 1;  $tc_seq = 1; $sc_seq = 1;  
 					$fn_id = ""; $sc_id ="";  $tc_id =""; $ts_id = "";
+					$row_count = 0;
 
 					//Create object of IntegrationHandler class to access methods to process conversion of xls to db format
 					$int_obj = new IntegrationHandler();
 					$reader_ary = $reader->toArray();
-					if(isset($reader_ary[0][0]))
+
+					if(isset($reader_ary[0][0]) && is_array($reader_ary[0][0]))
 					{
 						$reader_ary = $reader_ary[0];
 					}
 
-					//print_r($reader_ary);exit;
-					foreach ($reader_ary as $row) {
+					foreach ($reader_ary as $row_key_value) {
+						$row = array();
+						$index = 0;
+						//print_r($row_key_value);exit;
+						foreach ($row_key_value as $key => $value) {
+							$row[$index++] = $row_key_value[$key];
+						}
+						//print_r($row);exit;
+
 						switch ($call_page) {
 							//When upload method is called from project page to upload functionality and lower levels
 							case 'project':
-							if(isset($row['functionality_name']))
+							if(isset($row[0]))
 								$fn_id = $int_obj->handleFunctionality($row, $fn_id);
 							/*if($fn_id == 0){
 								$error = true; break;
@@ -78,65 +88,70 @@ class UploadController extends Controller {
 							if ($call_page == "functionality") {
 								$fn_id = $call_page_id;
 							}
-							if(isset($row['sceanrio_name'])){
+							if(isset($row[2])){
 								$sc_id = $int_obj->handleScenario($row, $fn_id, $sc_id, $sc_seq);
 								$sc_seq++;
 							}
-							/*if($sc_id == 0){
-								$error = true; break;
-							}*/
+
+
 
 							//When upload method is called from scenario page to upload testcases and teststeps to scenario with id as call_page_id
-
 							case 'scenario':
 							if ($call_page == "scenario") {
 								$sc_id = $call_page_id;
 							}
-							if(isset($row['sceanrio_name'])){
+							if(isset($row[2])){
 								$tc_seq = 1;
 							}
-							if(isset($row['test_case_name'])){
+							if(isset($row[6])){
 								$tc_id = $int_obj->handleTestcase($row, $sc_id, $tc_id, $tc_seq);
 								$tc_seq++;
 							}
-							/*if($tc_id == 0){
-								$error = true; break;
-							}*/
+
 
 							//When upload method is called from testcase page to upload teststeps to call_page_id testase
 							case 'testcase':
 							if ($call_page == "testcase") {
 								$tc_id = $call_page_id;
 							}
-							if(isset($row['testcase'])){
+							if(isset($row[2])){
 								$seq = 1;
 							}
-							if(isset($row['test_step']))
+							if(isset($row[9]))
 								$ts_id = $int_obj->handleTeststep($row, $tc_id, $ts_id, $seq);
-							/*if($ts_id == 0){
-								$error = true; break;
-							}*/
-							
-							//echo " <br/> ";
 							$seq++;
 							break;
 
 							//When upload method is called from testcase page to upload teststeps with execution format xls to call_page_id testase. New teststesp are created, each corresponding to the row of execution xls file
 							case 'teststep':
-							if ($call_page == "teststep") {
-								$tc_id = $call_page_id;
+							if($row_count == 0)
+								$row_count++;
+							else{
+								if ($call_page == "teststep") {
+									$tc_id = $call_page_id;
+									if($row_count == 1){
+										$tp_id = session()->get('open_project');
+										$pckg['package_name'] = $row[1];
+										$pckg['activity_name'] = $row[2];
+										\App\TestProject::find($tp_id)->update($pckg);
+										$del_obj = new DeleteQueryHandler(); 
+										$del_obj->softDeleteStepsByCaseId($tc_id);
+										$row_count++;
+									}
+									//echo "Delete called" ;  
+								}
+								$ts_id = $int_obj->handleExecution($row, $tc_id, $ts_id, $seq);
+
+								//echo " -> response of handleExecution = ".$ts_id;
+								if($ts_id == 0)
+								{
+									$message = $this->getMessage('messages.incorrect_format');
+	        						Toast::message($message, 'danger');
+	        						$error =true;
+	        						break;
+								}
+								$seq++;
 							}
-							//if(isset($row['test_step'])
-							//echo "Handling row<br/>";
-							$ts_id = $int_obj->handleExecution($row, $tc_id, $ts_id, $seq);
-							if($ts_id == 0)
-							{
-								$message = $this->getMessage('messages.description_required');
-        						Toast::message($message, 'danger');
-        						$error =true;
-        						break;
-							}
-							$seq++;
 							default:
 							break;
 						}
@@ -226,29 +241,27 @@ class UploadController extends Controller {
 					$fn_id = $int_obj->handleFunctionalityDbtoXlS($call_page_id);
 			
 
+
 				//When upload method is called from functionality page to upload scenario to functionality with id as call_page_id and lower levels
 				case 'functionality':
 				if ($call_page == "functionality") {
 					$fn_id = $call_page_id;
 				}
-				if(isset($row['sceanrio_name'])){
+				if(isset($row[2])){
 					$sc_id = $int_obj->handleScenario($row, $fn_id, $sc_id, $sc_seq);
 					$sc_seq++;
 				}
-				/*if($sc_id == 0){
-					$error = true; break;
-				}*/
-
+				
 				//When upload method is called from scenario page to upload testcases and teststeps to scenario with id as call_page_id
 
 				case 'scenario':
 				if ($call_page == "scenario") {
 					$sc_id = $call_page_id;
 				}
-				if(isset($row['sceanrio_name'])){
+				if(isset($row[2])){
 					$tc_seq = 1;
 				}
-				if(isset($row['test_case_name'])){
+				if(isset($row[6])){
 					$tc_id = $int_obj->handleTestcase($row, $sc_id, $tc_id, $tc_seq);
 					$tc_seq++;
 				}
@@ -264,7 +277,7 @@ class UploadController extends Controller {
 				if(isset($row['testcase'])){
 					$seq = 1;
 				}
-				if(isset($row['test_step']))
+				if(isset($row[9]))
 					$ts_id = $int_obj->handleTeststep($row, $tc_id, $ts_id, $seq);
 				/*if($ts_id == 0){
 					$error = true; break;
@@ -279,7 +292,7 @@ class UploadController extends Controller {
 				if ($call_page == "teststep") {
 					$tc_id = $call_page_id;
 				}
-				//if(isset($row['test_step'])
+				//if(isset($row[9])
 				//echo "Handling row<br/>";
 				$ts_id = $int_obj->handleExecution($row, $tc_id, $ts_id, $seq);
 				if($ts_id == 0)

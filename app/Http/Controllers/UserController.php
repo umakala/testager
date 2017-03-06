@@ -139,6 +139,46 @@ class UserController extends Controller {
 	}
 
 	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update(Request $request)
+	{
+		//Validations
+		$validator = \Validator::make($request->all(), array(
+			'loc' => 'required'         
+			));
+		if ($validator->fails())
+		{
+			$error="Location is required";
+		}
+		else{
+			if( session()->has('email')){
+				//Process when validations pass
+				$id = session()->get('id');
+				$content['autorun_location']        = $request->loc;
+				\App\User::find($id)->update($content);
+				session(['autorun_location' =>$content['autorun_location']  ]);
+				$message = $this->getMessage('messages.success');
+				Toast::message($message, 'success');
+		        return redirect()->route('profile');
+		 	}else
+		 	{
+		 		$error = "Session expired. Please login to continue";
+		 	}
+	 	}
+	 	$message = $error;
+		Toast::message($message, 'danger');
+	 	return redirect()->route('profile')->withInput();
+	}
+
+
+
+
+
+	/**
 	 * Verify email of the clicked link.
 	 * 
 	 */

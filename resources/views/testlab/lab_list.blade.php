@@ -154,7 +154,10 @@
                             <!--  {{$detail->lab->checkpoint_result == 'none' ? 'Not Defined' : $detail->lab->checkpoint_result}} -->
                         </td>
                         <td>
+
+                          @if($detail->lab->checkpoint_result == '')
                                 <button type="submit" title="Select scenarios and Go to Testlab" name="">Update Result</button>
+                          @endif
 <!-- 
                         <a href="{{URL::route('report.edit', ['id' => $detail->lab->tl_id] )}}">  <span class="glyphicon glyphicon-edit"></span> Edit Result
                             </a>  -->

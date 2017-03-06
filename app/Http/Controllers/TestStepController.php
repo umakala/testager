@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Handlers\DeleteQueryHandler;
+use App\Http\Controllers\Handlers\StoreQueryHandler;
 
 use Illuminate\Http\Request;
 use Toast;
@@ -58,41 +59,24 @@ class TestStepController extends Controller {
 			} 
 		}
 		else{
-			if( session()->has('email')){
+			if(session()->has('email')){
+
+				$store_obj = new StoreQueryHandler();
+				$level =  $request->add_level;
 				//Process when validations pass
-				$content['ts_id']                 	= $tc."_". $this->genrateRandomInt();				
-				$content['ts_name']                 = "";
-				$content['created_by'] 				= session()->get('email');
-		        $content['description']             = $request->description;
-		        $content['expected_result']         = $request->expected_result;
-				$content['status']             		= "not_executed";
-		        $content['tp_id']                 	= session()->get('open_project');
-		        $content['tc_id']                 	= $tc;
-		        $count 								= \App\TestStep::where('tc_id', $tc)->count();
-		       	$content['seq_no'] 	        		= $count+1;		
-		        $create 							= \App\TestStep::create($content);
+				/*$ts_id                	= $tc."_". $this->genrateRandomInt();
+				$e_id 					= $ts_id."_".$this->genrateRandomInt();
+				$store_obj->addStep($ts_id, $request, $e_id, $tc);
+				*/
+				$condition = $store_obj->getAddCondition($level, $tc);
+				$all_cases = \App\TestCase::where($condition)->get();
 
-		        //Add entry in execution table for this step
-		        $execution_content['scroll']		= $request->scroll;
-		        $execution_content['resource_id']	= $request->resource_id;
-		        $execution_content['text']			= $request->text;
-		        $execution_content['content_desc']	= $request->content_desc;
-		        $execution_content['class']			= $request->class;
-		        $execution_content['index']			= $request->index;
-		        $execution_content['sendkey']		= $request->sendkey;
-		        $execution_content['screenshot']	= $request->screenshot;
-		        $execution_content['checkpoint']	= $request->checkpoint;
-		        $execution_content['wait']			= $request->wait;
-		        $execution_content['tc_id']			= $tc;
-		        $execution_content['tp_id']			= $content['tp_id'];
-		        $execution_content['ts_id']			= $content['ts_id'];
-		        $execution_content['tl_id']			= 0;
-
-		        $execution_content['seq_no']		= $content['seq_no'];
-		        $execution_content['e_id']			= $content['ts_id']."_".$this->genrateRandomInt();
-		        $create 							= \App\Execution::create($execution_content);
-
-		        //return redirect()->route('profile', ['message' => ""]);
+				foreach ($all_cases as $case_value) {
+						$ts_id                	= $case_value->tc_id."_". $this->genrateRandomInt();
+						$e_id 					= $ts_id."_".$this->genrateRandomInt();
+						$store_obj->addStep($ts_id, $request, $e_id, $case_value->tc_id);
+				}
+			 	
 			 	return redirect()->route('testcase.show', ['id' => $tc] );
 		 	}else
 		 	{
@@ -205,14 +189,12 @@ class TestStepController extends Controller {
         	$del_obj = new DeleteQueryHandler();
         	$condition = $del_obj->getCondition($item, $level);
         	$all_steps = \App\TestStep::where($condition)->get();
-        	print_r($all_steps[1]); exit;
         	foreach ($all_steps as $step_value) {
         		if($step_value->ts_id != $id)
         		{
         			$del_res = $del_obj->deleteExecutionByStepId($step_value->ts_id);
         			$step_value->delete();
-        		}else
-        			echo "is equal";
+        		}
         	}
 
         	$del_res = $del_obj->deleteExecutionByStepId($id);

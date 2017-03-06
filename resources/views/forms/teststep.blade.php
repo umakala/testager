@@ -17,6 +17,7 @@
           <li><a href="{{URL::route('testcase.show' , ['id' => $cases[0]->tc_id] )}}">  {{$cases[0]->tc_name}}</a></li>
           <li class="active">Teststep</li>
         </ol>
+
         <input type="hidden"  value="{{$cases[0]->tc_id}}" name="tc_id"/>
 
          <div class="panel-body">      
@@ -28,6 +29,12 @@
                    <div class="help-line" id="text-help"></div>
                </div>
            </div>
+            <div class="form-group">
+                    <label for="add_level" class="control-label col-xs-4">Sequence No.</label>
+                    <div class="col-xs-8">
+                       <input type="text" class="form-control" value="{{old('seq_no')}}" id="seq_no"  name="seq_no" placeholder="">                
+                   </div>         
+              </div>
           </div>
 
             <div class="col-sm-12 col-lg-6">                
@@ -38,9 +45,19 @@
                    <div class="help-line" id="text-help"></div>
                </div>         
               </div>
+               <div class="form-group">
+                    <label for="add_level" class="control-label col-xs-4">Add for</label>
+                    <div class="col-xs-8">
+                        <select class="form-control" name="add_level">
+                          <option value="case" >This Testcase</option>
+                          <option value="scenario">This Scenario</option>
+                          <option value="functionality">This Functionality</option>
+                          <option value="project">This Project</option>
+                        </select>                 
+                   </div>         
+              </div>
               </div>
 
-    
     <div class="panel-title" style="text-align: center; padding-bottom:15px">Execution Format Details</div>
      
            <div class="col-sm-12 col-lg-6">  
@@ -52,7 +69,9 @@
                           <option value="Yes">Scroll Yes</option>   
                           <option value="Back" >Back Button</option>                      
                           <option value="tap" >Tap</option>                      
-                          <option value="otp" >OTP</option> 
+                          <option value="otp" >OTP</option>
+                          <option value="enter" >Enter</option> 
+
                       </select>
                        <div class="help-line" id="name-help"></div>
                    </div>
@@ -147,7 +166,13 @@
             </div>
             @endif
           </div>
-        <button type="submit" id="loginButton" class="btn btn-primary" style="float:right" >Add Step</button>
+          
+        <div class="form-group">
+            <label for="network_type" class="control-label col-xs-4"></label>  
+            <div class="col-xs-6">
+             <button type="submit" id="loginButton" class="btn btn-primary" style="float:right" >Add Step</button>
+            </div>
+        </div>
  @endif
 </div>
 </div>

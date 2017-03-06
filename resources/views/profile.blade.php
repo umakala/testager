@@ -14,17 +14,8 @@
 <div class="col-md-8">
   <div class="panel panel-default" style=" padding:10px">
          <div class="panel-title" > <span id="" class="glyphicon glyphicon-briefcase"></span> General Settings </div>        
-
-         <div class="panel-body" >
-	        <div class="row" style="padding-bottom: 10px">
-				<div class="col-md-4">
-					Autorun Location
-	            </div>     
-				<div class="col-md-8">
-					{{session()->get('autorun_location')}}
-	            </div>     
-			</div>	
-
+   <div class="panel-body" >
+	  
 	        <div class="row" style="padding-bottom: 10px">
 				<div class="col-md-4">
 					Last Opened Project
@@ -33,6 +24,31 @@
 				{{session()->get('project_name')}}
 	            </div>     
 			</div>	
+<form action="{{URL::route('user.update')}}" method ="POST" class="form-horizontal">
+<input type="hidden" name="_method" value="PUT">
+
+            <div class="row" style="padding-bottom: 10px">
+				<div class="col-md-4">
+					Autorun Location
+	            </div>     
+				<div class="col-md-8">
+				<input type="text" class="form-control" name="loc" value="{{session()->get('autorun_location')}}">					
+	            </div>     
+			</div>	
+
+
+	        <div class="row" style="padding-bottom: 10px">
+				<div class="col-md-4">
+					
+	            </div>     
+				<div class="col-md-8">
+				<button type="submit" class="btn btn-primary">
+									Update Location
+								</button>
+	            </div>     
+			</div>	
+</form
+
 
          </div>
     </div>    

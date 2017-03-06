@@ -19,7 +19,7 @@
                   <th style="max-width:10px">#</th>
                   <th style="min-width:150px">Case Name</th>
                   <th style="max-width:150px">Description</th>
-                  <th style="max-width:100px">Status</th>
+                  <th style="max-width:100px">Sequence No.</th>
                <th>
                <input type="checkbox" id="select_all" name="select_all" title="Select all" onclick="checkAll(this)" />   
 
@@ -43,8 +43,8 @@
                   <td>  
                      {{$detail->description}}                    
                   </td>
-                  <td  class="alert alert-warning"> 
-                     {{$detail->status}}
+                 <td>  
+                     {{$detail->seq_no}}                    
                   </td>
                   
                   <td> 

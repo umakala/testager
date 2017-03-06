@@ -86,7 +86,7 @@
 
 		
         <div class="panel-body">
-	         <div class="panel-title" style="font-style: bold; padding-bottom: 10px;" > Teststeps Details 
+	       <!--   <div class="panel-title" style="font-style: bold; padding-bottom: 10px;" > Teststeps Details 
 	         <p style="float:right">
 	         	<?php $tc_ids =  $case->tc_id."_";?>				
 			
@@ -96,7 +96,7 @@
 	        	<a href="{{URL::route('execute.show', ['id' => $tc_ids])}}"> <span id="" class="glyphicon glyphicon-play-circle"></span> Execute</a>
 		 	 </p>
 	 	</div>
-    	@include('modals.download_modal')
+    	 -->
     	
 
 

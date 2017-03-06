@@ -130,7 +130,7 @@ class TestcaseController extends Controller {
 	public function show($id)
 	{
 		$case = \App\TestCase::find($id);
-		$case->steps = \App\TestStep::where('tc_id' , $id)->orderBy('seq_no' , 'asc')->get();
+		$case->steps = \App\TestStep::where(['tc_id' => $id, 'soft_delete' => false])->orderBy('seq_no' , 'asc')->get();
 		return view('show.case', ['case' => $case]);
 	}
 
@@ -181,6 +181,7 @@ class TestcaseController extends Controller {
 
  				if($request->all_checkbox == "on"){
 		        	$tp_id = session()->get('open_project');
+		        	unset($content['tc_name']);
 		        	\App\TestCase::where(['description' => $old_description, 'tp_id' => $tp_id])->update($content);
 		        }
 
