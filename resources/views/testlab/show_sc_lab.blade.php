@@ -86,13 +86,13 @@
 <div class="panel-body" style="padding-top: 0px;font-size: 12pt">
 
     <div class="row" > 
-        <div  class="col-lg-4"  style="padding-top: 10px;">
-
+        <div  class="col-md-6 col-sm-12"  style="padding-top: 10px;">
+        <form action="{{URL::route('report.update', ['id' => $scenario->lab->scl_id])}}" method ="POST">
             <div class="row">                    
-                <div  class="col-lg-6" >Result :
+                <div  class="col-lg-4" >Result :
                 </div>
-                <div  class="col-lg-6" >
-              <form action="{{URL::route('report.update', ['id' => $scenario->lab->scl_id])}}" method ="POST"> 
+                <div  class="col-lg-8" >
+              
                       <input type="hidden" name="_method" value="PUT"> 
                       <input type="hidden" name="type" value="scenariolab">             
 
@@ -101,7 +101,7 @@
                                 ($scenario->lab->result == 'Fail'? 'danger' : 
                                 ($scenario->lab->result == '' || $scenario->lab->result == 'not_executed' ? 'warning': 
                                 ($scenario->lab->result == 'none' ? 'error' : 'warning')))}}" style="padding:10px; "> 
-                    <select class="alert" name="result" style="padding:5px; margin-bottom: 0px">
+                    <select class="alert form-control" name="result" style="padding:5px; margin-bottom: 0px">
                       <option value="Pass"  class="alert alert-success"
                           {{ $scenario->lab->result == "Pass" ? 'selected' : ''}}>Pass</option>
                       <option value="Fail" class="alert alert-danger"
@@ -110,20 +110,30 @@
                           {{ $scenario->lab->result == ""  ?  'selected' : '' }}>Not Available</option>
                       <option value="none" class="alert alert-error"
                           {{ $scenario->lab->result == "none"  ?  'selected' : '' }}>Not Defined</option>
-                          </select>  
-                          </div>
-
-                           @if($scenario->lab->result == '')
-                 <button type="submit" title="Update result for this lab" name="">Update Result</button>
-                 @endif
-
-                 </form>
+                    </select>  
+                  </div>
                 </div>
-            </div>           
+            </div>  
+                
+        <div class="row"> 
+
+                <div  class="col-lg-4" >Comment :
+                </div>
+                <div  class="col-lg-8" style="padding-bottom: 5px">
+                 <textarea class="form-control"  name="comment" rows="3" style="resize: none;overflow-y: scroll;" >{{$scenario->lab->comment}}</textarea>
+                </div>
+
+            @if($scenario->lab->result == '')
+           <button type="submit" title="Update result for this lab" name="" style="float: right;">Update Result</button>
+           @endif
         </div>
+        </div>                   
+         
+      </form>
+        <div>
 
 
-        <div  class="col-lg-4"  style="padding-top: 10px;">
+        <div  class="col-md-6 col-sm-12 "  style="padding-top: 10px;">
 
             <div class="row">                    
                 <div  class="col-lg-6" >Execution Type :
@@ -144,9 +154,6 @@
                 <div  class="col-lg-6" ><strong>{{$labs[0]->network_type}}</strong>
                 </div>
             </div>                        
-        </div>
-
-        <div  class="col-lg-4"  style="padding-top: 10px;">
             <div class="row">                    
                 <div  class="col-lg-6" >OS : 
                 </div>
@@ -176,7 +183,7 @@
   
   <div class="panel-body" style="padding-top: 0px"> 
     <h4 style="display: block;">
-       Testase scenario->labs
+       Testase labs
     </h4>
    <table class="table table-striped" cellspacing="0" width="auto">
       <thead>

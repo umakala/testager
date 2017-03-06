@@ -179,8 +179,9 @@ class TestScenarioController extends Controller {
 
 		        $scenario_update->update($content);
 
-		        if($request->all_checkbox == "on"){
+		        if($request->update_level == "project"){
 		        	$tp_id = session()->get('open_project');
+		        	unset($content['tsc_name']);
 		        	\App\TestScenario::where(['description' => $old_description, 'tp_id' => $tp_id])->update($content);
 		        }
 			 	return redirect()->route('scenario.show', ['id' => $id]);

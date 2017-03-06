@@ -19,7 +19,7 @@ class ScenarioLab extends Model {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['scl_id', 'tp_id', 'tf_id', 'tsc_id', 'result', 'execution_type', 'executed_by', 'created_at', 'updated_at'];
+	protected $fillable = ['scl_id', 'tp_id', 'tf_id', 'tsc_id', 'result', 'execution_type', 'executed_by', 'created_at', 'updated_at', 'comment'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.

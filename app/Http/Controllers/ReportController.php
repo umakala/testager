@@ -359,6 +359,7 @@ class ReportController extends Controller {
 			$sc_set['executed_by'] = session()->get('email');
 			$sc_set['execution_type'] = 'manual';
 			$sc_set['result'] = $request->result;
+			$sc_set['comment'] = $request->comment;
 
 
 			$update_obj    = new ResultUpdateQueryHandler();

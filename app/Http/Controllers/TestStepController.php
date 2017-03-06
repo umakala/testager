@@ -142,10 +142,12 @@ class TestStepController extends Controller {
 			if( session()->has('email')){
 				//Process when validations pass
 
+				$level = $request->update_level; 	
 				$content['description']             = $request->description;
 		        $content['expected_result']         = $request->expected_result;
-		        \App\TestStep::find($id)->update($content);
-
+		        $item = \App\TestStep::find($id);
+		        $item->update($content);
+		        
 		        $execution_content['scroll']		= $request->scroll;
 		        $execution_content['resource_id']	= $request->resource_id;
 		        $execution_content['text']			= $request->text;
@@ -159,6 +161,19 @@ class TestStepController extends Controller {
 				$tc_id								= $request->tc_id;
 
 		        $result = \App\Execution::where(['ts_id' => $id, 'tl_id' => 0])->update($execution_content);
+
+				$del_obj = new DeleteQueryHandler();
+	        	$condition = $del_obj->getCondition($item, $level);
+	        	$condition['soft_delete'] = false;
+	        	$all_steps = \App\TestStep::where($condition)->get();
+	        	foreach ($all_steps as $step_value) {
+	        		if($step_value->ts_id != $id)
+	        		{
+	        			$step_value->update($content);
+	        			\App\Execution::where(['ts_id' => $step_value->ts_id, 'tl_id' => 0])->update($execution_content);
+	        		}
+	        	}
+
 				return redirect()->route('testcase.show', ['id' => $tc_id]);
 
 			 	//return redirect()->route('teststep.show', ['id' => $id]);

@@ -158,6 +158,18 @@
             </div>
             @endif
           </div>
+
+          <div class="form-group">
+              <label for="network_type" class="control-label col-xs-4">Update Level</label>  
+              <div class="col-xs-6">
+                  <select class="form-control" name="update_level">
+                    <option value="step" >This TestStep</option>
+                    <option value="case" >This Testcase</option>
+                    <option value="project">This Project</option>                                
+                </select>                 
+                 <div class="help-line" id="network-help"></div>
+             </div>
+          </div>
         <button type="submit" id="loginButton" class="btn btn-primary" style="float:right" >Update</button>
   </div>
 </div>

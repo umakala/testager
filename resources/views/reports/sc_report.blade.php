@@ -170,7 +170,7 @@
                    <!--  <th>Status</th> -->
                     <th  width="200px">Execution Details</th>
                     <th>Result</th>
-                    <th colspan="2">Actions</th>
+                    <th colspan="2" style="text-align: center;">Actions</th>
 
                 </tr>
             </thead>

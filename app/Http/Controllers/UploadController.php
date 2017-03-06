@@ -143,13 +143,13 @@ class UploadController extends Controller {
 								$ts_id = $int_obj->handleExecution($row, $tc_id, $ts_id, $seq);
 
 								//echo " -> response of handleExecution = ".$ts_id;
-								if($ts_id == 0)
+								/*if($ts_id == 0)
 								{
 									$message = $this->getMessage('messages.incorrect_format');
 	        						Toast::message($message, 'danger');
 	        						$error =true;
 	        						break;
-								}
+								}*/
 								$seq++;
 							}
 							default:

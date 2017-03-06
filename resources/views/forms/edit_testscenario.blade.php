@@ -36,9 +36,7 @@
                <div class="form-group">                
                  <label for="title" class="control-label col-xs-4">Description</label>
                  <div class="col-xs-8">            
-                   <textarea class="form-control"  name="description"  rows="2"  value="">
-                     {{$scenario->description}}
-                   </textarea>
+                   <textarea class="form-control"  name="description"  rows="6">{{$scenario->description}}</textarea>
                    <div class="help-line" id="text-help"></div>
                </div>
                </div>
@@ -52,14 +50,16 @@
                    <div class="help-line" id="text-help"></div>
                </div>         
               </div>
-              <div class="form-group">  
-               <label for="all_checkbox" class="control-label col-xs-4"></label>
-                             
-                <div class="col-xs-8">  
-                <input type="checkbox" id="all_checkbox" name="all_checkbox" title="Select all" /> Update all <i>Scenarios</i> for this project  
-                </div>    
-                     
-              </div>
+              <div class="form-group">
+              <label for="network_type" class="control-label col-xs-4">Update Level</label>  
+              <div class="col-xs-6">
+                  <select class="form-control" name="update_level">
+                    <option value="step" >This Scenario</option>
+                    <option value="project">This Project</option>                                
+                </select>                 
+                <div class="help-line" id="network-help"></div>
+               </div>
+            </div>
               <div class="form-group">
                 @if(isset($_GET['message']))                           
                 <div class="alert alert-danger">

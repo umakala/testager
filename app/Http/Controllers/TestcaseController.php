@@ -179,9 +179,10 @@ class TestcaseController extends Controller {
 		        $old_description 					= $case_update->description;
 		        $case_update->update($content);
 
- 				if($request->all_checkbox == "on"){
-		        	$tp_id = session()->get('open_project');
+ 				if($request->update_level == "project"){
+		       		$tp_id = session()->get('open_project');
 		        	unset($content['tc_name']);
+					unset($content['seq_no']);
 		        	\App\TestCase::where(['description' => $old_description, 'tp_id' => $tp_id])->update($content);
 		        }
 
