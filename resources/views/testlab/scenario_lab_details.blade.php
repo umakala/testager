@@ -214,7 +214,7 @@
      {{$i++}}        				
    </td>
    <td> 
-    <a href="{{URL::route('lab.show', ['id' => $detail->tl_id])}}"> <span id="" class="glyphicon glyphicon-eye-open"></span>
+    <!-- <a href="{{URL::route('lab.show', ['id' => $detail->tl_id])}}"> <span id="" class="glyphicon glyphicon-eye-open"></span> -->
      {{$detail->case->tc_name}} Lab</a>     				
    </td>
    <td>  
