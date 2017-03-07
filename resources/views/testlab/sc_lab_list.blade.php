@@ -119,6 +119,8 @@
                       </td>
 
 
+
+                      @if($detail->lab->result == '')
                       <form action="{{URL::route('report.update', ['id' => $detail->lab->scl_id])}}" method ="POST" class="form-horizontal" enctype='multipart/form-data' > 
                         <input type="hidden" name="_method" value="PUT"> 
                         <input type="hidden" name="type" value="scenariolab">              
@@ -137,16 +139,17 @@
                           <!--  {{$detail->lab->result == 'none' ? 'Not Defined' : $detail->lab->result}} -->
                         </td>
                         <td>
-                          @if($detail->lab->result == '')
                           <button type="submit" title="Select scenarios and Go to Testlab" name="">Update Result</button>
-                          @endif
+                       
                         </td>
+
                       </form>
-
-
-
+                      @else
+                      <td class="alert alert-{{$detail->lab->result == 'Pass'? 'success' : ($detail->lab->result == '' || $detail->lab->result == 'not_executed' ? 'warning': ($detail->lab->result == 'none' ? 'error' : 'danger'))}}" >{{$detail->lab->result }} </td>
+                      <td></td>
+                      @endif
                       <td>
-                        <div style="margin-bottom: 15px;">
+                        <div style="margin-bottom: 10px;">
                           <a href="{{URL::route('sc_lab.show', ['id' => $detail->lab->scl_id] )}}">  <span class="glyphicon glyphicon-eye-open"></span> Scenario Lab Details
                           </a>       
                         </div>

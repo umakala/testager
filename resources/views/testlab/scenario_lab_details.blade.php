@@ -31,10 +31,10 @@
        </h4>
 
        <p style="float:right;">
-        <a href="{{URL::route('scenario.edit', ['id' => $scenario->tsc_id])}}" title="Edit Testcase"> <span id="" class="glyphicon glyphicon-edit"></span> Edit</a>
-
-        <a  data-toggle="modal" data-target="#deleteModal" title="Delete Scenario"> <i class="glyphicon glyphicon-trash"  ></i> Delete
-        </a>               
+        <!-- <a href="{{URL::route('scenario.edit', ['id' => $scenario->tsc_id])}}" title="Edit Testcase"> <span id="" class="glyphicon glyphicon-edit"></span> Edit</a>
+ -->
+       <!--  <a  data-toggle="modal" data-target="#deleteModal" title="Delete Scenario"> <i class="glyphicon glyphicon-trash"  ></i> Delete
+        </a>        -->        
       </p>
     </div>
 
@@ -86,7 +86,10 @@
 
   <div class="row" > 
     <div  class="col-md-6 col-sm-12"  style="padding-top: 10px;">
-        <form action="{{URL::route('report.update', ['id' => $scenario->lab->scl_id])}}" method ="POST">  <div class="row">                    
+
+        @if($scenario->lab->result == '')
+        <form action="{{URL::route('report.update', ['id' => $scenario->lab->scl_id])}}" method ="POST">
+        <div class="row">                    
                 <div  class="col-lg-2" >Result :
                 </div>
                 <div  class="col-lg-10" >
@@ -121,10 +124,39 @@
                  <textarea class="form-control"  name="comment" rows="3" style="resize: none;overflow-y: scroll;" >{{$scenario->lab->comment}}</textarea>
                 </div>
 
-            @if($scenario->lab->result == '')
            <button type="submit" title="Update result for this lab" name="" style="float: right;">Update Result</button>
-           @endif
+           
         </div>
+
+        @else
+
+        <div class="row"> 
+
+                <div  class="col-lg-2" >Result :
+                </div>
+                <div  class="col-lg-8" style="padding-bottom: 5px">
+                  <div class="alert 
+                        alert-{{$scenario->lab->result == 'Pass'? 'success' : 
+                                ($scenario->lab->result == 'Fail'? 'danger' : 
+                                ($scenario->lab->result == '' || $scenario->lab->result == 'not_executed' ? 'warning': 
+                                ($scenario->lab->result == 'none' ? 'error' : 'warning')))}}" style="padding:10px; "> 
+                                {{$scenario->lab->result}}
+
+                  </div>
+                </div>           
+        </div>
+        <div class="row"> 
+
+                <div  class="col-lg-2" >Comment :
+                </div>
+                <div  class="col-lg-8" style="padding-bottom: 5px">
+                 {{$scenario->lab->comment}}  
+                </div>           
+        </div>
+
+        @endif
+
+
         </div> 
   </form>
         <div>

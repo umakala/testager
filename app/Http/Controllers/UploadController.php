@@ -124,12 +124,12 @@ class UploadController extends Controller {
 
 							//When upload method is called from testcase page to upload teststeps with execution format xls to call_page_id testase. New teststesp are created, each corresponding to the row of execution xls file
 							case 'teststep':
-							if($row_count == 0)
-								$row_count++;
-							else{
+							/*if($row_count == 0)
+								$row_count++;*/
+							{
 								if ($call_page == "teststep") {
 									$tc_id = $call_page_id;
-									if($row_count == 1){
+									if($row_count == 0){
 										$tp_id = session()->get('open_project');
 										$pckg['package_name'] = $row[1];
 										$pckg['activity_name'] = $row[2];
@@ -295,19 +295,19 @@ class UploadController extends Controller {
 				//if(isset($row[9])
 				//echo "Handling row<br/>";
 				$ts_id = $int_obj->handleExecution($row, $tc_id, $ts_id, $seq);
-				if($ts_id == 0)
+				/*if($ts_id == 0)
 				{
 					$message = $this->getMessage('messages.description_required');
 					Toast::message($message, 'danger');
 					$error =true;
 					break;
-				}
+				}*/
 				$seq++;
 				default:
 				break;
 			}
-			if($error == true)
-				break;
+			/*if($error == true)
+				break;*/
 		}catch(Exception $e){
 			$message = $this->getMessage('messages.upload_failed');
 			Toast::message($message, 'danger');

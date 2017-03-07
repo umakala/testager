@@ -7,9 +7,6 @@
                 </a>               
 			</p>
 
-			<p>
-				Status : {{$scenario->status}} 
-			</p> 
 		</div>
 
         <div class="panel-body">

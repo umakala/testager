@@ -37,7 +37,7 @@
 				</div>
       	@else
 
-        @include('modals.download_form')
+        @include('modals.create_lab_form')
 
 
         <!-- Download and Upload options commented below as not required on this page -->
@@ -125,7 +125,7 @@
          				{{$i++}}        				
          			</td>
          			<td> 
-         			<a href="{{URL::route('lab.show', ['id' => $detail->tc_id])}}"> <span id="" class="glyphicon glyphicon-eye-open"></span>
+         			<!-- <a href="{{URL::route('lab.show', ['id' => $detail->tc_id])}}"> <span id="" class="glyphicon glyphicon-eye-open"></span> -->
          				{{$detail->tc_name}}  Lab</a>     				
          			</td>
          			<td>  

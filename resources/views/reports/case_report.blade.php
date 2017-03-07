@@ -70,10 +70,6 @@
                             </strong>
                             </div>
                         </div>
-
-
-
-                      
                     </div>
 
 

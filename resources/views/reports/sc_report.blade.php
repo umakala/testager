@@ -118,7 +118,7 @@
 
 
         <div class="panel-body"  id ="top">
-             <div class="panel-title" style="padding-bottom: 10px;" > Testcase Details 
+             <div class="panel-title" style="padding-bottom: 10px; " > <span style="font-weight: bold;"> Scenario Lab Details </span>
              <p  onclick="hideSummary()" style="float:right">
               <a data-toggle="collapse" data-parent="#panel" href="#summary_body" class="panel-toggle">
                 <span class="glyphicon glyphicon-filter"  id="icontoggle"></span><span style="font-style: bold; font-size: 14px; padding: 5px;" >Filters</span>
@@ -211,6 +211,9 @@
                             at 
                             {{isset($detail->lab->created_at)? date($exe_dt_format, strtotime($detail->lab->created_at)) : ""}}                                    
                         </td>
+
+
+                        @if($detail->lab->result == '')
                        <form action="{{URL::route('report.update', ['id' => $detail->lab->scl_id])}}" method ="POST" class="form-horizontal" enctype='multipart/form-data' > 
                       <input type="hidden" name="_method" value="PUT"> 
                       <input type="hidden" name="type" value="scenariolab">              
@@ -229,18 +232,28 @@
                             <!--  {{$detail->lab->result == 'none' ? 'Not Defined' : $detail->lab->result}} -->
                         </td>
                         <td>
-
-                        @if($detail->lab->result == '')
-                                <button type="submit" title="Select scenarios and Go to Testlab" name="">Update Result</button>
-                        @endif
-<!-- 
-                        <a href="{{URL::route('report.edit', ['id' => $detail->lab->tl_id] )}}">  <span class="glyphicon glyphicon-edit"></span> Edit Result
-                            </a>  -->
+                          <button type="submit" title="Select scenarios and Go to Testlab" name="">Update Result</button>
                         </td>
                         </form>
+
+                        @else
+<td class="alert alert-{{$detail->lab->result == 'Pass'? 'success' : ($detail->lab->result == '' || $detail->lab->result == 'not_executed' ? 'warning': ($detail->lab->result == 'none' ? 'error' : 'danger'))}}" >
+{{$detail->lab->result}} </td>
+<td></td>
+                        @endif
+
+
+
                         <td>
-                            <a href="{{URL::route('report.sc_lab', ['id' => $detail->tsc_id] )}}">  <span class="glyphicon glyphicon-calendar"></span> Scenario Lab History
-                            </a>       
+                        <div style="margin-bottom: 15px;">
+                          <a href="{{URL::route('sc_lab.show', ['id' => $detail->lab->scl_id] )}}">  <span class="glyphicon glyphicon-eye-open"></span> Scenario Lab Details
+                          </a>       
+                        </div>
+                        <div style="margin-bottom: 15px;">
+
+                          <a href="{{URL::route('report.sc_lab', ['id' => $detail->tsc_id] )}}">  <span class="glyphicon glyphicon-calendar"></span> Scenario Lab History
+                          </a>  
+                        </div>    
                         </td>
                     </tr>
                 @endforeach

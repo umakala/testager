@@ -110,6 +110,9 @@
                         {{$detail->executed_by}} at {{date($exe_dt_format, strtotime($detail->created_at))}}               
                     </td>
                   
+
+                   @if($detail->lab->checkpoint_result == '')
+                       
                      <form action="{{URL::route('report.update', ['id' => $detail->lab->tl_id])}}" method ="POST" class="form-horizontal" enctype='multipart/form-data' > 
                       <input type="hidden" name="_method" value="PUT"> 
                       <input type="hidden" name="type" value="testlab">              
@@ -140,14 +143,21 @@
                             <!--  {{$detail->lab->checkpoint_result == 'none' ? 'Not Defined' : $detail->lab->checkpoint_result}} -->
                         </td>
                         <td>
-                        @if($detail->lab->checkpoint_result == '')
                                 <button type="submit" title="Select scenarios and Go to Testlab" name="">Update Result</button>
-                        @endif
+                        
 <!-- 
                         <a href="{{URL::route('report.edit', ['id' => $detail->lab->tl_id] )}}">  <span class="glyphicon glyphicon-edit"></span> Edit Result
                             </a>  -->
                         </td>
                         </form>
+
+                        @else
+                        <td class="alert alert-{{$detail->lab->execution_result == 'Pass'? 'success' : ( ($detail->lab->execution_result == 'not_executed'  || $detail->lab->execution_result == '')  ? 'warning' : 'danger')}}"   >
+                           {{$detail->lab->execution_result}}
+                           </td>
+                        
+                         <td class="alert alert-{{$detail->lab->checkpoint_result == 'Pass'? 'success' : ($detail->lab->checkpoint_result == '' || $detail->lab->checkpoint_result == 'not_executed' ? 'warning': ($detail->lab->checkpoint_result == 'none' ? 'error' : 'warning'))}}" >{{$detail->lab->checkpoint_result}}</td>
+                        @endif
 
 
                     <!-- <td class="alert alert-{{$detail->lab->execution_result == 'Pass'? 'success' : ($detail->lab->execution_result == '' || $detail->lab->execution_result == 'none' ? 'warning' : 'danger')}}"   > 

@@ -47,7 +47,7 @@
                 </a>
 			</p>			
 			<p>
-				Status : {{$case->status}} <!-- by {{$case->created_by}} -->
+			<!-- by {{$case->created_by}} -->
 			</p> 
 
 

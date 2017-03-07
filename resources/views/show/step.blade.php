@@ -24,9 +24,7 @@
 				        {{Session::forget('toasts')}}
 				@endif
 	 		</p>
- 			<p>
-	        	Status : {{$step->status}} 
-	 		</p>
+ 			
 
 
 	 	<ol class="breadcrumb">

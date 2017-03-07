@@ -1,6 +1,18 @@
-<!-- Delete Modal Start-->
+<!-- Validations Script -->
+<script type="text/javascript">
+  function validateForm(){
+     var x = document.getElementByID('release').value;
+    if (x == "") {
+        msg = "Release must be filled out";
+        document.getElementByID('release-help').value = msg;
+        return false;
+    }     
+  }
+</script>
+
+<!-- Create Lab Modal Start-->
         <div class="panel panel-default" style=" padding-top:20px">
-            <form action="{{URL::route('lab.store', ['id' => $tc_ids])}}" method ="POST" class="form-horizontal">
+            <form action="{{URL::route('lab.store', ['id' => $tc_ids])}}" method ="POST" class="form-horizontal" onsubmit="return validateForm()">
             <input type="hidden"  value="{{$tc_ids}}"  name="tc_ids">
             <input type="hidden"  value="{{$scenario->tsc_id}}"  name="tsc_id">
 
@@ -15,7 +27,7 @@
                     </button>
                     </h4>
                   </div>
-              </div>           
+              </div>   
             <div class="panel-body">
                <!--  <div class="form-group">
                     <label for="release" class="control-label col-xs-4">Autorun Location</label>  
@@ -28,7 +40,7 @@
                 <div class="form-group">
                     <label for="release" class="control-label col-xs-4">Release</label>  
                     <div class="col-xs-6">    
-                    <input type="text" class="form-control" value="" id="release"  name="release" placeholder="Release Version">
+                    <input type="text" class="form-control" value="" id="release"  name="release" placeholder="Release Version" >
 
                        <div class="help-line" id="release-help"></div>
                    </div>

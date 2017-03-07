@@ -96,6 +96,12 @@
                         {{$detail->execution_type}} by                     
                         {{$detail->executed_by}} at {{date($exe_dt_format, strtotime($detail->created_at))}}               
                     </td>
+
+
+
+
+                  @if($detail->checkpoint_result == '')
+                       
                     <form action="{{URL::route('report.update', ['id' => $detail->tl_id])}}" method ="POST" class="form-horizontal" enctype='multipart/form-data' > 
                       <input type="hidden" name="_method" value="PUT"> 
                       <input type="hidden" name="type" value="testlab">              
@@ -126,14 +132,22 @@
                             <!--  {{$detail->checkpoint_result == 'none' ? 'Not Defined' : $detail->checkpoint_result}} -->
                         </td>
                         <td>
-                        @if($detail->checkpoint_result == '')
                                 <button type="submit" title="Select scenarios and Go to Testlab" name="">Update Result</button>
-                        @endif
-<!-- 
+                       
+                        <!-- 
                         <a href="{{URL::route('report.edit', ['id' => $detail->tl_id] )}}">  <span class="glyphicon glyphicon-edit"></span> Edit Result
                             </a>  -->
                         </td>
                         </form>
+
+                        @else
+
+                        <td class="alert alert-{{$detail->execution_result == 'Pass'? 'success' : ( ($detail->execution_result == 'not_executed'  || $detail->execution_result == '')  ? 'warning' : 'danger')}}"   > 
+                       
+                           {{$detail->execution_result}}
+                           </td>
+                           <td class="alert alert-{{$detail->checkpoint_result == 'Pass'? 'success' : ($detail->checkpoint_result == '' || $detail->checkpoint_result == 'not_executed' ? 'warning': ($detail->checkpoint_result == 'none' ? 'warning' : 'danger'))}}" >  {{$detail->checkpoint_result}}</td>
+                        @endif
                    
                 </tr>
                 @endforeach

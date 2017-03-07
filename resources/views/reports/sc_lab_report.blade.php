@@ -83,6 +83,9 @@
                         {{$detail->execution_type}} by                     
                         {{$detail->executed_by}} at {{date($exe_dt_format, strtotime($detail->created_at))}}               
                     </td>
+
+                     @if($detail->result == '')
+                       
                  <form action="{{URL::route('report.update', ['id' => $detail->scl_id])}}" method ="POST" class="form-horizontal"> 
                       <input type="hidden" name="_method" value="PUT"> 
                       <input type="hidden" name="type" value="scenariolab">             
@@ -101,18 +104,20 @@
                             <!--  {{$detail->result == 'none' ? 'Not Defined' : $detail->result}} -->
                         </td>
                         <td>
-                        @if($detail->result == '')
                                 <button type="submit" title="Update Result" name="">Update Result</button>
+                        </td>
+                        </form>
+                        @else
+                            <td class="alert alert-{{$detail->result == 'Pass'? 'success' : ($detail->result == '' || $detail->result == 'not_executed' ? 'warning': ($detail->result == 'none' ? 'error' : 'warning'))}}" >{{$detail->result}} </td><td></td>
                         @endif
-                        <!-- 
-                        <a href="{{URL::route('report.edit', ['id' => $detail->tl_id] )}}">  <span class="glyphicon glyphicon-edit"></span> Edit Result
-                            </a>  -->
-                            </td>
+
                             <td>
                             <a href="{{URL::route('sc_lab.show', ['id' => $detail->scl_id] )}}">  <span class="glyphicon glyphicon-eye-open"></span> Show Scenario Lab Details
                             </a> 
                         </td>
-                        </form>
+
+                       
+
                 </tr>
                 @endforeach
             </tbody>
