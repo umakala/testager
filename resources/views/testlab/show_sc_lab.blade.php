@@ -89,9 +89,9 @@
         <div  class="col-md-6 col-sm-12"  style="padding-top: 10px;">
         <form action="{{URL::route('report.update', ['id' => $scenario->lab->scl_id])}}" method ="POST">
             <div class="row">                    
-                <div  class="col-lg-4" >Result :
+                <div  class="col-lg-2" >Result :
                 </div>
-                <div  class="col-lg-8" >
+                <div  class="col-lg-10" >
               
                       <input type="hidden" name="_method" value="PUT"> 
                       <input type="hidden" name="type" value="scenariolab">             
@@ -117,7 +117,7 @@
                 
         <div class="row"> 
 
-                <div  class="col-lg-4" >Comment :
+                <div  class="col-lg-2" >Comment :
                 </div>
                 <div  class="col-lg-8" style="padding-bottom: 5px">
                  <textarea class="form-control"  name="comment" rows="3" style="resize: none;overflow-y: scroll;" >{{$scenario->lab->comment}}</textarea>
