@@ -1,18 +1,27 @@
 <!-- Validations Script -->
 <script type="text/javascript">
   function validateForm(){
-     var x = document.getElementByID('release').value;
+     var x = document.getElementById('release').value;
+     var valid = true;
     if (x == "") {
-        msg = "Release must be filled out";
-        document.getElementByID('release-help').value = msg;
-        return false;
-    }     
+        msg = "Release is required";
+        document.getElementById('release-help').innerHTML = msg;
+        valid =  false;
+    }
+    var y = document.getElementById('cycle').value;
+    if (y == "") {
+        msg = "Cycle filed is required";
+        document.getElementById('cycle-help').innerHTML = msg;
+        valid =  false;
+    } 
+    return valid;
+
   }
 </script>
 
 <!-- Create Lab Modal Start-->
         <div class="panel panel-default" style=" padding-top:20px">
-            <form action="{{URL::route('lab.store', ['id' => $tc_ids])}}" method ="POST" class="form-horizontal" onsubmit="return validateForm()">
+            <form action="{{URL::route('lab.store', ['id' => $tc_ids])}}" method ="POST" class="form-horizontal" onsubmit="return validateForm()" role="form">
             <input type="hidden"  value="{{$tc_ids}}"  name="tc_ids">
             <input type="hidden"  value="{{$scenario->tsc_id}}"  name="tsc_id">
 
@@ -29,20 +38,27 @@
                   </div>
               </div>   
             <div class="panel-body">
+            <?php $loc = session()->get('autorun_location'); ?>
+                   
                <!--  <div class="form-group">
                     <label for="release" class="control-label col-xs-4">Autorun Location</label>  
                     <div class="col-xs-6">    
-                    <?php $loc = session()->get('autorun_location'); ?>
-                    <input type="text" class="form-control" value="{{$loc}}" id="autorun"  name="autorun" placeholder="">
+                     <input type="text" class="form-control" value="{{$loc}}" id="autorun"  name="autorun" placeholder="">
                        <div class="help-line" id="autorun-help"></div>
                    </div>
                 </div> -->
                 <div class="form-group">
-                    <label for="release" class="control-label col-xs-4">Release</label>  
-                    <div class="col-xs-6">    
+                    <label for="release" class="control-label col-xs-4">Release & Cycle</label>  
+                    <div class="col-xs-3">    
                     <input type="text" class="form-control" value="" id="release"  name="release" placeholder="Release Version" >
 
                        <div class="help-line" id="release-help"></div>
+                    </div>
+
+                    <div class="col-xs-3">    
+                    
+                     <input type="text" class="form-control" value="" id="cycle"  name="cycle" placeholder="Cycle" >
+                       <div class="help-line" id="cycle-help"></div>
                    </div>
                 </div>
                 <div class="form-group">

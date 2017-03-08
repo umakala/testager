@@ -122,10 +122,21 @@ public function store(Request $request)
 	$id 			= $request->tc_ids;
 	$ids 			= explode($this->getDelimiterChar(),$id,-1);
 	$scl_id 		= 0;
-	
+
+	$validator = \Validator::make($request->all(), array(
+			'release' => 'required',
+			'cycle' => 'required'
+			));	
+	if ($validator->fails())
+	{
+		foreach ($validator->errors()->toArray() as $key => $value) {
+			$error[]=$value[0];
+		} 
+	}	
+
 	$scenarios 							= \App\TestScenario::where('tsc_id', $tsc_id)->get();	
 	$cases 								= \App\TestCase::find($ids); 
-	$excel_data['release_version'] 		= $request->release;
+	$excel_data['release_version'] 		= $request->release."^".$request->cycle;
 	$excel_data['os_version']			= $request->os_version;
 	$excel_data['network_type']			= $request->network_type;
 	$excel_data['device_name']			= $request->device_name;

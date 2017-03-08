@@ -11,7 +11,9 @@
           showCheckbox: false,
     };
 
-    $('select').multiselect(options);
+    //$('select').multiselect(options);
+
+    
     /*$('#tf_id').multiselect(options);
     $('#project').multiselect(options);
     $('#tf_id').multiselect(options);
