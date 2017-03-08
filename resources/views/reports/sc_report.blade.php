@@ -67,7 +67,10 @@
                     </thead>
                     <tbody>
                         <?php
-                         $i =1; 
+                         $i =1;
+                         $sum_total = 0; $sum_pass =0; $sum_fail=0; $sum_not_executed=0;
+                         $sum_step_total = 0; $sum_step_pass =0; $sum_step_fail=0; $sum_step_not_executed=0;
+                        
                         ?>
                         @foreach($project->functionalities as $fn)
                         <tr>
@@ -75,40 +78,80 @@
                                 {{$i++}}                        
                             </td>
                             <td> 
-                                <a href="{{URL::route('sc_report.functionality', ['id' => $fn->tf_id])}}" title="All Scenario Labs for {{$fn->tf_name}} "> 
+                                <a href="{{URL::route('report.functionality', ['id' => $fn->tf_id])}}" title="All test Labs for {{$fn->tf_name}} "> 
                                 {{$fn->tf_name}}                    
                                 </a>
                             </td>
                             <td class="alert alert-info">
-                               {{ isset($fn->testcases['total']) ? $fn->testcases['total'] : 0 }}
+                              {{ isset($fn->testcases['total']) ? $fn->testcases['total'] : $fn->testcases['total']= 0 }}
+                              <?php $sum_total += $fn->testcases['total']; ?>
+                                
                             </td>
                             <td class="alert alert-success">
-                               {{ isset($fn->testcases['pass']) ? $fn->testcases['pass'] : 0 }}
-                                                             
+                               {{ isset($fn->testcases['pass']) ? $fn->testcases['pass'] : $fn->testcases['pass']= 0 }}
+                                <?php $sum_pass += $fn->testcases['pass']; ?>     
                             </td>
                             <td class="alert alert-danger">
-                               {{ isset($fn->testcases['fail']) ? $fn->testcases['fail'] : 0 }}                               
+                               {{ isset($fn->testcases['fail']) ? $fn->testcases['fail'] :$fn->testcases['fail']= 0 }} 
+                                <?php $sum_fail += $fn->testcases['fail']; ?>
                             </td>
-                            <td class="alert alert-error">
-                               {{ isset($fn->testcases['not_executed']) ? $fn->testcases['not_executed'] : 0 }}                               
+                            <td class="alert alert-warning">
+                               {{ isset($fn->testcases['not_executed']) ? $fn->testcases['not_executed'] :$fn->testcases['not_executed']= 0 }}              
+                                <?php $sum_not_executed += $fn->testcases['not_executed']; ?>
+
                             </td>
                             <td class="alert alert-info">
-                               {{ isset($fn->teststeps['total']) ? $fn->teststeps['total'] : 0 }}                                
-                            </td>
-                            <td  class="alert alert-success">
-                               {{ isset($fn->teststeps['pass']) ? $fn->teststeps['pass'] : 0 }}
+                              {{ isset($fn->teststeps['total']) ? $fn->teststeps['total'] : $fn->teststeps['total']= 0 }}
+                              <?php $sum_step_total += $fn->teststeps['total']; ?>
                                 
                             </td>
-                            <td  class="alert alert-danger">
-                               {{ isset($fn->teststeps['fail']) ? $fn->teststeps['fail'] : 0 }}
-                                
+                            <td class="alert alert-success">
+                               {{ isset($fn->teststeps['pass']) ? $fn->teststeps['pass'] : $fn->teststeps['pass']= 0 }}
+                                <?php $sum_step_pass += $fn->teststeps['pass']; ?>     
                             </td>
-                             <td  class="alert alert-error">
-                               {{ isset($fn->teststeps['not_executed']) ? $fn->teststeps['not_executed'] : 0 }}
-                                
+                            <td class="alert alert-danger">
+                               {{ isset($fn->teststeps['fail']) ? $fn->teststeps['fail'] :$fn->teststeps['fail']= 0 }} 
+                                <?php $sum_step_fail += $fn->teststeps['fail']; ?>
+                            </td>
+                            <td class="alert alert-warning">
+                               {{ isset($fn->teststeps['not_executed']) ? $fn->teststeps['not_executed'] :$fn->teststeps['not_executed']= 0 }}              
+                                <?php $sum_step_not_executed += $fn->teststeps['not_executed']; ?>
+
                             </td>
                         </tr>
                         @endforeach
+                        <tr style="">
+                            <td> 
+                                                   
+                            </td>
+                            <td> 
+                               TOTAL
+                            </td>
+                            <td>
+                               {{$sum_total}}
+                            </td>
+                            <td >
+                               {{$sum_pass}}                           
+                            </td>
+                            <td >
+                               {{$sum_fail}}                              
+                            </td>
+                            <td >
+                               {{$sum_not_executed}}                              
+                            </td>
+                            <td>
+                              {{$sum_step_total}}
+                            </td>
+                            <td >
+                               {{$sum_step_pass}}                           
+                            </td>
+                            <td>
+                               {{$sum_step_fail}}                              
+                            </td>
+                            <td>
+                               {{$sum_step_not_executed}}                              
+                            </td>
+                        </tr>
                     </tbody>
                  </table>
                 </div>

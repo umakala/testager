@@ -73,10 +73,9 @@
                  Lab
             </a></li>
         </ul>  <b class="caret" style="color: #000;"></b>-->                  
-        <a href="{{url('sc_report')}}" ><!--  data-toggle="dropdown" class="dropdown-toggle">   -->    Reports 
+        <a href="{{url('report')}}" ><!--  data-toggle="dropdown" class="dropdown-toggle">   -->    Reports 
         </a>
     </span>
-
 
     <!-- Defect dropdown options  -->
      <span class="btn headerButt dropdown">
