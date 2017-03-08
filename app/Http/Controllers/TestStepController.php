@@ -130,7 +130,8 @@ class TestStepController extends Controller {
 	public function update($id, Request $request)
 	{
 		$validator = \Validator::make($request->all(), array(
-			'description' => 'required'			
+			'description' => 'required',
+			'expected_result' => 'required'
 			));
 		if ($validator->fails())
 		{
@@ -162,14 +163,17 @@ class TestStepController extends Controller {
 
 		        $result = \App\Execution::where(['ts_id' => $id, 'tl_id' => 0])->update($execution_content);
 
-				$del_obj = new DeleteQueryHandler();
+				$del_obj = new DeleteQueryHandler();				
 	        	$condition = $del_obj->getCondition($item, $level);
 	        	$condition['soft_delete'] = false;
+
 	        	$all_steps = \App\TestStep::where($condition)->get();
 	        	foreach ($all_steps as $step_value) {
 	        		if($step_value->ts_id != $id)
 	        		{
 	        			$step_value->update($content);
+
+	        			//exit;
 	        			\App\Execution::where(['ts_id' => $step_value->ts_id, 'tl_id' => 0])->update($execution_content);
 	        		}
 	        	}

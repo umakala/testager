@@ -221,6 +221,8 @@ class DeleteQueryHandler {
 	public function getCondition($item, $level )
 	{
 		$condition['expected_result'] = $item->expected_result;
+		$condition['description'] 	  = $item->description;
+	
 		switch ($level) {
 			case 'step':
 			 	$condition['ts_id'] = $item->ts_id;
