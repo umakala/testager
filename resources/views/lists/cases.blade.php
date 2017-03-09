@@ -40,7 +40,7 @@
                   <a href="{{URL::route('testcase.show', ['id' => $detail->tc_id])}}"> <span id="" class="glyphicon glyphicon-eye-open"></span>
                      {{$detail->tc_name}}</a>               
                   </td>
-                  <td>  
+                  <td style="max-width:200px">  
                      {{$detail->description}}                    
                   </td>
                  <td>  

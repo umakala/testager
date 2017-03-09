@@ -190,8 +190,9 @@ class ExecutionController extends Controller{
 		}
 		else
 		{
-			$message = $this->getMessage('messages.exe_not_found');
-			Toast::message($message, 'danger');
+			//$message = $this->getMessage('messages.exe_not_found');
+			$message = $this->getMessage('messages.run_autorun');			
+			Toast::message($message, 'info');
 		}
 	}
 

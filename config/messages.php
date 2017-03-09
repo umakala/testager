@@ -50,7 +50,7 @@ return [
 	*/
 	'execution_start'			=> "Autorun launched for execution. Use downloaded file as input to Autorun and select your screenshot location.",
 	'upload_completed' 			=> "File upload process complete.",
-
+	'run_autorun' 				=> "Please start AutoRun to execute script.",
 
 
 ];
