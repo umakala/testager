@@ -198,8 +198,8 @@ select.form-control[disabled] {
 }
 
 .pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
-    background-color: #1e1e1e!important;
-    border-color: #1e1e1e!important;
+    background-color: #7d4627!important;
+    border-color: #7d4627!important;
     color: #fff!important;
 }
 
@@ -354,7 +354,7 @@ textarea.form-control {
 .articleCachePanel {
 	margin: 0 0 18px;
 	padding: 0 0 18px 0;
-	border-bottom: 1px solid #1e1e1e;
+	border-bottom: 1px solid #7d4627;
 }
 
 .formContainer {
@@ -386,9 +386,9 @@ textarea.form-control {
 
 .rowPanelTitle {
 	font-size: 16px;
-	color: #1e1e1e;
+	color: #7d4627;
 	margin: 20px 0 10px 0!important;
-    border-bottom: 1px solid #1e1e1e;
+    border-bottom: 1px solid #7d4627;
 	cursor: pointer;
 }
 

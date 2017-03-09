@@ -18,10 +18,12 @@
          --> 	<thead>
          		<tr>
       			<th style="max-width:10px">#</th>
-      			<th style="min-width:120px">Name</th>
+      			<th>Name</th>
       			<th style="min-width:150px">Description</th>
-					<th>Total Testcases</th>
-               <th style="min-width:100px"> Actions
+               <th style="min-width:150px">Expected Result</th>
+               <th>Type</th>
+					<th style="max-width:30px">Test cases</th>
+               <th> Actions
                </th>
                <!-- <th style="min-width:100px"> 
                <input type="checkbox" id="select_all" name="select_all" title="Select all" onclick="checkAll(this)" />   
@@ -46,15 +48,29 @@
          			<td>  
          				{{($detail->description == "" ) ? "-" : $detail->description}}          				
          			</td>
+                  <td>
+                     {{($detail->expected_result == "" ) ? "-" : $detail->expected_result}}                      
+                  </td>
+                  @if(strpos($detail->expected_result, 'unsuccessful'))
+                  <td class="alert alert-danger">
+                     Negative
+                  @else
+                  <td class="alert alert-success">
+                     Positive
+                  @endif
+                  </td>   
+         			<td> 
+         				{{$detail->testcases}}
+         			</td>
+         		 
+                  <!-- 
          			<td> 
          				{{date($small_dt_format, strtotime($detail->created_at))}} 
-         			</td>	
+         			</td>	 -->
                   <!--Lab for multiple scenarios - to be implemented  -->
                   <!-- <td> 
                    <input type="checkbox" id="{{$detail->tsc_id}}" name="{{$detail->tsc_id}}" class="checkbox">                 
                   </td> -->
-
-
          			<td> 
                   <a href="{{URL::route('scenario.show', ['id' => $detail->tsc_id])}}" style="margin-right: 10px"> <span id="" class="glyphicon glyphicon-eye-open"></span></a>	
 
