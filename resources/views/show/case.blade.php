@@ -30,27 +30,20 @@
 		</p>
 
 		<!-- Toast -->
-		<p>@include('toast::messages')
+		<div>@include('toast::messages')
 		@if(Session::has('toasts'))
 		        {{Session::forget('toasts')}}
 		@endif
-		</p>
+		</div>
 
 		<!-- Body -->
 		<div class="panel-body">
-			<p style="float:right">
+			<p style="float:right; padding-top:8px;">
 				<a href="{{URL::route('testcase.edit', ['id' => $case->tc_id])}}" title="Edit Testcase"> <span id="" class="glyphicon glyphicon-edit"></span> Edit</a>
-
-				
 
 				<a  data-toggle="modal" data-target="#deleteModal" title="Delete Testcase"> <i class="glyphicon glyphicon-trash"  ></i>Delete
                 </a>
 			</p>			
-			<p>
-			<!-- by {{$case->created_by}} -->
-			</p> 
-
-
 	 	<ol class="breadcrumb">
 	 	<li><a href="{{URL::route('scenario.show' , ['id' => $case->tsc_id] )}}">Scenario {{$case->tsc_name}}</a></li>
           <li><a href="{{URL::route('testcase.show' , ['id' => $case->tc_id] )}}">{{$case->tc_name}}</a></li>

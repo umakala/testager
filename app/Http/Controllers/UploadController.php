@@ -1,5 +1,7 @@
 <?php namespace App\Http\Controllers;
 
+/*ini_set('max_execution_time', 180);
+*/
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Handlers\DeleteQueryHandler;

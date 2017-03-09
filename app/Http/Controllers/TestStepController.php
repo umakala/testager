@@ -166,7 +166,6 @@ class TestStepController extends Controller {
 				$del_obj = new DeleteQueryHandler();				
 	        	$condition = $del_obj->getCondition($item, $level);
 	        	$condition['soft_delete'] = false;
-
 	        	$all_steps = \App\TestStep::where($condition)->get();
 	        	foreach ($all_steps as $step_value) {
 	        		if($step_value->ts_id != $id)
@@ -177,6 +176,9 @@ class TestStepController extends Controller {
 	        			\App\Execution::where(['ts_id' => $step_value->ts_id, 'tl_id' => 0])->update($execution_content);
 	        		}
 	        	}
+	        	$message = $this->getMessage('messages.success');
+	        	$message.= " Total Steps updated = ".count($all_steps);
+				Toast::success($message);
 
 				return redirect()->route('testcase.show', ['id' => $tc_id]);
 
@@ -185,7 +187,9 @@ class TestStepController extends Controller {
 		 	{
 		 		$error[] = "Session expired. Please login to continue";
 		 	}
-	 	}
+	 	}/*
+	 	$message = $this->getMessage('messages.update_failed');
+    	Toast::message($message, 'danger');*/
 	 	return redirect()->route('teststep.edit', ['id' => $id, 'message' => $error])->withInput();
 	}
 

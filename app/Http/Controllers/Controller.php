@@ -1,5 +1,7 @@
 <?php namespace App\Http\Controllers;
 
+ini_set('max_execution_time', 180);
+
 use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
