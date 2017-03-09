@@ -51,7 +51,7 @@
                   <td>
                      {{($detail->expected_result == "" ) ? "-" : $detail->expected_result}}                      
                   </td>
-                  @if(strpos($detail->expected_result, 'unsuccessful'))
+                  @if(strpos(strtolower($detail->expected_result), 'unsuccessful'))
                   <td class="alert alert-danger">
                      Negative
                   @else

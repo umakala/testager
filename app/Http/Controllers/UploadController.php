@@ -77,7 +77,7 @@ class UploadController extends Controller {
 						switch ($call_page) {
 							//When upload method is called from project page to upload functionality and lower levels
 							case 'project':
-							if(isset($row[0]))
+							if(isset($row[0]) && strlen((trim($row[0])))>0)
 								$fn_id = $int_obj->handleFunctionality($row, $fn_id);
 							/*if($fn_id == 0){
 								$error = true; break;
@@ -88,12 +88,10 @@ class UploadController extends Controller {
 							if ($call_page == "functionality") {
 								$fn_id = $call_page_id;
 							}
-							if(isset($row[2])){
+							if(isset($row[2]) && strlen((trim($row[2])))>0){
 								$sc_id = $int_obj->handleScenario($row, $fn_id, $sc_id, $sc_seq);
 								$sc_seq++;
 							}
-
-
 
 							//When upload method is called from scenario page to upload testcases and teststeps to scenario with id as call_page_id
 							case 'scenario':
@@ -103,7 +101,7 @@ class UploadController extends Controller {
 							if(isset($row[2])){
 								$tc_seq = 1;
 							}
-							if(isset($row[6])){
+							if(isset($row[6]) && strlen((trim($row[6])))>0){
 								$tc_id = $int_obj->handleTestcase($row, $sc_id, $tc_id, $tc_seq);
 								$tc_seq++;
 							}
@@ -117,7 +115,7 @@ class UploadController extends Controller {
 							if(isset($row[2])){
 								$seq = 1;
 							}
-							if(isset($row[9]))
+							if(isset($row[9]) && strlen((trim($row[9])))>0)
 								$ts_id = $int_obj->handleTeststep($row, $tc_id, $ts_id, $seq);
 							$seq++;
 							break;
