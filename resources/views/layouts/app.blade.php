@@ -21,8 +21,9 @@
     <script type="text/javascript" src="{{ URL::asset('assets/js/jquery-1.11.3.min.js')}}"></script>          
     <script type="text/javascript" src="{{ URL::asset('assets/js/bootstrap.min.js')}}"></script>
     <script type="text/javascript" src="{{ URL::asset('assets/js/jquery.ui.widget.js')}}"></script>
-  
-  
+    
+
+
 
     <!-- treeview libs-->
     <link href="{{ URL::asset('assets/css/bootstrap-treeview.css')}}" rel="stylesheet">
@@ -31,6 +32,12 @@
   
   <script type="text/javascript" src="{{ URL::asset('assets/js/bootstrap_multiselect.js')}}"></script>
     <script type="text/javascript" src="{{ URL::asset('assets/js/jquery_multiselect.js')}}"></script> 
+
+  <!-- datatable scripts -->
+    <script type="text/javascript" src="{{ URL::asset('assets/js/jquery.dataTables.min.js')}}"></script>
+        <script type="text/javascript" src="{{ URL::asset('assets/js/dataTables.bootstrap.min.js')}}"></script>
+
+    
     <!-- common methods -->
     <script type="text/javascript">
         function signOff() {

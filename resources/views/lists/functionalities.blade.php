@@ -9,15 +9,15 @@
 	 		</div>
 	 		<input type="hidden" name="tsc_id" value="{{$id}}">
 
-         <table class="table table-striped" cellspacing="0"  >
-         	<thead>
+        <table id="scTBL" class="table table-striped table-hover" cellspacing="0" width="auto">
+ 	       <thead>
          		<tr>
       			<th style="max-width:10px">#</th>
       			<th style="min-width:150px">Name</th>
       			<th style="min-width:150px">Description</th>
 					<th>Total Scenarios</th>
                <th style="max-width:100px">Created by</th>
-					<th style="max-width:50px"> Created on </th>
+					<th > Created on </th>
                <th style="min-width:100px"> Actions </th>
              	</tr>
          	</thead>
@@ -62,3 +62,7 @@
         </div>
 
 </div>
+
+<script type="text/javascript">
+    $("#scTBL").DataTable({ responsive: true});
+</script>

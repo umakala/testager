@@ -12,16 +12,15 @@
       
          <input type="hidden" name="tf_id" value="{{$id}}">
          <input type="hidden" name="type" value="scenario">
-
+<table id="scTBL" class="table table-striped table-hover" cellspacing="0" width="auto">
+ <!-- 
          <table class="table table-striped" cellspacing="0"  >
-         	<thead>
+         --> 	<thead>
          		<tr>
       			<th style="max-width:10px">#</th>
-      			<th style="min-width:150px">Name</th>
-      			<th style="min-width:130px">Description</th>
+      			<th style="min-width:120px">Name</th>
+      			<th style="min-width:150px">Description</th>
 					<th>Total Testcases</th>
-               <th style="max-width:100px">Created by</th>
-					<th style="max-width:50px"> Created on </th>
                <th style="min-width:100px"> Actions
                </th>
                <!-- <th style="min-width:100px"> 
@@ -48,12 +47,6 @@
          				{{($detail->description == "" ) ? "-" : $detail->description}}          				
          			</td>
          			<td> 
-         				{{$detail->testcases}}
-         			</td>
-         			<td> 
-         				{{$detail->created_by}} 
-         			</td>
-         			<td> 
          				{{date($small_dt_format, strtotime($detail->created_at))}} 
          			</td>	
                   <!--Lab for multiple scenarios - to be implemented  -->
@@ -76,3 +69,7 @@
         </div>
 
 </div>
+
+<script type="text/javascript">
+    $("#scTBL").DataTable({ responsive: true});
+</script>

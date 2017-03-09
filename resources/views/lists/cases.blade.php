@@ -13,13 +13,13 @@
          <input type="hidden" name="type" value="case">
 
 
-         <table class="table table-striped" cellspacing="0"  >
-            <thead>
+        <table id="scTBL" class="table table-striped table-hover" cellspacing="0" width="auto">
+    <thead>
                <tr>
-                  <th style="max-width:10px">#</th>
-                  <th style="min-width:150px">Case Name</th>
-                  <th style="max-width:150px">Description</th>
-                  <th style="max-width:100px">Sequence No.</th>
+                  <th>#</th>
+                  <th>Case Name</th>
+                  <th>Description</th>
+                  <th>Sequence No.</th>
                <th>
                <input type="checkbox" id="select_all" name="select_all" title="Select all" onclick="checkAll(this)" />   
 
@@ -55,3 +55,7 @@
             </tbody>
          </table>
          </form>
+
+<script type="text/javascript">
+    $("#scTBL").DataTable({ responsive: true});
+</script>
