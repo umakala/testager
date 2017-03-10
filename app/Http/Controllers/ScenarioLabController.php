@@ -133,13 +133,13 @@ class ScenarioLabController extends Controller {
 
 			$tc = \App\TestCase::find($value->tc_id);
 			$value->case = $tc;
-/*
+			$value->case->steps = \App\TestStep::where(['tc_id' => $value->tc_id, 'soft_delete' => false])->orderBy('seq_no', 'asc')->get();	
+			/*
 			$tsc = \App\TestScenario::select('tsc_name')->where('tsc_id' , $value->tsc_id)->get();
 			$value->tsc_name = $tsc[0]->tsc_name;*/
 		}
 
 		//$sc_details->case_labs = $lab_details;
-
 		return view('testlab.show_sc_lab', ['labs' => $lab_details, 'scenario' => $sc_details]);
 	}
 

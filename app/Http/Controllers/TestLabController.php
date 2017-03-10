@@ -188,6 +188,7 @@ public function showScenarioLab($id)
 	foreach ($lab_cases as $key => $value) {
 		$value->case = \App\TestCase::find($value->tc_id);
 		$tc_ids		= $tc_ids.$value->tc_id."_";
+		$value->case->steps = \App\TestStep::where(['tc_id' => $value->tc_id, 'soft_delete' => false])->orderBy('seq_no', 'asc')->get();	
 	}
 	return view('testlab.scenario_lab_details', ['labs' => $lab_cases, 'scenario' => $sc , 'tc_ids' => $tc_ids]);
 }

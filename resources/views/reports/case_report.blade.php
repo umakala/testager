@@ -34,7 +34,7 @@
                         <div class="row">                    
                             <div  class="col-lg-6" >Release
                             </div>
-                            <div  class="col-lg-6" ><strong> {{$execution_results->lab->tp_name}} {{$execution_results->lab->release_version}} /</strong>
+                            <div  class="col-lg-6" ><strong> {{$execution_results->lab->tp_name}} {{$execution_results->lab->release_version}} </strong>
                             </div>
                         </div>
                         <div class="row">                    
@@ -43,7 +43,7 @@
                             <div  class="col-lg-6" ><strong> 
                             <a href="{{URL::route('report.functionality', ['id' => $execution_results->lab->tf_id])}}">
 
-                            {{$execution_results->tf_name}} / 
+                            {{$execution_results->tf_name}} 
                             </a>
                             </strong>
                             </div>
@@ -55,7 +55,7 @@
                             <div  class="col-lg-6" ><strong> 
 <a href="{{URL::route('report.scenario', ['id' => $execution_results->lab->tsc_id])}}">
  
-{{$execution_results->tsc_name}} / </a></strong>
+{{$execution_results->tsc_name}}  </a></strong>
                             </div>
                         </div>
 
