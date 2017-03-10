@@ -13,7 +13,7 @@
          <input type="hidden" name="type" value="case">
 
 
-    <table id="scTBL" class="table table-striped table-hover" cellspacing="0" width="auto">
+    <table  class="table table-striped table-hover" cellspacing="0" width="auto">
     <thead>
                <tr>
                   <th>#</th>
