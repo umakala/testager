@@ -53,10 +53,10 @@
 </head>
 
 <body>
-        <div class="col-lg-9 col-sm-12" >
+        <div class="col-md-9 col-sm-12" >
           @include('layouts.header')
         </div>
-        <div class="col-lg-3 col-sm-12" >
+        <div class="col-md-3 col-sm-12" >
             <ul class="hamburgerMenu">
                 <a href="{{URL::route('profile')}}">
                     <li style="background-color:#7d4627;font-size: 16px; font-weight: bold ">
@@ -65,7 +65,7 @@
                 </a>              
             </ul>  
         </div>
-    <div class="col-lg-12 fixed" >
+    <div class="col-md-12 fixed" >
              <div class="dynTemplate" style="margin-top: 20px;">
                  @if(isset($info)) 
                 <p class="alert alert-info" >{{$info}}</p>

@@ -125,6 +125,44 @@ class ChartsHandler {
 		]);
 	}
 
+	public function createLabSummaryPieChart($chart_details)
+	{
+		$cp_data = Lava::DataTable();
+		$cp_data->addStringColumn('Summary')
+		        ->addNumberColumn('Percent')
+		        ->addRow(['Pass', $chart_details['pass']])
+		        ->addRow(['Fail', $chart_details['fail']])
+		        ->addRow(['Results Not Available', $chart_details['not_available']]);
+
+		Lava::PieChart('result', $cp_data, [
+		    'title' => 'Execution Summary:',
+		    'titleTextStyle' => [
+		        'fontSize' => 12
+		    ],
+		    'colors' => ['#43a047', '#e53935', '#fb8c00', '#1e88e5', '#9e9e9e'],
+		     'pieSliceBorderColor'      => '#eeeeee'
+		]);
+	}
+
+	public function createScvsLabSummaryPieChart($chart_details)
+	{
+		$cp_data = Lava::DataTable();
+
+		$cp_data->addStringColumn('Summary')
+		        ->addNumberColumn('Count')
+		        ->addRow(['Planned Scenarios', $chart_details['sc_total']])
+		        ->addRow(['Completed', $chart_details['pass']+$chart_details['fail'] ])
+		        ->addRow(['Balance', $chart_details['balance']]);
+
+		Lava::ColumnChart('sc_result', $cp_data, [
+		    'title' => 'Scenarios Coverage',
+		    'titleTextStyle' => [
+		        'fontSize' => 12
+		    ],
+		    'color' => '#1e88e5'
+		]);
+	}
+
 public function createSummaryColumnChart($chart_details)
 	{
 		$summary = Lava::DataTable();

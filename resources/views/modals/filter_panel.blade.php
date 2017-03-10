@@ -1,6 +1,6 @@
 
          <div class="panel-body"  id ="top">
-           <div class="panel-title" style="padding-bottom: 10px;" > Testcase Details 
+           <div class="panel-title" style="padding-bottom: 10px;" > 
              <p  onclick="hideSummary()" style="float:right">
               <a data-toggle="collapse" data-parent="#panel" href="#summary_body" class="panel-toggle">
                 <span class="glyphicon glyphicon-filter"  id="icontoggle"></span><span style="font-style: bold; font-size: 14px; padding: 5px;" >Filters</span>
@@ -24,9 +24,7 @@
                             <label for="os_version" class="control-label col-xs-4">Filter by Functionality</label>
                             <div class="col-xs-6">
                                 <select class="form-control" name="os_version"  style="font-size:12px">
-                                    @foreach($project->functionalities as $fn)
-                                        <option value="{{$fn->tf_id}}">{{$fn->tf_name}}</option>
-                                    @endforeach
+                                   
                               </select>
                            </div>
                         </div>

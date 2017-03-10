@@ -63,7 +63,8 @@ Route::get('report/case/{id}', array("as"=>"report.case" , 'uses' =>'ReportContr
 Route::get('report/scenario/{id?}', array("as"=>"report.scenario" , 'uses' =>'ReportController@show_scenario'));
 Route::get('report/functionality/{id?}', array("as"=>"report.functionality" , 'uses' =>'ReportController@index'));
 
-
+Route::resource('summary', 'ReportSummaryController');
+Route::get('summary/functionality/{id?}', array("as"=>"summary.functionality" , 'uses' =>'ReportSummaryController@index'));
 
 Route::resource('project', 'TestProjectController');
 Route::resource('functionality', 'FunctionalityController');

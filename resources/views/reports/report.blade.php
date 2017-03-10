@@ -267,7 +267,7 @@
          <td class="alert alert-{{$detail->lab->execution_result == 'Pass'? 'success' : ( ($detail->lab->execution_result == 'not_executed'  || $detail->lab->execution_result == '')  ? 'warning' : 'danger')}}"   >
            {{$detail->lab->execution_result}}
          </td>
-         <td class="alert alert-{{$detail->lab->checkpoint_result == 'Pass'? 'success' : ($detail->lab->checkpoint_result == '' || $detail->lab->checkpoint_result == 'not_executed' ? 'warning': ($detail->lab->checkpoint_result == 'none' ? 'error' : 'danger'))}}" > {{$detail->lab->checkpoint_result}}</td>
+         <td class="alert alert-{{$detail->lab->checkpoint_result == 'Pass'? 'success' : ($detail->lab->checkpoint_result == '' || $detail->lab->checkpoint_result == 'not_executed' ? 'warning': ($detail->lab->checkpoint_result == 'none' ? 'warning' : 'danger'))}}" >  {{($detail->lab->checkpoint_result == "none" )? "Not Defined" : $detail->lab->checkpoint_result}}</td>
          <td></td>
          @endif
 

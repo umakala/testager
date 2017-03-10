@@ -73,7 +73,7 @@
                  Lab
             </a></li>
         </ul>  <b class="caret" style="color: #000;"></b>-->                  
-        <a href="{{url('report')}}" ><!--  data-toggle="dropdown" class="dropdown-toggle">   -->    Reports 
+        <a href="{{url('summary')}}" ><!--  data-toggle="dropdown" class="dropdown-toggle">   -->    Reports 
         </a>
     </span>
 

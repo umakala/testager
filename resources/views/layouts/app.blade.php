@@ -123,7 +123,7 @@
 </head>
 
 <body>
-    <div class="col-lg-9 fixed" >
+    <div class="col-md-9 fixed" >
         @include('layouts.header')
 
        <div class="dynTemplate">
@@ -138,7 +138,7 @@
         </div>
       </div>
     </div>             
-        <div class="col-lg-3 col-sm-4" style="padding-right: 0px">
+        <div class="col-md-3 col-sm-4" style="padding-right: 0px">
         <div class="hamburger">
             <ul class="hamburgerMenu">
                 <a href="{{URL::route('project.show', ['id' => session()->get('open_project')])}}">
