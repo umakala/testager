@@ -27,16 +27,24 @@ class ReportSummaryController extends Controller {
 
 		foreach ($functionalities as $fn) {
 			$fn->sc_count = \App\TestScenario::where('tf_id' , $fn->tf_id)->count();
-			$report['sc_total']+=$fn->sc_count;
+			$report['sc_total']+=$fn->sc_count;			
 
+			$sample = \App\ScenarioLab::select()->where('tf_id' , $fn->tf_id)->groupBy('tsc_id')->get()->toArray();
+			//$fn->sc_labs = \App\ScenarioLab::where('tf_id' , $fn->tf_id)->distinct('tsc_id')->count('tsc_id');
 
-			$fn->sc_labs_count = \App\ScenarioLab::where('tf_id' , $fn->tf_id)->count();
+			$fn->sc_labs_count = count($sample);
 			$report['total']+=$fn->sc_labs_count;
 
-			$fn->pass = \App\ScenarioLab::where(['tf_id' => $fn->tf_id, 'result' => 'Pass'])->count();
+			$fn_pass = 0; $fn_fail = 0;
+
+			foreach ($sample as $key => $value) {
+				($value['result'] == "Pass")?$fn_pass+=1: $fn_fail+=1;
+			}
+
+			$fn->pass = $fn_pass;
 			$report['pass']+=$fn->pass;
 
-			$fn->fail = \App\ScenarioLab::where(['tf_id' => $fn->tf_id, 'result' => 'Fail'])->count();
+			$fn->fail = $fn_fail;
 			$report['fail']+=$fn->fail;
 
 
