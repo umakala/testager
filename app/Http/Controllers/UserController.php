@@ -50,8 +50,11 @@ class UserController extends Controller {
 				else*/
 
 				$project_name = \App\TestProject::select('tp_name')->find($result[0]['open_project']);
-				
-				session(['id' => $result[0]['id'], 'name'=>$result[0]['name'], 'email' => $request->email , 'open_project' => $result[0]['open_project'] , 'autorun_location' =>  $result[0]['autorun_location'] , 'project_name' => $project_name->tp_name]);
+				$p_n = "";
+				if(isset($project_name->tp_name))
+					$p_n = $project_name->tp_name;
+					
+				session(['id' => $result[0]['id'], 'name'=>$result[0]['name'], 'email' => $request->email , 'open_project' => $result[0]['open_project'] , 'autorun_location' =>  $result[0]['autorun_location'] , 'project_name' => $p_n]);
 				return redirect()->route('profile');			
 			}
 			else

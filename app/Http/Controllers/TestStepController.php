@@ -171,7 +171,6 @@ class TestStepController extends Controller {
 	        		if($step_value->ts_id != $id)
 	        		{
 	        			$step_value->update($content);
-
 	        			//exit;
 	        			\App\Execution::where(['ts_id' => $step_value->ts_id, 'tl_id' => 0])->update($execution_content);
 	        		}
